@@ -1,0 +1,244 @@
+****************驱动文件****************
+HARDWARE
+	infrared.c【红外控制 】
+	ultrasonic.c【超声波测距 EXTI】
+	cba.c【核心板硬件 LED BEEP】
+	usart.c【串口操作　USART】
+	usart_a72.c
+	usart_drv.c	
+	bh1750.c【BH1750光照传感器 IIC】
+	power_check.c【电源 采集电量 ADC】
+	rc522.c【RFID读写控制函数】
+	drive.c【标志物&主车的操作驱动】
+	agv.c【*移动机器人】
+	rng.c【生成随机数】
+my_lib
+	my_lib.c【数据处理】
+	date_base.h【系统通信协议 包的操作定义】
+	roadway.c【道路状况检测&主车操作】
+	date_filtering.c【过滤去取滤波结果】
+CAN
+	can_drv.c【CAN驱动】
+	CanP_HostCom.c【CAN主机通讯】
+	fifo_drv.c【CAN fifo 邮箱驱动】
+	Hard_Can.c【CAN硬件设置】
+	can_user.c【CAN上挂载设备的使用】
+	Can_check.c【使用TIM7进行CAN设备循环检测】
+My code
+	Zigbee.c【zigbee主车通讯&wifi平板通讯】
+	Function.c【主车的函数操作】
+	NEW_Task_board.c【任务版】
+	Voluntarily.c【自动运行函数】
+	NEW_SYN.c【语言识别合成】
+	Card.c【主车读卡过路障】
+	CRC.c【CRC校验算法驱动】
+
+
+
+/*********************笔记部分**************************/
+
+Digital_tube_TEXT();	//任务板测试
+
+Dimming(1);				//调光
+Stadiometry();			//测距
+ETC_detection();		//ETC
+SYN_Extern();			//语音识别					
+
+
+Digital_tube_dynamic_display(66,1);				//数码管
+Task_board_buzzer();							//任务板蜂鸣器
+Task_board_turn_light();						//任务板转向灯
+
+TFT_Test_Zigbee('B',0x11,0x11,0x11);			//TFTA显示		
+
+
+uploading_flat_computer(0xB0);									// 发送开始TFTA
+uploading_flat_computer(0xB1);									// 发送开始TFTB
+uploading_flat_computer(0xB2);								    // 发送交通灯A识别
+uploading_flat_computer(0xB3);								    // 发送交通灯B识别
+uploading_flat_computer(0xB4);									// 发送开始二维码A识别
+
+Send_Zigbee_Data(0x00,0x00,0x00,0x00);					        // 发送启动副车
+
+Timeout_detection(30,0xA1,0x02);								// TFTA(图形)30s超时检测
+Timeout_detection(15,0xA2,0x03);								// 交通灯15s超时检测	
+Timeout_detection(10,0xA3,0x04);								// 二维码A10s超时检测						
+Timeout_detection(60,0xA4,0x05);								// 副车
+
+
+Send_ZigbeeData_To_Fifo(SMG_TimClear, 8);       // LED显示标志物计时模式 -> 清零
+Send_ZigbeeData_To_Fifo(SEG_TimOpen, 8);    	// LED显示标志物计时模式 -> 开启					
+Send_ZigbeeData_To_Fifo(SMG_TimClose, 8);       // LED显示标志物计时模式 -> 关闭
+Send_ZigbeeData_To_Fifo(Charge_Open, 8);        // 无线充电标志物开启
+Send_ZigbeeData_To_Fifo(Gate_Open, 8);      	// 道闸 -> 开启
+Send_ZigbeeData_To_Fifo(GarageA_To1, 8);		// 立体车库A到达第一层	
+
+
+
+YY_Play_Zigbee("你好");							// 制语音播报标志物播报指定文本信息
+Rotate_Dis_Inf(200);							// 立体显示标志物显示距离信息（单位：mm）
+Rotate_show_Inf("A123B4",'C','5');				// 立体显示标志物显示车牌数据
+LED_Dis_Zigbee(123);							// LED显示标志物显示测距信息
+LED_Date_Zigbee(0x12,0x34,0x56,0x01);			// LED显示标志物显示数据
+Gate_Show_Zigbee("A123B4");                     // 道闸系统标志物显示车牌
+TFT_Dis_Zigbee('A',123);						// 智能TFT显示器显示距离信息
+TFT_Show_Zigbee('A',"A123B4");					// TFT显示器显示车牌
+
+
+
+/*密钥更改*/
+KEY_Open[0]=0xff;
+KEY_Open[1]=0xff;
+KEY_Open[2]=0xff;
+KEY_Open[3]=0xff;
+KEY_Open[4]=0xff;
+KEY_Open[5]=0xff;			
+/*数据块*/
+Read_Car_Address=extract((char*)TFT_license_plate);	// X*4+N(十进制)					
+/*初始化卡位置*/					
+Car_location=0xF2;							// 卡的位置
+Car_location_ASCll[0]='F';		  // 卡的位置ASCll
+Car_location_ASCll[1]='2';		  // 卡的位置ASCll
+					
+					
+/***************************************************************/
+Car_Go(Go_Speed, Go_Temp);      			    			// 主车前进	
+参数：	  速度     码盘
+Car_Track(Go_Speed);									    // 主车循迹
+参数：      速度 
+Full_STOP();												// 主车停车
+参数：  无
+Full_Right(wheel_Speed);                  					// 主车右转
+参数：       速度值
+Full_Left(wheel_Speed);                   					// 主车左转
+参数：       速度值 
+Car_Back(Go_Speed, Go_Temp);						 		// 主车后退	
+参数：	  速度     码盘
+MP_Tracking(Go_Speed, Go_Temp);								// 码盘循迹
+参数：	  速度     码盘
+Car_L45(90, 480);		 									// 左旋转 45度						
+	
+Car_R45(90, 480);											// 右旋转 45度						
+
+Full_RL_little(1,90);										// 左微调
+
+Full_RL_little(2,90);										// 右微调
+/***************************************************************/			
+定时器使用说明
+TIM1 ->
+TIM2 ->
+TIM3 -> *红绿灯识别超时判断
+TIM4 -> *任务板数码管扫描
+TIM5 ->
+TIM6 -> 超声波计时（固定）
+TIM7 -> CAN总线检测（固定）
+TIM8 ->
+TIM9 -> 路况检测（固定）
+TIM10 -> 串行数据通讯时间帧（固定）
+TIM11 ->
+TIM12 ->
+TIM13 ->
+TIM14 ->
+
+串口使用说明
+USART1 -> RFID通信（固定）
+USART2 -> A72通信（固定）
+USART3 ->
+UART4  -> A72通信（固定）
+UART5  ->
+USART6 -> SYN7318通信（固定）
+
+中断使用说明
+TIM3 -> 超时检测中断（根据需要修改）
+TIM4 -> 数码管动态扫描中断（根据任务板）
+TIM6 -> 超声波计时中断（固定）
+TIM7 -> CAN总线检测中断（固定）
+TIM9 -> 路况检测中断（固定）
+TIM10 -> 串行数据通讯时间帧中断（固定）
+
+EXTI4 -> 超声接收中断(超声接收根据引脚位置开启不同中断线)
+EXTI15 -> 超声接收中断(超声接收根据引脚位置开启不同中断线)
+
+USART1 ->串口1接收中断（RFID）
+USART2 ->串口2接收中断（A72）
+USART4 ->串口4接收中断（A72）
+USART6 ->串口6接收中断（SYN7318）
+
+CAN1_RX0 -> CAN总线接收中断
+
+ADC使用说明
+ADC1 -> 电池电量检测
+
+中断优先级（第0组 16响应优先级）
+0 -> USART2  串口2接收中断（A72）
+1 -> USART1  串口1接收中断（RFID）
+2 -> UART4  串口4接收中断（A72）
+3 -> TIM3  超时检测中断（根据需要修改）
+4 -> TIM4  数码管动态扫描中断（根据任务板）
+5 -> TIM9  路况检测中断（固定）
+6 -> TIM10  串行数据通讯时间帧中断（固定）
+7 -> EXTI_15/EXTI_4  超声接收中断(超声接收根据引脚位置开启不同中断线)
+8 -> TIM6  超声波计时中断（固定）
+9 -> USART6  串口6接收中断（SYN7318）
+10 -> 
+11 -> 
+12 -> 
+13 -> 
+14 -> 
+15 -> 
+16 -> 
+
+/**************************************************************
+标准任务板				   _________	
+				PB9<-RST--|  O   O  |--BEEP->PC13
+	  	     PC6<-RL_RXD--|  O   O  |--RI_TXD->PF11
+			 PC7<-BL_TXD--|  O   O  |--R_OUT->PG8
+		  	    PB15<-OE--|  O   O  |--ADDR->PG15
+			 PH10<-LED_L--|  O   O  |--SCL->PB6
+			 PH11<-LED_R--|  O   O  |--SDA->PB7
+			   PB4<-INT0--|  O   O  |--+5V
+			   PA15<-INC--|  O   O  |--GND
+                          |---------|
+
+***************************************************************/
+
+RFID读写卡说明（Mifare S50 RFID）
+容量：8Kb
+16个扇区  64个地址块  每个块存储16个字节 每个扇区独立的密码访问
+--------------------------------------------------|
+	     |块0|	扇区0 块0 不可更改	  |数据块| 0  |
+  扇区0  |块1|					      |数据块| 1  |
+         |块2|				    	  |数据块| 2  |
+	     |块3|	密码A 控制块 密码B    |控制块| 3  |
+--------------------------------------------------|
+	     |块0|					      |数据块| 4  |
+  扇区1  |块1|					      |数据块| 5  |
+         |块2|				    	  |数据块| 6  |
+	     |块3|	密码A 控制块 密码B    |控制块| 7  |
+--------------------------------------------------|
+。。。。。。。。。。。。。。。。。。。。。。。。。|
+--------------------------------------------------|
+         |块0|					      |数据块| 60 |
+  扇区15 |块1|					      |数据块| 61 |
+         |块2|				    	  |数据块| 62 |
+	     |块3|	密码A 控制块 密码B    |控制块| 63 |
+--------------------------------------------------|
+RFID控制块内容：
+0xff,0xff,0xff,0xff,0xff,0xff
+密码A（默认密码）
+0xff,0x07,0x80,0x69,0xff
+存取控制 
+0xff,0xff,0xff,0xff,0xff
+密码B	 						
+（更改密码需验证密钥后，更改需要修改的扇区块3）
+/***************************************************************/
+	接收WIFI/Zigbee信息处理结构：
+	（检测WIFI/Zigbee接收的标志位）
+			判断接收到相应的数据
+				1.	关闭定时器
+				2.	判断是否启动全自动
+				3.	清除定时器标志位
+				4.	清除成功标志位
+	（清除WIFI/Zigbee接收的标志位）
+	
+/***************************************************************/	 
