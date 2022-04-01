@@ -1,3 +1,7 @@
+/*****************************************
+2023/3/29  PID_TrackMP2.3.4优化寻卡判断
+*****************************************/
+
 #include "PID.h"
 #include "CanP_HostCom.h"
 //#include "MasterCarCotrol.h"
@@ -49,19 +53,19 @@ void PID_Calc(float error)
 	//previous_I = I;
 	previous_error = error;
 }
-//获取PID循迹偏差程度值 熄灭三个灯以上才会或后8全灭停止 @return:PID计算结果
+//获取PID循迹偏差程度值 普通循迹 @return:PID计算结果
 float PID_Track(unsigned int speed)
 {
 	float error = 0;
 	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
 	//previous_error = 0, previous_I = 0; //误差值
 	//选择偏差程度值
-	uint16_t data8 = Get_Host_UpTrack(TRACK_H8);
-	switch (data8)
+#if TRACK_MODE==1 //8灯循迹
+	switch (Get_Host_UpTrack(TRACK_H8))
 	{
-	case 0: //全灭
-		error = 99;
-		return 99;
+	case 0xff: //全亮
+		error = 0;
+		break;
 	case 0xE7: //11100111 车头在正中
 		error = 0;
 		break;
@@ -111,16 +115,66 @@ float PID_Track(unsigned int speed)
 		error = 3.2;
 		break;
 
-	default:
-		if(Get_Host_TrackDieCount(TRACK_H8)>3)
-		{
-			error = 99;
-			return 99;
-		}else
-		{
-			error = 0;
-		}
+	default: //0x00&0xff
+		//Send_UpMotor(0, 0);
+		error = 99;
+		return 99;
 	}
+#else 
+	switch (Get_Host_UpTrack(TRACK_Q7))
+	{
+	case 0x7F: //全亮
+		error = 0;
+		break;
+	case 0x77: //111 0111 车头在正中
+		error = 0;
+		break;
+	case 0x6F: //110 1111 车头在中偏左
+		error = -1;
+		break;
+	case 0x7B: //111 1011 车头在中偏右
+		error = 1;
+		break;
+
+	case 0x5F: //单灯偏左1 101 1111
+		error = -2;
+		break;
+	case 0x3F: //单灯偏左2 011 1111
+		error = -3;
+		break;
+
+	case 0x7D: //单灯偏右1 111 1101
+		error = 2;
+		break;
+	case 0x7E: //单灯偏右2 111 1110
+		error = 3;
+		break;
+
+	case 0x67://双灯偏左1 110 0111
+		error = -1.6;
+		break;
+	case 0x4F://双灯偏左2 100 1111
+		error = -2.6;
+		break;
+	case 0x1F://双灯偏左3 001 1111
+		error = -3;
+		break;		
+	case 0x73://双灯偏右1 111 0011
+		error = 1.6;
+		break;
+	case 0x79://双灯偏右2 111 1001
+		error = 2.6;
+		break;
+	case 0x7C://双灯偏右3 111 1100
+		error = 3;
+		break;				
+
+	default: //0x00&0xff
+		//Send_UpMotor(0, 0);
+		error = 99;
+		return 99;
+	}
+#endif 	
 	if (error == 0) //回到轨道完毕重置参数
 	{
 		PID_reset();
@@ -137,7 +191,7 @@ float PID_Track(unsigned int speed)
 	}
 	return 99;
 }
-//获取PID循迹偏差程度值 主车循迹全黑线停止循迹(全亮直行 黑线返回99) @return:PID计算结果
+//获取PID循迹偏差程度值 寻卡版(全亮直行 黑线返回99) @return:PID计算结果
 float PID_Track2(unsigned int speed)
 {
 	float error = 0;
@@ -148,7 +202,12 @@ float PID_Track2(unsigned int speed)
 	switch (Get_Host_UpTrack(TRACK_H8))
 	{
 	case 0:
-		error = 99;
+		if (Get_Host_UpTrack(TRACK_Q7)==0x7f)
+		{
+			PID_reset();
+			Send_UpMotor(speed, speed);
+			return 99;
+		}
 		return 99;
 	case 0xEF: //11101111 车头在中偏左
 		error = -1;
@@ -277,7 +336,12 @@ float PID_Track3(unsigned int speed)
 	switch (Get_Host_UpTrack(TRACK_H8))
 	{
 	case 0xff:
-		error = 99;
+		if (Get_Host_UpTrack(TRACK_Q7)==0x7f)
+		{
+			PID_reset();
+			Send_UpMotor(speed, speed);
+			return 99;
+		}
 		return 99;
 	case 0xEF: //11101111 车头在中偏左
 		error = -1;
@@ -401,16 +465,22 @@ float PID_Track3(unsigned int speed)
 float PID_Track4(unsigned int speed)
 {
 	float error = 0;
+	uint16_t h8,q7;
 	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
 	//previous_error = 0, previous_I = 0; //误差值
 	//选择偏差程度值
-
-	switch (Get_Host_UpTrack(TRACK_H8))
+	h8 = Get_Host_UpTrack(TRACK_H8);
+	switch (h8)
 	{
-	case 0xff://全灭
-		PID_reset();
-		Send_UpMotor(speed, speed);
-		return 99;
+	case 0xff://全亮
+		if (Get_Host_UpTrack(TRACK_Q7)==0x7f)
+		{
+			PID_reset();
+			Send_UpMotor(speed, speed);
+			return 99;
+		}
+		
+		
 	case 0xEF: //11101111 车头在中偏左
 		error = -1;
 		break;
@@ -656,24 +726,14 @@ float PID_TrackMP(unsigned int speed)
 
 
 //获取PID循迹偏差程度值 十字路口可能存在白卡版(循迹版灭四灯以上或全亮则跳出本次循迹) @return:PID计算结果
-//主车循迹 灭灯3个以上、全亮、全灭 停止循迹(可用于白色卡黑色停止线上停车)
 float PID_Track5(unsigned int speed)
 {
-	uint16_t data7,data8;
 	float error = 0;
 
-	data8 = Get_Host_UpTrack(TRACK_H8);
-	data7 = Get_Host_UpTrack(TRACK_Q7);
-	switch (data8)
+	switch (Get_Host_UpTrack(TRACK_H8))
 	{
-	case 0xff://后8灯等全亮
-		if (data7 == 0x7f)//前7灯全亮 这里若不判断前7灯 后八灯可能出现误判
-		{
-			error = 99;
-		}else
-		{
-			error = 0;
-		}
+	case 0xff://全亮
+		error = 99;
 		break;
 	case 0x7E: // 0111 1110 白卡横放
 		error = 99;
