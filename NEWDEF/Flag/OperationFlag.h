@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2021-12-21 16:54:56
+ * @LastEditTime: 2022-04-01 20:26:43
  * @version: 2021
  */
 #ifndef __OperationFlag_H
@@ -35,6 +35,7 @@ uint8_t OFlag_GetCmd1(uint8_t *status); //获取副指令1
 uint8_t OFlag_GetCmd2(uint8_t *status); //获取副指令2
 uint8_t OFlag_GetCmd3(uint8_t *status); //获取副指令3
 
+void OFlag_resetWaitFlag(void);//重置等待flag
 unsigned int OFlag_check(uint8_t *data);                                                         //检测是否为Zigbee节点的包
 void Agreement_Send(unsigned char mode, uint8_t *data);                                          //协议选择发送方式发送数据
 void OFlag_Zigbee(uint8_t zigbee_num, uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3); //Zigbee通讯

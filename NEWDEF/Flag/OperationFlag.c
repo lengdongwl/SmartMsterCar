@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2021-12-21 22:21:14
+ * @LastEditTime: 2022-04-01 20:26:22
  * @version: 2021.05.20协议
  */
 #include "OperationFlag.H"
@@ -18,12 +18,12 @@
 #define Agreement_mode_infrared 1
 #define Agreement_mode_Zigbee 2
 
-uint8_t DZ_flag = 0; //道闸标志物开启
-uint8_t CK_flag = 0; //车库标志物下降完毕
-uint8_t DX_flag = 0; //特殊地形方向
-uint8_t YY_flag [3] ={0,0,0};//语音标志物日期时间读取
-uint8_t OFlag_SLAVEflag = 0;//等待副车
-uint8_t OFlag_ETCflag=0;    //等待ETC
+uint8_t DZ_flag = 0;            //道闸标志物开启
+uint8_t CK_flag = 0;            //车库标志物下降完毕
+uint8_t DX_flag = 0;            //特殊地形方向
+uint8_t YY_flag[3] = {0, 0, 0}; //语音标志物日期时间读取
+uint8_t OFlag_SLAVEflag = 0;    //等待副车
+uint8_t OFlag_ETCflag = 0;      //等待ETC
 void Operation_Zigbee(void);
 uint8_t OFlag_xx(uint8_t *cmd, uint8_t *flag, uint8_t time);
 /*红外通讯*/
@@ -138,7 +138,7 @@ void Agreement_Send(unsigned char mode, uint8_t *data)
         Send_Debug_string("\r\n");*/
         Send_ZigbeeData_To_Fifo(data, 8);
     }
-        //Send_ZigbeeData_To_Fifo(data, 8);
+    //Send_ZigbeeData_To_Fifo(data, 8);
     //delay_ms(50);
 }
 
@@ -431,7 +431,7 @@ void OFlag_alarm(unsigned char mode)
 //发送开启码开启烽火台
 void OFlag_alarm_open(unsigned char *KEY)
 {
-    Agreement_Send(Agreement_mode_infrared,KEY);
+    Agreement_Send(Agreement_mode_infrared, KEY);
 }
 
 /**
@@ -693,14 +693,14 @@ void OFlag_YY(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3)
  */
 void OFlag_YY_cmd(uint8_t cmd)
 {
-    if(cmd==0)
+    if (cmd == 0)
     {
-        OFlag_YY(0x20,0x01,0,0);//随机播报
-    }else
-    {
-        OFlag_YY(0x10,cmd,0,0);//指定播报
+        OFlag_YY(0x20, 0x01, 0, 0); //随机播报
     }
-
+    else
+    {
+        OFlag_YY(0x10, cmd, 0, 0); //指定播报
+    }
 }
 
 /**
@@ -712,14 +712,15 @@ void OFlag_YY_cmd(uint8_t cmd)
  * @return {*}
  * 例:日期2021年5月20日 OFlag_YY_setTime(0,0x21,0x05,0x20);
  */
-void OFlag_YY_setTime(uint8_t mode,uint8_t t1,uint8_t t2,uint8_t t3)
+void OFlag_YY_setTime(uint8_t mode, uint8_t t1, uint8_t t2, uint8_t t3)
 {
-    if(mode)
+    if (mode)
     {
-        OFlag_YY(0x40,t1,t2,t3);
-    }else
+        OFlag_YY(0x40, t1, t2, t3);
+    }
+    else
     {
-        OFlag_YY(0x30,t1,t2,t3);
+        OFlag_YY(0x30, t1, t2, t3);
     }
 }
 
@@ -742,23 +743,24 @@ void OFlag_YY_setTime(uint8_t mode,uint8_t t1,uint8_t t2,uint8_t t3)
     str[8]='\0';
     Send_Debug_string(str);
  */
-uint8_t *OFlag_YY_getTime(uint8_t mode,uint32_t count)
+uint8_t *OFlag_YY_getTime(uint8_t mode, uint32_t count)
 {
-    YY_flag[0]=0;//清除缓存
-    YY_flag[1]=0;
-    YY_flag[2]=0;
-    
-    TIM_Cmd(TIM4, ENABLE);//读取数据线程
-    while (count--)//超时判断
+    YY_flag[0] = 0; //清除缓存
+    YY_flag[1] = 0;
+    YY_flag[2] = 0;
+
+    TIM_Cmd(TIM4, ENABLE); //读取数据线程
+    while (count--)        //超时判断
     {
-        if(mode==1)
+        if (mode == 1)
         {
-            OFlag_YY(0x41,1,0,0);
-        }else
-        {
-            OFlag_YY(0x31,1,0,0);
+            OFlag_YY(0x41, 1, 0, 0);
         }
-        if(YY_flag[0]!=0)//读取完毕退出
+        else
+        {
+            OFlag_YY(0x31, 1, 0, 0);
+        }
+        if (YY_flag[0] != 0) //读取完毕退出
         {
             break;
         }
@@ -784,24 +786,22 @@ uint8_t *OFlag_YY_getTime(uint8_t mode,uint32_t count)
 uint8_t OFlag_YY_play(uint8_t *str)
 {
     uint8_t data[100];
-    uint8_t Length=0,dataLength=0;
-    
-    Length = strlen((char *)str);//计算文本长度
-    dataLength=Length+2;//数据区长度=文本长度+2(命令字与文本编码格式)
-    data[0]=0xFD;//帧头
-    data[1]=dataLength>>8;//数据区长度高8位
-    data[2]=0x00ff&dataLength;//数据区长度低8位
-    data[3]=0x01;//命令字
-    data[4]=0x00;//0.GB2312 1.GBK 2.BIG5 3.Unicode
+    uint8_t Length = 0, dataLength = 0;
+
+    Length = strlen((char *)str);  //计算文本长度
+    dataLength = Length + 2;       //数据区长度=文本长度+2(命令字与文本编码格式)
+    data[0] = 0xFD;                //帧头
+    data[1] = dataLength >> 8;     //数据区长度高8位
+    data[2] = 0x00ff & dataLength; //数据区长度低8位
+    data[3] = 0x01;                //命令字
+    data[4] = 0x00;                //0.GB2312 1.GBK 2.BIG5 3.Unicode
 
     for (int i = 0; i < Length; i++)
     {
-        data[i+5]=str[i];
+        data[i + 5] = str[i];
     }
-    Send_ZigbeeData_To_Fifo(data, 5+Length);
+    Send_ZigbeeData_To_Fifo(data, 5 + Length);
 }
-
-
 
 /**
  * @description: TFT标志物控制
@@ -851,12 +851,12 @@ void OFlag_TFT_show(uint8_t mode, uint8_t *str)
  * @return {*}
  * 例OFlag_TFT_showHEX('A',0xA,1,0xB,2,0xC,3); 显示A1B2C3
  */
-void OFlag_TFT_showHEX(uint8_t mode, uint8_t data1,uint8_t data2,uint8_t data3,uint8_t data4,uint8_t data5,uint8_t data6)
+void OFlag_TFT_showHEX(uint8_t mode, uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4, uint8_t data5, uint8_t data6)
 {
-    OFlag_TFT(mode, 0x40, data1*16+data2,data3*16+data4,data5*16+data6);
+    OFlag_TFT(mode, 0x40, data1 * 16 + data2, data3 * 16 + data4, data5 * 16 + data6);
     delay_ms(200);
-	  OFlag_TFT(mode, 0x40, data1*16+data2,data3*16+data4,data5*16+data6);
-	  delay_ms(200);
+    OFlag_TFT(mode, 0x40, data1 * 16 + data2, data3 * 16 + data4, data5 * 16 + data6);
+    delay_ms(200);
 }
 
 /**
@@ -867,7 +867,7 @@ void OFlag_TFT_showHEX(uint8_t mode, uint8_t data1,uint8_t data2,uint8_t data3,u
  */
 void OFlag_TFT_jl(uint8_t mode, uint32_t data)
 {
-    OFlag_TFT(mode, 0x50, 0, data/100,((data/10%10)*16)+ (data%10));
+    OFlag_TFT(mode, 0x50, 0, data / 100, ((data / 10 % 10) * 16) + (data % 10));
 }
 
 /**
@@ -1167,9 +1167,8 @@ void OFlag_ETC_cmd(uint8_t mode, uint8_t cmd)
 
 void OFlag_ETC_wait(void)
 {
-    OFlag_ETCflag=1;
+    OFlag_ETCflag = 1;
 }
-
 
 /**
  * @description: 获取闸门状态 10秒闸门自动关闭
@@ -1258,8 +1257,8 @@ unsigned int OFlag_DX_status(uint8_t *status)
  */
 unsigned int OFlag_DX_wait(uint8_t count)
 {
-    uint8_t _cmd[8] = {0x55,DX_cmd[1], 0x10, 0x01, 0, 0, calc_CheckSum(0x10, 0x01, 0, 0), 0xbb};
-    if(OFlag_xx(_cmd, &DX_flag, count))
+    uint8_t _cmd[8] = {0x55, DX_cmd[1], 0x10, 0x01, 0, 0, calc_CheckSum(0x10, 0x01, 0, 0), 0xbb};
+    if (OFlag_xx(_cmd, &DX_flag, count))
     {
         return DX_flag;
     }
@@ -1278,7 +1277,7 @@ void OFlag_DX_carGo(unsigned int speed, unsigned int refMP)
     while (PID_Track4(speed) != 99)
     {
         delay_ms(1);
-    }//行驶到白色线停止循迹
+    } //行驶到白色线停止循迹
     MasterCar_Stop();
     PID_Set_recovery();
     MasterCar_GoMP(speed, refMP);
@@ -1319,8 +1318,7 @@ void OFlag_SlaveRun(void)
 uint8_t OFlag_SlaveRun_wait(uint8_t count)
 {
     TaskBoard_Time(count);
-    OFlag_SLAVEflag=1;//重置副车启动主车标志
-
+    OFlag_SLAVEflag = 1; //重置副车启动主车标志
 }
 
 /**
@@ -1386,7 +1384,6 @@ uint8_t OFlag_GetCmd3(uint8_t *status)
     return status[5];
 }
 
-
 /**
  * @description: zigbee通用请求发送接收处理
  * @param {uint8_t} *cmd 协议包
@@ -1449,7 +1446,7 @@ void Operation_Zigbee(void)
     case zNum_DX: //特殊地形
         DX_flag = OFlag_DX_status(Zigb_Rx_Buf);
         break;
-    case zNum_YY://语音播报标志物
+    case zNum_YY: //语音播报标志物
         YY_flag[0] = Zigb_Rx_Buf[3];
         YY_flag[1] = Zigb_Rx_Buf[4];
         YY_flag[2] = Zigb_Rx_Buf[5];
@@ -1466,4 +1463,9 @@ void Operation_Zigbee(void)
     }
 
     Zigbee_Rx_flag = 0;
+}
+
+void OFlag_resetWaitFlag(void)
+{
+    OFlag_SLAVEflag = OFlag_ETCflag = 0;
 }

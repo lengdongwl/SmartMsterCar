@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-03-16 10:42:12
+ * @LastEditTime: 2022-04-01 20:42:09
  * 
  * 短线1800 长线2250
  */
@@ -828,10 +828,6 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 #define PI 3.14159
 
 
-uint8_t *MO8= "A12345",*MO2,*MO4;
-int  MO1 = 2,MO3=0,MO9=4,MO6=3;
-
-
 /**
  * @description: 主车任务运行选择 
  * 设定主车当前运行任务 通过Set_Flag_Task()选择任务
@@ -861,8 +857,8 @@ void MasterCar_TaskRunThread(void)
 		//Send_Debug_num2(RC_Card_final_P1P2(MasterCar_GoMpValue,2250,1,2));
 		break;
 	case 0x03:
-		Send_Debug_num2(Get_Host_TrackDieCount(TRACK_H8));
-		Send_Debug_num2(Get_Host_UpTrack(TRACK_H8));
+		PID_Set(25, 0, 300);
+		task_wait();
 		//getRightMP();
 		//RC_Card_ALLFun1(MasterCar_GoMpValue,2250*2,RC_Get_address(6,1),K_A);
 		//Send_Debug_num(RC_write(1,K_A,"-F2-D2-D4-B4-B7-"));
@@ -878,7 +874,8 @@ void MasterCar_TaskRunThread(void)
 		break;
 	case 0x04:
 		//getStopGoMP();
-		OFlag_SlaveRun_wait(20);
+		PID_Set(25, 0, 300);
+		task_RFID();
 		//Send_Debug_num2 (CRC24_BLE("SH20",4));
 		//RC_write(41,K_A,"A5#3");
 		
@@ -927,116 +924,53 @@ void MasterCar_TaskRunThread(void)
 
 void task_first(void)
 {
+	OFlag_resetWaitFlag();
 	PID_Set(25, 0, 300);
-	MasterCar_SmartRun1(MasterCar_GoSpeed);
+	
+	/*任务1*/
+	delay_ms(100);
+	OFlag_LED_time(2);	//LED显示清零
+	OFlag_LED_time(2);
+	delay_ms(100);
+	OFlag_LED_time(1);	//LED显示倒计时开启
+	OFlag_LED_time(1);
+	delay_ms(200);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
+	MasterCar_Right(MasterCar_TrunSpeed,1);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
+	MasterCar_Right(MasterCar_TrunSpeed,1);
+	MasterCar_BackMP(MasterCar_GoSpeed,800);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_Stop();
+	OFlag_LED_jl( TaskBoard_WAVE() );//LED显示距离模式
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue2);
+	MasterCar_Left(MasterCar_TrunSpeed,1);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
+	MasterCar_Stop();
+	OFlag_light2(4);//路灯调节到指定档位并获取初始档位
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue2);
+	MasterCar_Right(MasterCar_TrunSpeed,1);
+	BKRC_Voice_Extern(0,3);//小创语音识别3次
+	MasterCar_Right(MasterCar_TrunSpeed,1);
+	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
+	OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
+	delay_ms(200);
+	OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
+	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
+	task_RFID();
+	
 }
 void task_second(void)
 {
-	uint8_t dtbuf=0,CPpark[6]={0,0,0,0,0,0};
-	uint32_t calcdata=0;
-	uint8_t openCode[6];
-	/*F6→F4*/
-	/*当前小车车头方向:东  将要行驶方向:北*/
-	MasterCar_SmartRun(MasterCar_GoSpeed);
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	MasterCar_BackMP(MasterCar_GoSpeed,600);
-	MasterCar_SmartRun(MasterCar_GoSpeed);
-	MasterCar_Stop();
-	MO3=TaskBoard_WAVE();//超声波测距
-	OFlag_LED_jl( MO3 );//LED显示距离模式
-
-	if(MO3>350)//防止距离太远无法扫描二维码
-	{
-		dtbuf=1;
-		MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
-		if(OWiFi_QRCode1(15))//请求静态标志物1识别 结果存放于OWifi_CRCode
-		{
-			MO2=OWifi_CRCode;
-		}
-	}else
-	{
-		dtbuf=0;
-		if(OWiFi_QRCode1(15))//请求静态标志物1识别 结果存放于OWifi_CRCode
-		{
-			MO2=OWifi_CRCode;
-		}
-	}
-	calcdata=CRC24_BLE(MO2,4);//算法计算烽火台数据
-	Send_Debug_num2(calcdata);
-	openCode[0]=calcdata/(16*16*16*16*16);
-	openCode[1]=(calcdata/(16*16*16*16))%16;
-	openCode[2]=(calcdata/(16*16*16))%16;
-	openCode[3]=(calcdata/(16*16))%16;
-	openCode[4]=(calcdata/16)%16;
-	openCode[5]=calcdata%16;
-	OFlag_SlaveSendZigbee(0x0E,openCode[0],openCode[1],openCode[2]);//To副车 烽火台开启码1
-	delay_ms(100);
-	OFlag_SlaveSendZigbee(0x0F,openCode[3],openCode[4],openCode[5]);//To副车 烽火台开启码2
-	delay_ms(100);
-	OFlag_SlaveSendZigbee(0x0E,openCode[0],openCode[1],openCode[2]);//To副车 烽火台开启码1
-	delay_ms(100);
-	OFlag_SlaveSendZigbee(0x0F,openCode[3],openCode[4],openCode[5]);//To副车 烽火台开启码2
-
-	if (dtbuf==0)//若为近距离扫二维码情况下在往前后在拐弯
-	{
-		MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
-
-	}
-	delay_ms(100);
-	MasterCar_Left(MasterCar_TrunSpeed,1);
-
-	DebugKEY=1;
-	OFlag_DZ_wait(5,"");
-#if 0
-	/*F4→F2*/
-	/*当前小车车头方向:北  将要行驶方向:北*/
 	
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,1800);
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	OFlag_light2((MO1*111)%4+1);//路灯调节到指定档位并获取初始档位
-
-	/*当前小车车头方向:北  将要行驶方向:西*/
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	MasterCar_BackMP(MasterCar_GoSpeed,300);
-
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,4800);
-	/*当前小车车头方向:北  将要行驶方向:西*/
-	MasterCar_Left(MasterCar_TrunSpeed,1);
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,1800);
-#else
-	task_RFID();
-#endif
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,500);
-
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	BKRC_Voice_Extern(0,3);//小创语音识别3次
-	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
-	OWiFi_Send(0XB9,CPpark[0],CPpark[1],CPpark[2]);//上传破损车牌数据
-	OWiFi_Send(0XBA,CPpark[3],CPpark[4],CPpark[5]);
-	if(OWiFi_TFT('B',40))//请求TFTB识别
-	{
-		MO4=OWifi_TFTCP;
-	}
-
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-	//立体显示
-	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
-	MasterCar_Right(MasterCar_TrunSpeed,1);
-
-
-
-	/*B4→B6*/
-	/*当前小车车头方向:南  将要行驶方向:南*/
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
 	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
 	MasterCar_Right(MasterCar_TrunSpeed,1);
-	MasterCar_SmartRunMP(MasterCar_GoSpeed,650);
-	MasterCar_Right(MasterCar_TrunSpeed,3);
-	OFlag_SlaveRun();
-	OFlag_SlaveRun_wait(10);
+	OFlag_SlaveRun();//启动副车
+	OFlag_SlaveRun_wait(30);
 }
 
 /**
@@ -1047,24 +981,20 @@ void task_second(void)
 void task_wait(void)
 {
 	PID_Set(25, 0, 300);
+	
+	OFlag_DZ_open("B98765");
+	delay_ms(500);
+	delay_ms(500);
 	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
-	MasterCar_Left(MasterCar_TrunSpeed,1);	
-	MasterCar_BackEnter(1800);
-	MasterCar_DebugKEY();
-	OFlag_CK_cmd('B',MO6);//车库A到达第1层
+	MasterCar_Right(MasterCar_TrunSpeed,1);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
+	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
+	OFlag_alarm_open("123456");
+	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
 
-	OFlag_LED_time(0); //LED倒计时关闭
-	delay_ms(200);
-	OFlag_LED_time(0);
-	delay_ms(200);
-	OFlag_LED_time(0);
-
-	OFlag_WX_open();
-	delay_ms(200);
-	OFlag_WX_open();
-	delay_ms(200);
-	OFlag_WX_open();
+	MasterCar_BackEnter(1780);
 
 	while (1)
 	{
@@ -1079,10 +1009,7 @@ void task_wait(void)
  */
 void task_test(void)
 {
-	if (RC_Card_oneFunc4(MasterCar_GoMpValue,2250,1,K_A)==2)
-	{
-		Send_Debug_string2(RC_Get_buffer());
-	}
+	
 }
 
 /**
@@ -1113,10 +1040,14 @@ void task_waitWifi(void)
  */
 void task_RFID(void) 
 {
-
+	Send_Debug_num2(RC_Card_checkRangeRead(MasterCar_GoMpValue2,900,RC_Get_address(0,1),K_A));
+	Send_Debug_num2(RC_Card_checkRangeRead(0,900,RC_Get_address(0,1),K_A));
+	MasterCar_BackMP(MasterCar_GoSpeed,600);
 	MasterCar_SmartRun2(MasterCar_GoSpeed);
+	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue2);
+	MasterCar_Left(MasterCar_TrunSpeed,1);
+	Send_Debug_num2(RC_Card_checkRangeRead(MasterCar_GoMpValue2,1200,RC_Get_address(0,1),K_A));
+	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_Stop();
-
-	
-
+	OFlag_ETC_wait();
 }
