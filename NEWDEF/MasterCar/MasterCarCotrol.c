@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-04 15:41:57
+ * @LastEditTime: 2022-04-04 15:49:12
  * 
  * 短线1800 长线2250
  */
@@ -874,8 +874,9 @@ void MasterCar_TaskRunThread(void)
 		break;
 	case 0x04:
 		//getStopGoMP();
-		PID_Set(25, 0, 300);
-		task_RFID();
+		OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
+	delay_ms(200);
+	OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
 		//Send_Debug_num2 (CRC24_BLE("SH20",4));
 		//RC_write(41,K_A,"A5#3");
 		
