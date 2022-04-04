@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-01 20:42:09
+ * @LastEditTime: 2022-04-04 15:41:57
  * 
  * ¶ÌÏß1800 ³¤Ïß2250
  */
@@ -995,6 +995,9 @@ void task_wait(void)
 	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
 
 	MasterCar_BackEnter(1780);
+	OFlag_LED_time(0);
+	delay_ms(200);
+	OFlag_LED_time(0);
 
 	while (1)
 	{
@@ -1041,12 +1044,15 @@ void task_waitWifi(void)
 void task_RFID(void) 
 {
 	Send_Debug_num2(RC_Card_checkRangeRead(MasterCar_GoMpValue2,900,RC_Get_address(0,1),K_A));
+	Send_Debug_string2(RC_Get_buffer());
 	Send_Debug_num2(RC_Card_checkRangeRead(0,900,RC_Get_address(0,1),K_A));
+	Send_Debug_string2(RC_Get_buffer());
 	MasterCar_BackMP(MasterCar_GoSpeed,600);
 	MasterCar_SmartRun2(MasterCar_GoSpeed);
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue2);
 	MasterCar_Left(MasterCar_TrunSpeed,1);
 	Send_Debug_num2(RC_Card_checkRangeRead(MasterCar_GoMpValue2,1200,RC_Get_address(0,1),K_A));
+	Send_Debug_string2(RC_Get_buffer());
 	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_Stop();
 	OFlag_ETC_wait();
