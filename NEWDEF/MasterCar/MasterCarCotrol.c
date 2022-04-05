@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-05 10:01:13
+ * @LastEditTime: 2022-04-05 15:44:08
  * 
  * 短线1800 长线2250
  */
@@ -662,6 +662,7 @@ void getStopGoMP(void)
 uint8_t Zigbee_receive_CarPlate[6] = {'A', '9', '9', '9', '9', '9'}; //接收副车车牌数据
 unsigned int Zigbee_receive_RFIDKey[6];								 //接收RFID密钥
 uint8_t Wifi_receive_data[6] = {0, 0, 0, 0, 0, 0};					 //wifi接收数据存放缓冲区
+uint8_t Zigbee_receive_alarm[6] = {0, 0, 0, 0, 0, 0};			     //接收烽火台
 /**
  * @description: 主车接收Wifi Zigbee处理线程
  * 在主车无操作下或与安卓端通信时，自动启用该线程
@@ -791,6 +792,16 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 		Send_Debug_num(MO5);
 		Send_Debug_string("\n");*/
 		break;
+	case 0x08:
+		Zigbee_receive_alarm[0] = OFlag_GetCmd1(data);
+		Zigbee_receive_alarm[1] = OFlag_GetCmd2(data);
+		Zigbee_receive_alarm[2] = OFlag_GetCmd3(data);
+		break;
+	case 0x09:
+		Zigbee_receive_alarm[4] = OFlag_GetCmd1(data);
+		Zigbee_receive_alarm[5] = OFlag_GetCmd2(data);
+		Zigbee_receive_alarm[6] = OFlag_GetCmd3(data);
+		break;
 	default:
 		break;
 	}
@@ -842,18 +853,25 @@ void MasterCar_TaskRunThread(void)
 	switch (t)
 	{
 	case 0x01:
-		task_first();
+		//task_first();
+		OFlag_SlaveSendZigbee(0x0E,'1','2','3');//To副车 烽火台开启码1
+		delay_ms(100);
+		OFlag_SlaveSendZigbee(0x0F,'4','5','6');//To副车 烽火台开启码2
+
 		break;
 	case 0x02:
-		PID_Set(25, 0, 300);
-		task_RFID();
+		OFlag_SlaveSendZigbee(0x05,2,0,0);//To副车 车库层次
+		delay_ms(100);
+		OFlag_SlaveSendZigbee(0x05,2,0,0);//To副车 车库层次
+
 		break;
 	case 0x03:
-		PID_Set(25, 0, 300);
-		task_wait();
+		OFlag_alarm_open(Zigbee_receive_alarm);
 		break;
 	case 0x04:
-		OFlag_SlaveRun();
+		OFlag_alarm_open("123456");
+
+		//OFlag_SlaveRun();
 		break;
 /*
 	case 0x05:
@@ -961,7 +979,12 @@ void task_wait(void)
 	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
 	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
-	OFlag_alarm_open("123456");
+	
+	
+	OFlag_alarm_open(Zigbee_receive_alarm);
+	delay_ms(200);
+	OFlag_alarm_open(Zigbee_receive_alarm);
+
 	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
 
 	MasterCar_BackEnter(1780);
