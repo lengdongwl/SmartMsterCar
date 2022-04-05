@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-04 15:49:12
+ * @LastEditTime: 2022-04-05 10:01:13
  * 
  * 短线1800 长线2250
  */
@@ -675,6 +675,7 @@ void MasterCar_TaskReceiveThread(void)
 	{
 		OFlag_SLAVEflag=0;
 		TaskBoard_TimeClose();//关闭倒计时检测
+		Send_Debug_string2("T->go");
 		task_wait();//启动等待副车任务
 	}
 	
@@ -716,8 +717,8 @@ void MasterCar_TaskReceiveThread(void)
 		case zNum_ETC: //ETC
 			if(OFlag_ETCflag)
 			{
-				task_ETC();
 				OFlag_ETCflag=0;
+				task_ETC();
 			}
 			break;
 		case zNum_DX: //特殊地形
@@ -747,15 +748,12 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 	switch (OFlag_GetCmd(data))
 	{
 	case 0x01:
-		/*if (SLAVE_flag==0)
-		{		
-			SLAVE_flag=1;//从车启动主车标志
-			task_wait(); //启动主车指令 taskID根据需求修改
-		}*/
 		if(OFlag_SLAVEflag)
 		{
-			task_wait(); //启动主车指令 taskID根据需求修改
 			OFlag_SLAVEflag=0;
+			TaskBoard_TimeClose();//关闭倒计时检测
+			Send_Debug_string2("S->go");
+			task_wait(); //启动主车指令 taskID根据需求修改
 		}
 		break;
 	case 0x03:
@@ -847,51 +845,22 @@ void MasterCar_TaskRunThread(void)
 		task_first();
 		break;
 	case 0x02:
-		//getLeftMP();
-		//task_wait();
 		PID_Set(25, 0, 300);
 		task_RFID();
-		//task_test();
-		//OWiFi_TFT('A',50);//请求TFTA识别
-		//task_RFID();
-		//Send_Debug_num2(RC_Card_final_P1P2(MasterCar_GoMpValue,2250,1,2));
 		break;
 	case 0x03:
 		PID_Set(25, 0, 300);
 		task_wait();
-		//getRightMP();
-		//RC_Card_ALLFun1(MasterCar_GoMpValue,2250*2,RC_Get_address(6,1),K_A);
-		//Send_Debug_num(RC_write(1,K_A,"-F2-D2-D4-B4-B7-"));
-		//OFlag_DX_statusGet();
-		
-		//DebugKEY=!DebugKEY;
-		//OWiFi_TFT('B',40);//请求TFTB识别
-		//Send_Debug_string(OWifi_TFTCP);
-		//OFlag_SlaveRun();
-		//task_wait();
-		/*OWiFi_TFT('B',30);
-		Send_Debug_string(OWifi_TFTCP);*/
 		break;
 	case 0x04:
-		//getStopGoMP();
-		OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
-	delay_ms(200);
-	OFlag_ltDisplay_show("A12345","F1");//车牌显示及坐标
-		//Send_Debug_num2 (CRC24_BLE("SH20",4));
-		//RC_write(41,K_A,"A5#3");
-		
-		/*Send_Debug_HEX(OWifi_TFTShape[0]);
-		Send_Debug_HEX(OWifi_TFTShape[1]);
-		Send_Debug_HEX(OWifi_TFTShape[2]);
-		Send_Debug_HEX(OWifi_TFTShape[3]);
-		Send_Debug_HEX(OWifi_TFTShape[4]);
-		Send_Debug_HEX(OWifi_TFTShape[5]);*/
+		OFlag_SlaveRun();
 		break;
-
+/*
 	case 0x05:
 		//MasterCar_Right(MasterCar_TrunSpeed, test_buffer);
 		break;
 	case 0x06: //等待副车发送启动指令
+		Send_Debug_string2("M->go");
 		task_wait();
 		break;
 	case 0x07: //等待ETC
@@ -906,7 +875,7 @@ void MasterCar_TaskRunThread(void)
 		break;
 	case 0x09:
 		break;
-
+*/
 	default:
 		_Flag_Task = 0xff;
 
