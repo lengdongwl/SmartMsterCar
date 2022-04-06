@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-05 15:44:08
+ * @LastEditTime: 2022-04-06 11:22:27
  * 
  * 短线1800 长线2250
  */
@@ -798,9 +798,9 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 		Zigbee_receive_alarm[2] = OFlag_GetCmd3(data);
 		break;
 	case 0x09:
-		Zigbee_receive_alarm[4] = OFlag_GetCmd1(data);
-		Zigbee_receive_alarm[5] = OFlag_GetCmd2(data);
-		Zigbee_receive_alarm[6] = OFlag_GetCmd3(data);
+		Zigbee_receive_alarm[3] = OFlag_GetCmd1(data);
+		Zigbee_receive_alarm[4] = OFlag_GetCmd2(data);
+		Zigbee_receive_alarm[5] = OFlag_GetCmd3(data);
 		break;
 	default:
 		break;
@@ -853,23 +853,22 @@ void MasterCar_TaskRunThread(void)
 	switch (t)
 	{
 	case 0x01:
-		//task_first();
-		OFlag_SlaveSendZigbee(0x0E,'1','2','3');//To副车 烽火台开启码1
-		delay_ms(100);
-		OFlag_SlaveSendZigbee(0x0F,'4','5','6');//To副车 烽火台开启码2
-
+		task_first();
+		
 		break;
 	case 0x02:
-		OFlag_SlaveSendZigbee(0x05,2,0,0);//To副车 车库层次
-		delay_ms(100);
-		OFlag_SlaveSendZigbee(0x05,2,0,0);//To副车 车库层次
+		OFlag_ETC_wait();
 
 		break;
 	case 0x03:
+		for (int i = 0; i < 6; i++)
+		{
+			Send_Debug_HEX(Zigbee_receive_alarm[i]);
+		}
 		OFlag_alarm_open(Zigbee_receive_alarm);
 		break;
 	case 0x04:
-		OFlag_alarm_open("123456");
+		
 
 		//OFlag_SlaveRun();
 		break;
@@ -980,14 +979,22 @@ void task_wait(void)
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue);
 	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
 	
+	Send_Debug_HEX(Zigbee_receive_alarm[0]);
+	Send_Debug_HEX(Zigbee_receive_alarm[1]);
+	Send_Debug_HEX(Zigbee_receive_alarm[2]);
+	Send_Debug_HEX(Zigbee_receive_alarm[3]);
+	Send_Debug_HEX(Zigbee_receive_alarm[4]);
+	Send_Debug_HEX(Zigbee_receive_alarm[5]);
+	delay_ms(500);	
+	OFlag_alarm_open(Zigbee_receive_alarm);
+	delay_ms(500);
+	OFlag_alarm_open(Zigbee_receive_alarm);
+	delay_ms(500);
+	OFlag_alarm_open(Zigbee_receive_alarm);
 	
-	OFlag_alarm_open(Zigbee_receive_alarm);
-	delay_ms(200);
-	OFlag_alarm_open(Zigbee_receive_alarm);
-
 	MasterCar_RightMP(MasterCar_TrunSpeed,MasterCar_RightMPV_45);
 
-	MasterCar_BackEnter(1780);
+	MasterCar_BackEnter(1700);
 	OFlag_LED_time(0);
 	delay_ms(200);
 	OFlag_LED_time(0);

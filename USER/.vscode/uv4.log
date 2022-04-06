@@ -1,17 +1,3 @@
-*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
-Build target 'Car_Demo'
-compiling MasterCarCotrol.c...
-..\NEWDEF\MasterCar\MasterCarCotrol.c(803): warning:  #175-D: subscript out of range
-  		Zigbee_receive_alarm[6] = OFlag_GetCmd3(data);
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1040): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  	Send_Debug_string2(RC_Get_buffer());
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1042): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  	Send_Debug_string2(RC_Get_buffer());
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1048): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  	Send_Debug_string2(RC_Get_buffer());
-..\NEWDEF\MasterCar\MasterCarCotrol.c: 4 warnings, 0 errors
-linking...
-Program Size: Code=20984 RO-data=696 RW-data=1744 ZI-data=2488  
-FromELF: creating hex file...
-"..\OUTPUT\CarV1.0" - 0 Error(s), 4 Warning(s).
-Build Time Elapsed:  00:00:03
+Load "..\\OUTPUT\\CarV1.0" 
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 11:22:46
