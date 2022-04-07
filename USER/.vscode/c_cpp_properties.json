@@ -32,8 +32,7 @@
                 "D:\\Keil_v5\\ARM\\ARMCC\\include",
                 "D:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
                 "d:\\MCU\\CarV9.9.9\\FWLIB\\src",
-                "d:\\MCU\\CarV9.9.9\\TXT",
-                "d:\\MCU\\CarV9.9.9\\NEWDEF"
+                "d:\\MCU\\CarV9.9.9\\TXT"
             ],
             "defines": [
                 "USE_STDPERIPH_DRIVER",

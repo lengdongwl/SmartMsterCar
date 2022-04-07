@@ -1662,6 +1662,7 @@ Section Cross References
     pid.o(i.PID_Set) refers to pid.o(.data) for Kd
     pid.o(i.PID_Set_recovery) refers to pid.o(.data) for R_Kp
     pid.o(i.PID_Track) refers to canp_hostcom.o(i.Get_Host_UpTrack) for Get_Host_UpTrack
+    pid.o(i.PID_Track) refers to pid.o(i.PID_GetError) for PID_GetError
     pid.o(i.PID_Track) refers to pid.o(i.PID_reset) for PID_reset
     pid.o(i.PID_Track) refers to canp_hostcom.o(i.Send_UpMotor) for Send_UpMotor
     pid.o(i.PID_Track) refers to pid.o(i.PID_Calc) for PID_Calc
@@ -3244,7 +3245,8 @@ Removing Unused input sections from the image.
     Removing mastercarcotrol.o(i.task_waitWifi), (8 bytes).
     Removing pid.o(.rev16_text), (4 bytes).
     Removing pid.o(.revsh_text), (4 bytes).
-    Removing pid.o(i.PID_Track), (420 bytes).
+    Removing pid.o(i.PID_GetError), (240 bytes).
+    Removing pid.o(i.PID_Track), (172 bytes).
     Removing pid.o(i.PID_Track3), (412 bytes).
     Removing operationflag.o(.rev16_text), (4 bytes).
     Removing operationflag.o(.revsh_text), (4 bytes).
@@ -3349,7 +3351,7 @@ Removing Unused input sections from the image.
     Removing dsqrt.o(.text), (162 bytes).
     Removing cdcmple.o(.text), (48 bytes).
 
-874 unused section(s) (total 135410 bytes) removed from the image.
+875 unused section(s) (total 135402 bytes) removed from the image.
 
 ==============================================================================
 
@@ -4704,29 +4706,29 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000188   Data   RO         3783    RESET               startup_stm32f40_41xxx.o
-    0x08000188   0x08000188   0x00000000   Code   RO         7861  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000188   0x08000188   0x00000004   Code   RO         8186    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x0800018c   0x0800018c   0x00000004   Code   RO         8189    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         8191    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         8193    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000190   0x08000190   0x00000008   Code   RO         8194    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         8196    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         8198    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000198   0x08000198   0x00000004   Code   RO         8187    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000188   0x08000188   0x00000000   Code   RO         7759  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000188   0x08000188   0x00000004   Code   RO         8084    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x0800018c   0x0800018c   0x00000004   Code   RO         8087    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         8089    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         8091    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000190   0x08000190   0x00000008   Code   RO         8092    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         8094    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         8096    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000198   0x08000198   0x00000004   Code   RO         8085    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x0800019c   0x0800019c   0x00000024   Code   RO         3784    .text               startup_stm32f40_41xxx.o
-    0x080001c0   0x080001c0   0x0000001e   Code   RO         7864    .text               mc_w.l(llshl.o)
-    0x080001de   0x080001de   0x00000020   Code   RO         7866    .text               mc_w.l(llushr.o)
-    0x080001fe   0x080001fe   0x00000024   Code   RO         7868    .text               mc_w.l(memcpya.o)
-    0x08000222   0x08000222   0x00000024   Code   RO         7870    .text               mc_w.l(memseta.o)
-    0x08000246   0x08000246   0x000000de   Code   RO         8137    .text               mf_w.l(ddiv.o)
-    0x08000324   0x08000324   0x00000022   Code   RO         8139    .text               mf_w.l(dflti.o)
-    0x08000346   0x08000346   0x00000026   Code   RO         8145    .text               mf_w.l(f2d.o)
-    0x0800036c   0x0800036c   0x00000038   Code   RO         8147    .text               mf_w.l(d2f.o)
-    0x080003a4   0x080003a4   0x00000000   Code   RO         8214    .text               mc_w.l(iusefp.o)
-    0x080003a4   0x080003a4   0x0000006e   Code   RO         8215    .text               mf_w.l(fepilogue.o)
-    0x08000412   0x08000412   0x000000ba   Code   RO         8217    .text               mf_w.l(depilogue.o)
-    0x080004cc   0x080004cc   0x00000024   Code   RO         8231    .text               mc_w.l(init.o)
-    0x080004f0   0x080004f0   0x0000005e   Code   RO         8249    .text               mc_w.l(__dclz77c.o)
+    0x080001c0   0x080001c0   0x0000001e   Code   RO         7762    .text               mc_w.l(llshl.o)
+    0x080001de   0x080001de   0x00000020   Code   RO         7764    .text               mc_w.l(llushr.o)
+    0x080001fe   0x080001fe   0x00000024   Code   RO         7766    .text               mc_w.l(memcpya.o)
+    0x08000222   0x08000222   0x00000024   Code   RO         7768    .text               mc_w.l(memseta.o)
+    0x08000246   0x08000246   0x000000de   Code   RO         8035    .text               mf_w.l(ddiv.o)
+    0x08000324   0x08000324   0x00000022   Code   RO         8037    .text               mf_w.l(dflti.o)
+    0x08000346   0x08000346   0x00000026   Code   RO         8043    .text               mf_w.l(f2d.o)
+    0x0800036c   0x0800036c   0x00000038   Code   RO         8045    .text               mf_w.l(d2f.o)
+    0x080003a4   0x080003a4   0x00000000   Code   RO         8112    .text               mc_w.l(iusefp.o)
+    0x080003a4   0x080003a4   0x0000006e   Code   RO         8113    .text               mf_w.l(fepilogue.o)
+    0x08000412   0x08000412   0x000000ba   Code   RO         8115    .text               mf_w.l(depilogue.o)
+    0x080004cc   0x080004cc   0x00000024   Code   RO         8129    .text               mc_w.l(init.o)
+    0x080004f0   0x080004f0   0x0000005e   Code   RO         8147    .text               mc_w.l(__dclz77c.o)
     0x0800054e   0x0800054e   0x00000006   Code   RO         1910    i.ADC_ClearFlag     stm32f4xx_adc.o
     0x08000554   0x08000554   0x00000016   Code   RO         1912    i.ADC_Cmd           stm32f4xx_adc.o
     0x0800056a   0x0800056a   0x00000002   PAD
@@ -4738,7 +4740,7 @@ Memory Map of the image
     0x08000644   0x08000644   0x00000054   Code   RO         1932    i.ADC_Init          stm32f4xx_adc.o
     0x08000698   0x08000698   0x000000b8   Code   RO         1937    i.ADC_RegularChannelConfig  stm32f4xx_adc.o
     0x08000750   0x08000750   0x0000000a   Code   RO         1939    i.ADC_SoftwareStartConv  stm32f4xx_adc.o
-    0x0800075a   0x0800075a   0x00000020   Code   RO         6820    i.Agreement_Send    operationflag.o
+    0x0800075a   0x0800075a   0x00000020   Code   RO         6718    i.Agreement_Send    operationflag.o
     0x0800077a   0x0800077a   0x00000002   PAD
     0x0800077c   0x0800077c   0x00000018   Code   RO          383    i.BH1750_Configure  bh1750.o
     0x08000794   0x08000794   0x0000000c   Code   RO          384    i.BH1750_PortInit   bh1750.o
@@ -4846,51 +4848,51 @@ Memory Map of the image
     0x080028a6   0x080028a6   0x00000002   PAD
     0x080028a8   0x080028a8   0x000000c8   Code   RO         6409    i.MasterCar_TaskReceiveThread  mastercarcotrol.o
     0x08002970   0x08002970   0x0000005c   Code   RO         6410    i.MasterCar_TaskRunThread  mastercarcotrol.o
-    0x080029cc   0x080029cc   0x0000008c   Code   RO         7216    i.MasterCar_findCar3  rfidcard.o
+    0x080029cc   0x080029cc   0x0000008c   Code   RO         7114    i.MasterCar_findCar3  rfidcard.o
     0x08002a58   0x08002a58   0x0000003c   Code   RO          393    i.Multiple_Read_BH1750  bh1750.o
     0x08002a94   0x08002a94   0x00000078   Code   RO         1862    i.NVIC_Init         misc.o
     0x08002b0c   0x08002b0c   0x00000014   Code   RO         1863    i.NVIC_PriorityGroupConfig  misc.o
-    0x08002b20   0x08002b20   0x00000078   Code   RO         6824    i.OFlag_CK_status   operationflag.o
-    0x08002b98   0x08002b98   0x00000038   Code   RO         6828    i.OFlag_DX_status   operationflag.o
-    0x08002bd0   0x08002bd0   0x0000005c   Code   RO         6831    i.OFlag_DZ          operationflag.o
-    0x08002c2c   0x08002c2c   0x0000001e   Code   RO         6833    i.OFlag_DZ_open     operationflag.o
-    0x08002c4a   0x08002c4a   0x0000002c   Code   RO         6834    i.OFlag_DZ_show     operationflag.o
-    0x08002c76   0x08002c76   0x0000001a   Code   RO         6835    i.OFlag_DZ_status   operationflag.o
-    0x08002c90   0x08002c90   0x0000000c   Code   RO         6840    i.OFlag_ETC_wait    operationflag.o
-    0x08002c9c   0x08002c9c   0x00000006   Code   RO         6841    i.OFlag_GetCmd      operationflag.o
-    0x08002ca2   0x08002ca2   0x00000006   Code   RO         6842    i.OFlag_GetCmd1     operationflag.o
-    0x08002ca8   0x08002ca8   0x00000006   Code   RO         6843    i.OFlag_GetCmd2     operationflag.o
-    0x08002cae   0x08002cae   0x00000006   Code   RO         6844    i.OFlag_GetCmd3     operationflag.o
-    0x08002cb4   0x08002cb4   0x0000005c   Code   RO         6849    i.OFlag_LED         operationflag.o
-    0x08002d10   0x08002d10   0x00000038   Code   RO         6850    i.OFlag_LED_jl      operationflag.o
-    0x08002d48   0x08002d48   0x00000012   Code   RO         6852    i.OFlag_LED_time    operationflag.o
-    0x08002d5a   0x08002d5a   0x00000044   Code   RO         6853    i.OFlag_SlaveRun    operationflag.o
+    0x08002b20   0x08002b20   0x00000078   Code   RO         6722    i.OFlag_CK_status   operationflag.o
+    0x08002b98   0x08002b98   0x00000038   Code   RO         6726    i.OFlag_DX_status   operationflag.o
+    0x08002bd0   0x08002bd0   0x0000005c   Code   RO         6729    i.OFlag_DZ          operationflag.o
+    0x08002c2c   0x08002c2c   0x0000001e   Code   RO         6731    i.OFlag_DZ_open     operationflag.o
+    0x08002c4a   0x08002c4a   0x0000002c   Code   RO         6732    i.OFlag_DZ_show     operationflag.o
+    0x08002c76   0x08002c76   0x0000001a   Code   RO         6733    i.OFlag_DZ_status   operationflag.o
+    0x08002c90   0x08002c90   0x0000000c   Code   RO         6738    i.OFlag_ETC_wait    operationflag.o
+    0x08002c9c   0x08002c9c   0x00000006   Code   RO         6739    i.OFlag_GetCmd      operationflag.o
+    0x08002ca2   0x08002ca2   0x00000006   Code   RO         6740    i.OFlag_GetCmd1     operationflag.o
+    0x08002ca8   0x08002ca8   0x00000006   Code   RO         6741    i.OFlag_GetCmd2     operationflag.o
+    0x08002cae   0x08002cae   0x00000006   Code   RO         6742    i.OFlag_GetCmd3     operationflag.o
+    0x08002cb4   0x08002cb4   0x0000005c   Code   RO         6747    i.OFlag_LED         operationflag.o
+    0x08002d10   0x08002d10   0x00000038   Code   RO         6748    i.OFlag_LED_jl      operationflag.o
+    0x08002d48   0x08002d48   0x00000012   Code   RO         6750    i.OFlag_LED_time    operationflag.o
+    0x08002d5a   0x08002d5a   0x00000044   Code   RO         6751    i.OFlag_SlaveRun    operationflag.o
     0x08002d9e   0x08002d9e   0x00000002   PAD
-    0x08002da0   0x08002da0   0x00000018   Code   RO         6854    i.OFlag_SlaveRun_wait  operationflag.o
-    0x08002db8   0x08002db8   0x0000005c   Code   RO         6861    i.OFlag_YY          operationflag.o
-    0x08002e14   0x08002e14   0x00000022   Code   RO         6862    i.OFlag_YY_cmd      operationflag.o
-    0x08002e36   0x08002e36   0x00000054   Code   RO         6867    i.OFlag_Zigbee      operationflag.o
-    0x08002e8a   0x08002e8a   0x0000000e   Code   RO         6870    i.OFlag_alarm_open  operationflag.o
-    0x08002e98   0x08002e98   0x0000001a   Code   RO         6871    i.OFlag_check       operationflag.o
+    0x08002da0   0x08002da0   0x00000018   Code   RO         6752    i.OFlag_SlaveRun_wait  operationflag.o
+    0x08002db8   0x08002db8   0x0000005c   Code   RO         6759    i.OFlag_YY          operationflag.o
+    0x08002e14   0x08002e14   0x00000022   Code   RO         6760    i.OFlag_YY_cmd      operationflag.o
+    0x08002e36   0x08002e36   0x00000054   Code   RO         6765    i.OFlag_Zigbee      operationflag.o
+    0x08002e8a   0x08002e8a   0x0000000e   Code   RO         6768    i.OFlag_alarm_open  operationflag.o
+    0x08002e98   0x08002e98   0x0000001a   Code   RO         6769    i.OFlag_check       operationflag.o
     0x08002eb2   0x08002eb2   0x00000002   PAD
-    0x08002eb4   0x08002eb4   0x0000017c   Code   RO         6873    i.OFlag_light2      operationflag.o
-    0x08003030   0x08003030   0x0000003c   Code   RO         6874    i.OFlag_ltDisplay   operationflag.o
-    0x0800306c   0x0800306c   0x00000036   Code   RO         6875    i.OFlag_ltDisplay_show  operationflag.o
+    0x08002eb4   0x08002eb4   0x0000017c   Code   RO         6771    i.OFlag_light2      operationflag.o
+    0x08003030   0x08003030   0x0000003c   Code   RO         6772    i.OFlag_ltDisplay   operationflag.o
+    0x0800306c   0x0800306c   0x00000036   Code   RO         6773    i.OFlag_ltDisplay_show  operationflag.o
     0x080030a2   0x080030a2   0x00000002   PAD
-    0x080030a4   0x080030a4   0x00000014   Code   RO         6876    i.OFlag_resetWaitFlag  operationflag.o
-    0x080030b8   0x080030b8   0x00000038   Code   RO         7397    i.OWiFi_toZigbee    operationwifi.o
-    0x080030f0   0x080030f0   0x00000180   Code   RO         7398    i.Operation_WiFi    operationwifi.o
-    0x08003270   0x08003270   0x000000d8   Code   RO         7399    i.Operation_WiFi_Master  operationwifi.o
-    0x08003348   0x08003348   0x0000009c   Code   RO         6878    i.Operation_Zigbee  operationflag.o
+    0x080030a4   0x080030a4   0x00000014   Code   RO         6774    i.OFlag_resetWaitFlag  operationflag.o
+    0x080030b8   0x080030b8   0x00000038   Code   RO         7295    i.OWiFi_toZigbee    operationwifi.o
+    0x080030f0   0x080030f0   0x00000180   Code   RO         7296    i.Operation_WiFi    operationwifi.o
+    0x08003270   0x08003270   0x000000d8   Code   RO         7297    i.Operation_WiFi_Master  operationwifi.o
+    0x08003348   0x08003348   0x0000009c   Code   RO         6776    i.Operation_Zigbee  operationflag.o
     0x080033e4   0x080033e4   0x00000084   Code   RO         6630    i.PID_Calc          pid.o
-    0x08003468   0x08003468   0x00000050   Code   RO         6631    i.PID_Set           pid.o
-    0x080034b8   0x080034b8   0x00000040   Code   RO         6632    i.PID_Set_recovery  pid.o
-    0x080034f8   0x080034f8   0x0000019c   Code   RO         6634    i.PID_Track2        pid.o
-    0x08003694   0x08003694   0x0000019c   Code   RO         6636    i.PID_Track4        pid.o
-    0x08003830   0x08003830   0x000001b4   Code   RO         6637    i.PID_Track5        pid.o
-    0x080039e4   0x080039e4   0x00000190   Code   RO         6638    i.PID_TrackMP       pid.o
-    0x08003b74   0x08003b74   0x00000180   Code   RO         6639    i.PID_TrackMP2      pid.o
-    0x08003cf4   0x08003cf4   0x0000005c   Code   RO         6640    i.PID_reset         pid.o
+    0x08003468   0x08003468   0x00000050   Code   RO         6632    i.PID_Set           pid.o
+    0x080034b8   0x080034b8   0x00000040   Code   RO         6633    i.PID_Set_recovery  pid.o
+    0x080034f8   0x080034f8   0x0000019c   Code   RO         6635    i.PID_Track2        pid.o
+    0x08003694   0x08003694   0x0000019c   Code   RO         6637    i.PID_Track4        pid.o
+    0x08003830   0x08003830   0x000001b4   Code   RO         6638    i.PID_Track5        pid.o
+    0x080039e4   0x080039e4   0x00000190   Code   RO         6639    i.PID_TrackMP       pid.o
+    0x08003b74   0x08003b74   0x00000180   Code   RO         6640    i.PID_TrackMP2      pid.o
+    0x08003cf4   0x08003cf4   0x0000005c   Code   RO         6641    i.PID_reset         pid.o
     0x08003d50   0x08003d50   0x0000007c   Code   RO          502    i.Parameter_Init    power_check.o
     0x08003dcc   0x08003dcc   0x0000000c   Code   RO          765    i.PcdAntennaOff     rc522.o
     0x08003dd8   0x08003dd8   0x0000001a   Code   RO          766    i.PcdAntennaOn      rc522.o
@@ -4909,10 +4911,10 @@ Memory Map of the image
     0x080043c4   0x080043c4   0x00000020   Code   RO         2593    i.RCC_APB2PeriphClockCmd  stm32f4xx_rcc.o
     0x080043e4   0x080043e4   0x00000020   Code   RO         2595    i.RCC_APB2PeriphResetCmd  stm32f4xx_rcc.o
     0x08004404   0x08004404   0x000000e8   Code   RO         2602    i.RCC_GetClocksFreq  stm32f4xx_rcc.o
-    0x080044ec   0x080044ec   0x000000a4   Code   RO         7221    i.RC_Card_checkRangeRead  rfidcard.o
-    0x08004590   0x08004590   0x0000000c   Code   RO         7232    i.RC_Get_address    rfidcard.o
-    0x0800459c   0x0800459c   0x00000008   Code   RO         7233    i.RC_Get_buffer     rfidcard.o
-    0x080045a4   0x080045a4   0x0000005c   Code   RO         7236    i.RC_check_read     rfidcard.o
+    0x080044ec   0x080044ec   0x000000a4   Code   RO         7119    i.RC_Card_checkRangeRead  rfidcard.o
+    0x08004590   0x08004590   0x0000000c   Code   RO         7130    i.RC_Get_address    rfidcard.o
+    0x0800459c   0x0800459c   0x00000008   Code   RO         7131    i.RC_Get_buffer     rfidcard.o
+    0x080045a4   0x080045a4   0x0000005c   Code   RO         7134    i.RC_check_read     rfidcard.o
     0x08004600   0x08004600   0x0000003e   Code   RO          780    i.Rc522_OutSRst     rc522.o
     0x0800463e   0x0800463e   0x0000002a   Code   RO          781    i.ReadRawRC         rc522.o
     0x08004668   0x08004668   0x00000018   Code   RO          783    i.Readcard_daivce_Init  rc522.o
@@ -4947,10 +4949,10 @@ Memory Map of the image
     0x08004d58   0x08004d58   0x00000068   Code   RO         3792    i.SystemInit        system_stm32f4xx.o
     0x08004dc0   0x08004dc0   0x00000020   Code   RO         3955    i.TIM1_BRK_TIM9_IRQHandler  roadway_check.o
     0x08004de0   0x08004de0   0x0000002c   Code   RO         1800    i.TIM1_UP_TIM10_IRQHandler  timer.o
-    0x08004e0c   0x08004e0c   0x00000088   Code   RO         7695    i.TIM2_IRQHandler   taskboard.o
+    0x08004e0c   0x08004e0c   0x00000088   Code   RO         7593    i.TIM2_IRQHandler   taskboard.o
     0x08004e94   0x08004e94   0x0000002c   Code   RO         4901    i.TIM3_IRQHandler   function.o
-    0x08004ec0   0x08004ec0   0x0000002c   Code   RO         6879    i.TIM4_IRQHandler   operationflag.o
-    0x08004eec   0x08004eec   0x00000044   Code   RO         7400    i.TIM5_IRQHandler   operationwifi.o
+    0x08004ec0   0x08004ec0   0x0000002c   Code   RO         6777    i.TIM4_IRQHandler   operationflag.o
+    0x08004eec   0x08004eec   0x00000044   Code   RO         7298    i.TIM5_IRQHandler   operationwifi.o
     0x08004f30   0x08004f30   0x0000002c   Code   RO          234    i.TIM6_DAC_IRQHandler  ultrasonic.o
     0x08004f5c   0x08004f5c   0x00000020   Code   RO         4671    i.TIM7_IRQHandler   can_check.o
     0x08004f7c   0x08004f7c   0x00000044   Code   RO         1345    i.TIM8_TRG_COM_TIM14_IRQHandler  syn7318.o
@@ -4960,16 +4962,16 @@ Memory Map of the image
     0x08005000   0x08005000   0x00000012   Code   RO         2956    i.TIM_ITConfig      stm32f4xx_tim.o
     0x08005012   0x08005012   0x00000002   PAD
     0x08005014   0x08005014   0x00000084   Code   RO         3003    i.TIM_TimeBaseInit  stm32f4xx_tim.o
-    0x08005098   0x08005098   0x00000068   Code   RO         7697    i.TaskBoard_BH      taskboard.o
-    0x08005100   0x08005100   0x00000020   Code   RO         7699    i.TaskBoard_Init    taskboard.o
-    0x08005120   0x08005120   0x00000010   Code   RO         7701    i.TaskBoard_RISend  taskboard.o
-    0x08005130   0x08005130   0x00000002   Code   RO         7702    i.TaskBoard_SMGDisplay  taskboard.o
+    0x08005098   0x08005098   0x00000068   Code   RO         7595    i.TaskBoard_BH      taskboard.o
+    0x08005100   0x08005100   0x00000020   Code   RO         7597    i.TaskBoard_Init    taskboard.o
+    0x08005120   0x08005120   0x00000010   Code   RO         7599    i.TaskBoard_RISend  taskboard.o
+    0x08005130   0x08005130   0x00000002   Code   RO         7600    i.TaskBoard_SMGDisplay  taskboard.o
     0x08005132   0x08005132   0x00000002   PAD
-    0x08005134   0x08005134   0x00000028   Code   RO         7704    i.TaskBoard_Time    taskboard.o
-    0x0800515c   0x0800515c   0x0000000e   Code   RO         7705    i.TaskBoard_TimeClose  taskboard.o
+    0x08005134   0x08005134   0x00000028   Code   RO         7602    i.TaskBoard_Time    taskboard.o
+    0x0800515c   0x0800515c   0x0000000e   Code   RO         7603    i.TaskBoard_TimeClose  taskboard.o
     0x0800516a   0x0800516a   0x00000002   PAD
-    0x0800516c   0x0800516c   0x00000020   Code   RO         7707    i.TaskBoard_TimeStatus  taskboard.o
-    0x0800518c   0x0800518c   0x00000008   Code   RO         7708    i.TaskBoard_WAVE    taskboard.o
+    0x0800516c   0x0800516c   0x00000020   Code   RO         7605    i.TaskBoard_TimeStatus  taskboard.o
+    0x0800518c   0x0800518c   0x00000008   Code   RO         7606    i.TaskBoard_WAVE    taskboard.o
     0x08005194   0x08005194   0x00000060   Code   RO         1801    i.Tim2_Init         timer.o
     0x080051f4   0x080051f4   0x0000005c   Code   RO         1802    i.Tim4_Init         timer.o
     0x08005250   0x08005250   0x00000060   Code   RO         1803    i.Tim5_Init         timer.o
@@ -5009,20 +5011,20 @@ Memory Map of the image
     0x08005ecc   0x08005ecc   0x00000058   Code   RO          241    i.Ultrasonic_TIM    ultrasonic.o
     0x08005f24   0x08005f24   0x00000010   Code   RO          789    i.WriteRawRC        rc522.o
     0x08005f34   0x08005f34   0x00000044   Code   RO          790    i.WriteRawRC_HDL    rc522.o
-    0x08005f78   0x08005f78   0x00000038   Code   RO         7710    i._BEEP_Init        taskboard.o
-    0x08005fb0   0x08005fb0   0x00000002   Code   RO         7711    i._CD4051_Init      taskboard.o
+    0x08005f78   0x08005f78   0x00000038   Code   RO         7608    i._BEEP_Init        taskboard.o
+    0x08005fb0   0x08005fb0   0x00000002   Code   RO         7609    i._CD4051_Init      taskboard.o
     0x08005fb2   0x08005fb2   0x00000002   PAD
-    0x08005fb4   0x08005fb4   0x0000002c   Code   RO         7712    i._IR_Init          taskboard.o
-    0x08005fe0   0x08005fe0   0x00000050   Code   RO         7713    i._LED_Init         taskboard.o
-    0x08006030   0x08006030   0x00000054   Code   RO         7714    i._LIGHT_Init       taskboard.o
-    0x08006084   0x08006084   0x00000002   Code   RO         7715    i._SMG_Init         taskboard.o
+    0x08005fb4   0x08005fb4   0x0000002c   Code   RO         7610    i._IR_Init          taskboard.o
+    0x08005fe0   0x08005fe0   0x00000050   Code   RO         7611    i._LED_Init         taskboard.o
+    0x08006030   0x08006030   0x00000054   Code   RO         7612    i._LIGHT_Init       taskboard.o
+    0x08006084   0x08006084   0x00000002   Code   RO         7613    i._SMG_Init         taskboard.o
     0x08006086   0x08006086   0x00000002   PAD
-    0x08006088   0x08006088   0x00000050   Code   RO         7716    i._WAVE_Init        taskboard.o
-    0x080060d8   0x080060d8   0x0000000e   Code   RO         8243    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080060e6   0x080060e6   0x00000002   Code   RO         8244    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080060e8   0x080060e8   0x0000000e   Code   RO         8245    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x080060f6   0x080060f6   0x00000046   Code   RO         7484    i.arr_sort          mystring.o
-    0x0800613c   0x0800613c   0x0000001c   Code   RO         6880    i.calc_CheckSum     operationflag.o
+    0x08006088   0x08006088   0x00000050   Code   RO         7614    i._WAVE_Init        taskboard.o
+    0x080060d8   0x080060d8   0x0000000e   Code   RO         8141    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x080060e6   0x080060e6   0x00000002   Code   RO         8142    i.__scatterload_null  mc_w.l(handlers.o)
+    0x080060e8   0x080060e8   0x0000000e   Code   RO         8143    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x080060f6   0x080060f6   0x00000046   Code   RO         7382    i.arr_sort          mystring.o
+    0x0800613c   0x0800613c   0x0000001c   Code   RO         6778    i.calc_CheckSum     operationflag.o
     0x08006158   0x08006158   0x0000003c   Code   RO         1766    i.delay_init        delay.o
     0x08006194   0x08006194   0x0000004c   Code   RO         1767    i.delay_ms          delay.o
     0x080061e0   0x080061e0   0x0000004c   Code   RO         1768    i.delay_us          delay.o
@@ -5039,7 +5041,7 @@ Memory Map of the image
     0x08006720   0x08006720   0x0000003c   Code   RO         3960    i.wheel_Nav_check   roadway_check.o
     0x0800675c   0x0800675c   0x000000a4   Code   RO         3961    i.wheel_Track_check  roadway_check.o
     0x08006800   0x08006800   0x00000110   Data   RO         3840    .constdata          my_lib.o
-    0x08006910   0x08006910   0x00000020   Data   RO         8241    Region$$Table       anon$$obj.o
+    0x08006910   0x08006910   0x00000020   Data   RO         8139    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x08006b2c, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
@@ -5075,12 +5077,12 @@ Memory Map of the image
     0x20000401   COMPRESSED   0x00000001   PAD
     0x20000402   COMPRESSED   0x00000172   Data   RW         5192    .data               voluntarily.o
     0x20000574   COMPRESSED   0x0000004c   Data   RW         6424    .data               mastercarcotrol.o
-    0x200005c0   COMPRESSED   0x00000030   Data   RW         6641    .data               pid.o
-    0x200005f0   COMPRESSED   0x0000008e   Data   RW         6881    .data               operationflag.o
-    0x2000067e   COMPRESSED   0x0000000c   Data   RW         7240    .data               rfidcard.o
+    0x200005c0   COMPRESSED   0x00000030   Data   RW         6642    .data               pid.o
+    0x200005f0   COMPRESSED   0x0000008e   Data   RW         6779    .data               operationflag.o
+    0x2000067e   COMPRESSED   0x0000000c   Data   RW         7138    .data               rfidcard.o
     0x2000068a   COMPRESSED   0x00000002   PAD
-    0x2000068c   COMPRESSED   0x00000030   Data   RW         7401    .data               operationwifi.o
-    0x200006bc   COMPRESSED   0x00000023   Data   RW         7717    .data               taskboard.o
+    0x2000068c   COMPRESSED   0x00000030   Data   RW         7299    .data               operationwifi.o
+    0x200006bc   COMPRESSED   0x00000023   Data   RW         7615    .data               taskboard.o
     0x200006df   COMPRESSED   0x00000001   PAD
     0x200006e0        -       0x00000032   Zero   RW          576    .bss                uart_a72.o
     0x20000712   COMPRESSED   0x00000002   PAD
@@ -5091,7 +5093,7 @@ Memory Map of the image
     0x20000a64        -       0x00000028   Zero   RW         4556    .bss                hard_can.o
     0x20000a8c        -       0x00000190   Zero   RW         4599    .bss                can_user.o
     0x20000c1c        -       0x0000007c   Zero   RW         6423    .bss                mastercarcotrol.o
-    0x20000c98        -       0x0000081f   Zero   RW         7239    .bss                rfidcard.o
+    0x20000c98        -       0x0000081f   Zero   RW         7137    .bss                rfidcard.o
     0x200014b7   COMPRESSED   0x00000001   PAD
     0x200014b8        -       0x00000400   Zero   RW         3781    STACK               startup_stm32f40_41xxx.o
 
@@ -5124,7 +5126,7 @@ Image component sizes
         70          0          0          0          0        675   mystring.o
       1686         94          0        142          0      19445   operationflag.o
        724         64          0         48          0       3711   operationwifi.o
-      2412        318          0         48          0       6352   pid.o
+      2412        318          0         48          0       6348   pid.o
        736         68          0         19          0       5355   power_check.o
       1718         34          0         49          0      16694   rc522.o
        416         46          0         12       2079       4748   rfidcard.o
@@ -5150,7 +5152,7 @@ Image component sizes
          0          0          0        370          0       5101   voluntarily.o
 
     ----------------------------------------------------------------------
-     25272       2074        696       1760       4568     800209   Object Totals
+     25272       2074        696       1760       4568     800205   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         54          0          0         11          3          0   (incl. Padding)
 
@@ -5202,8 +5204,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     26232       2090        696       1760       4568     773833   Grand Totals
-     26232       2090        696        508       4568     773833   ELF Image Totals (compressed)
+     26232       2090        696       1760       4568     773829   Grand Totals
+     26232       2090        696        508       4568     773829   ELF Image Totals (compressed)
      26232       2090        696        508          0          0   ROM Totals
 
 ==============================================================================

@@ -620,7 +620,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>refer code</GroupName>
+          <GroupName>*USED</GroupName>
           <Files>
             <File>
               <FileName>Zigbee.c</FileName>
@@ -696,11 +696,6 @@
               <FileName>TaskBoard.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\NEWDEF\TaskBoard\TaskBoard.c</FilePath>
-            </File>
-            <File>
-              <FileName>Car_refer.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\NEWDEF\Car_refer.txt</FilePath>
             </File>
           </Files>
         </Group>

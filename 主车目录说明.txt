@@ -24,7 +24,7 @@ CAN
 	Hard_Can.c【CAN硬件设置】
 	can_user.c【CAN上挂载设备的使用】
 	Can_check.c【使用TIM7进行CAN设备循环检测】
-My code
+*USED
 	Zigbee.c【zigbee主车通讯&wifi平板通讯】
 	Function.c【主车的函数操作】
 	NEW_Task_board.c【任务版】

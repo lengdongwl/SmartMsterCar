@@ -756,8 +756,8 @@
   </Group>
 
   <Group>
-    <GroupName>refer code</GroupName>
-    <tvExp>1</tvExp>
+    <GroupName>*USED</GroupName>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -934,18 +934,6 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\NEWDEF\TaskBoard\TaskBoard.c</PathWithFileName>
       <FilenameWithoutPath>TaskBoard.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>9</GroupNumber>
-      <FileNumber>56</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>..\NEWDEF\Car_refer.txt</PathWithFileName>
-      <FilenameWithoutPath>Car_refer.txt</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
