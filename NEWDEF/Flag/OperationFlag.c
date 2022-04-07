@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-01 20:26:22
+ * @LastEditTime: 2022-04-07 15:04:38
  * @version: 2021.05.20协议
  */
 #include "OperationFlag.H"
@@ -1274,7 +1274,7 @@ unsigned int OFlag_DX_wait(uint8_t count)
 void OFlag_DX_carGo(unsigned int speed, unsigned int refMP)
 {
     PID_Set(25, 0, 300); //上地形前快速调整车身
-    while (PID_Track4(speed) != 99)
+    while (PID_Track3(speed) != 99)
     {
         delay_ms(1);
     } //行驶到白色线停止循迹

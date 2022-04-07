@@ -157,6 +157,106 @@ float PID_GetError(unsigned short TrackStatus)
 #endif
 }
 
+
+/**
+ * @description: 获取偏差值(暴力校准车身参数)
+ * @param {unsigned short} TrackStatus 循迹灯状态
+ * @return {float} 0则未处理状态
+ */
+float PID_GetError_plus(unsigned short TrackStatus)
+{
+	float error = 0;
+
+#if TRACK_MODE == 1
+	switch (TrackStatus)
+	{
+	case 0xEF: //11101111 车头在中偏左
+		error = -2;
+		break;
+	case 0xF7: //11110111 车头在中偏右
+		error = 2;
+		break;
+	case 0xDF: //单灯偏左1
+		error = -2.5;
+		break;
+	case 0xBF: //单灯偏左2
+		error = -3;
+		break;
+	case 0x7F: //单灯偏左3
+		error = -3.2;
+		break;
+	case 0xFB: //单灯偏右1
+		error = 2.5;
+		break;
+	case 0xFD: //单灯偏右2
+		error = 3;
+		break;
+	case 0xFE: //单灯偏右3
+		error = 3.2;
+		break;
+	case 0xCF: //双灯偏左1
+		error = -2;
+		break;
+	case 0x9F: //双灯偏左2
+		error = -2.6;
+		break;
+	case 0x3F: //双灯偏左3
+		error = -3.2;
+		break;
+	case 0xF3: //双灯偏右1
+		error = 2;
+		break;
+	case 0xF9: //双灯偏右2
+		error = 2.6;
+		break;
+	case 0xFC: //双灯偏右3
+		error = 3.2;
+		break;
+	}
+	return error;
+#else
+	switch (TrackStatus)
+	{
+	case 0x6F: //110 1111 车头在中偏左
+		error = -2;
+		break;
+	case 0x7B: //111 1011 车头在中偏右
+		error = 2;
+		break;
+	case 0x5F: //单灯偏左1 101 1111
+		error = -2.5;
+		break;
+	case 0x3F: //单灯偏左2 011 1111
+		error = -3;
+		break;
+	case 0x7D: //单灯偏右1 111 1101
+		error = 2.5;
+		break;
+	case 0x7E: //单灯偏右2 111 1110
+		error = 3.2;
+		break;
+	case 0x67: //双灯偏左1 110 0111
+		error = -2;
+		break;
+	case 0x4F: //双灯偏左2 100 1111
+		error = -2.6;
+		break;
+	case 0x1F: //双灯偏左3 001 1111
+		error = -3;
+		break;
+	case 0x73: //双灯偏右1 111 0011
+		error = 2;
+		break;
+	case 0x79: //双灯偏右2 111 1001
+		error = 2.6;
+		break;
+	case 0x7C: //双灯偏右3 111 1100
+		error = 3.2;
+		break;
+	}
+	return error;
+#endif
+}
 /**
  * @description: 主车正常循迹(自动调正车身 全亮与车头在正中间直行 其余状态返回99)
  * @param {unsigned int} speed 速度
@@ -192,7 +292,7 @@ float PID_Track(unsigned int speed)
 
 /**
  * @description: 主车正常循迹(自动调正车身 灭4个及以上的灯返回99)
- * 白卡处于十字路口或全黑停止线都返回99
+ * 白卡处于十字路口（必须与小车平行）或全黑停止线都返回99
  * @param {unsigned int} speed 速度
  * @return {*}0.正常直行 99.无处理 其他.调整车身
  */
@@ -207,7 +307,8 @@ float PID_Track2(unsigned int speed)
 		if (Get_Host_TrackDieCount(TRACK_H8) > 3)
 		{
 			return 99;
-		}else //可能出现三个灯以上的灭
+		}
+		else //可能出现三个灯以上的灭
 		{
 			PID_reset();				//正常状态重置参数
 			Send_UpMotor(speed, speed); //主车直行
@@ -222,313 +323,136 @@ float PID_Track2(unsigned int speed)
 	}
 }
 
-//获取PID循迹偏差程度值 寻卡版(全亮返回99 过特殊地形版) @return:PID计算结果
+/**
+ * @description: 主车正常循迹(在PID_Track2基础上，添加另外四个结束循迹条件)
+ * 白卡处于十字路口或全黑停止线都返回99
+ * @param {unsigned int} speed 速度
+ * @return {*}0.正常直行 99.无处理 其他.调整车身
+ */
+float PID_Track2_plus(unsigned int speed)
+{
+	float error = 0;
+	uint8_t trackStatus = Get_Host_UpTrack(TRACK_H8);
+	uint16_t countLight;
+	error = PID_GetError(trackStatus); //读取调整的误差值
+	if (error == 0)					   //非调整状态
+	{
+		//0111 1110（0x7e）十字路口卡刚好处于循迹灯中间
+		//0011 1110（0x3e）
+		//0111 1100（0x7c）
+		countLight = Get_Host_TrackDieCount(TRACK_H8);
+		if ((countLight == 2 && trackStatus == 0x7e) ||
+			(countLight == 3 && (trackStatus == 0x3e || trackStatus == 0x7c)) ||
+			(countLight > 3)) 
+		{
+			return 99;
+		}else if(trackStatus==0xff)//前8灯全亮
+		{
+			if (Get_Host_UpTrack(TRACK_Q7) == 0x7f)//前7灯全亮
+			{
+				return 99;
+			}
+		}else //可能出现三个灯以上的灭
+		{
+			PID_reset();				//正常状态重置参数
+			Send_UpMotor(speed, speed); //主车直行
+			return 0;
+		}
+	}
+	else //调整状态
+	{
+		PID_Calc(error);									//根据偏差程度 计算PID结果
+		Send_UpMotor(speed + PID_value, speed - PID_value); //根据PID结果调整车身状态
+		return PID_value;
+	}
+	return 99;
+}
+
+
+/**
+ * @description: 主车正常循迹(检测到全亮返回99)
+ * @param {unsigned int} speed 速度
+ * @return {*}0.正常直行 99.无处理 其他.调整车身
+ */
 float PID_Track3(unsigned int speed)
 {
 	float error = 0;
-	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
-	//previous_error = 0, previous_I = 0; //误差值
-	//选择偏差程度值
-	switch (Get_Host_UpTrack(TRACK_H8))
+	uint8_t trackStatus = Get_Host_UpTrack(TRACK_H8);
+	uint16_t countLight;
+	error = PID_GetError(trackStatus); //读取调整的误差值
+	if (error == 0)					   //非调整状态
 	{
-	case 0xff:
-		if (Get_Host_UpTrack(TRACK_Q7) == 0x7f)
+		//0111 1110（0x7e）十字路口卡刚好处于循迹灯中间
+		//0011 1110（0x3e）
+		//0111 1100（0x7c）
+		countLight = Get_Host_TrackDieCount(TRACK_H8);
+		if ((countLight == 2 && trackStatus == 0x7e) ||
+			(countLight == 3 && (trackStatus == 0x3e || trackStatus == 0x7c))) 
 		{
-			PID_reset();
-			Send_UpMotor(speed, speed);
 			return 99;
+		}else if(trackStatus==0xff)//前8灯全亮
+		{
+			if (Get_Host_UpTrack(TRACK_Q7) == 0x7f)//前7灯全亮
+			{
+				return 99;
+			}
+		}else //可能出现三个灯以上的灭
+		{
+			PID_reset();				//正常状态重置参数
+			Send_UpMotor(speed, speed); //主车直行
+			return 0;
 		}
-		return 99;
-	case 0xEF: //11101111 车头在中偏左
-		error = -1;
-		break;
-	case 0xF7: //11110111 车头在中偏右
-		error = 1;
-		break;
-	case 0xDF: //单灯偏左1
-		error = -2;
-		break;
-	case 0xBF: //单灯偏左2
-		error = -3;
-		break;
-	case 0x7F: //单灯偏左3
-		error = -3.2;
-		break;
-	case 0xFB: //单灯偏右1
-		error = 2;
-		break;
-	case 0xFD: //单灯偏右2
-		error = 3;
-		break;
-	case 0xFE: //单灯偏右3
-		error = 3.2;
-		break;
-	case 0xCF: //双灯偏左1
-		error = -2;
-		break;
-	case 0x9F: //双灯偏左2
-		error = -3;
-		break;
-	case 0x3F: //双灯偏左3
-		error = -3.2;
-		break;
-	case 0xF3: //双灯偏右1
-		error = 2;
-		break;
-	case 0xF9: //双灯偏右2
-		error = 3;
-		break;
-	case 0xFC: //双灯偏右3
-		error = 3.2;
-		break;
-	default: //0x00&0xff
-		error = 0;
-		break;
 	}
-	if (error == 0) //回到轨道完毕重置参数
+	else //调整状态
 	{
-		PID_reset();
-		Send_UpMotor(speed, speed);
-		return 0;
-	}
-	if (error != 99)
-	{
-		PID_Calc(error); //根据偏差程度 计算PID结果
-		Send_UpMotor(speed + PID_value, speed - PID_value);
+		PID_Calc(error);									//根据偏差程度 计算PID结果
+		Send_UpMotor(speed + PID_value, speed - PID_value); //根据PID结果调整车身状态
 		return PID_value;
-		//Send_UpMotor(speed+PID_value,speed-PID_value);
 	}
 	return 99;
 }
 
-//获取PID循迹偏差程度值 寻读卡版(全亮直行返回99) @return:PID计算结果
-float PID_Track4(unsigned int speed)
-{
-	float error = 0;
-	uint16_t h8, q7;
-	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
-	//previous_error = 0, previous_I = 0; //误差值
-	//选择偏差程度值
-	h8 = Get_Host_UpTrack(TRACK_H8);
-	switch (h8)
-	{
-	case 0xff: //全亮
-		if (Get_Host_UpTrack(TRACK_Q7) == 0x7f)
-		{
-			PID_reset();
-			Send_UpMotor(speed, speed);
-			return 99;
-		}
 
-	case 0xEF: //11101111 车头在中偏左
-		error = -1;
-		break;
-	case 0xF7: //11110111 车头在中偏右
-		error = 1;
-		break;
-	case 0xDF: //单灯偏左1
-		error = -2;
-		break;
-	case 0xBF: //单灯偏左2
-		error = -3;
-		break;
-	case 0x7F: //单灯偏左3
-		error = -3.2;
-		break;
-	case 0xFB: //单灯偏右1
-		error = 2;
-		break;
-	case 0xFD: //单灯偏右2
-		error = 3;
-		break;
-	case 0xFE: //单灯偏右3
-		error = 3.2;
-		break;
-	case 0xCF: //双灯偏左1
-		error = -2;
-		break;
-	case 0x9F: //双灯偏左2
-		error = -3;
-		break;
-	case 0x3F: //双灯偏左3
-		error = -3.2;
-		break;
-	case 0xF3: //双灯偏右1
-		error = 2;
-		break;
-	case 0xF9: //双灯偏右2
-		error = 3;
-		break;
-	case 0xFC: //双灯偏右3
-		error = 3.2;
-		break;
-	default: //0x00&0xff
-		error = 0;
-		break;
-	}
-	if (error == 0) //回到轨道完毕重置参数
-	{
-		PID_reset();
-		Send_UpMotor(speed, speed);
-		return 0;
-	}
-	if (error != 99)
-	{
-		PID_Calc(error); //根据偏差程度 计算PID结果
-		Send_UpMotor(speed + PID_value, speed - PID_value);
-		return PID_value;
-		//Send_UpMotor(speed+PID_value,speed-PID_value);
-	}
-	return 99;
-}
-
-//获取PID循迹偏差程度值 循迹码盘版（非调整情况都为前进 适用于特殊地形） @return:PID计算结果
+/**
+ * @description: 循迹码盘指定范围（非调整都为前进 适用于特殊地形）
+ * @param {unsigned int} speed
+ * @return {*}
+ */
 float PID_TrackMP(unsigned int speed)
 {
 	float error = 0;
-	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
-	//previous_error = 0, previous_I = 0; //误差值
-	//选择偏差程度值
-
-	switch (Get_Host_UpTrack(TRACK_H8))
+	uint8_t trackStatus = Get_Host_UpTrack(TRACK_H8);
+	error = PID_GetError(trackStatus); //读取调整的误差值
+	if (error == 0)					   //非调整状态
 	{
-	case 0xEF: //11101111 车头在中偏左
-		error = -1.1;
-		break;
-	case 0xF7: //11110111 车头在中偏右
-		error = 1.1;
-		break;
-
-	case 0xDF: //单灯偏左1
-		error = -2;
-		break;
-	case 0xBF: //单灯偏左2
-		error = -3;
-		break;
-	case 0x7F: //单灯偏左3
-		error = -3.2;
-		break;
-
-	case 0xFB: //单灯偏右1
-		error = 2;
-		break;
-	case 0xFD: //单灯偏右2
-		error = 3;
-		break;
-	case 0xFE: //单灯偏右3
-		error = 3.2;
-		break;
-
-	case 0xCF: //双灯偏左1
-		error = -1.6;
-		break;
-	case 0x9F: //双灯偏左2
-		error = -2.6;
-		break;
-	case 0x3F: //双灯偏左3
-		error = -3.2;
-		break;
-	case 0xF3: //双灯偏右1
-		error = 1.6;
-		break;
-	case 0xF9: //双灯偏右2
-		error = 2.6;
-		break;
-	case 0xFC: //双灯偏右3
-		error = 3.2;
-		break;
-
-	default: //0x00&0xff
-		error = 0;
-	}
-	if (error == 0) //回到轨道完毕重置参数
-	{
-		PID_reset();
-		Send_UpMotor(speed, speed);
+		PID_reset();				//正常状态重置参数
+		Send_UpMotor(speed, speed); //主车直行
 		return 0;
 	}
-	if (error != 99)
+	else //调整状态
 	{
-		PID_Calc(error); //根据偏差程度 计算PID结果
-		Send_UpMotor(speed + PID_value, speed - PID_value);
+		PID_Calc(error);									//根据偏差程度 计算PID结果
+		Send_UpMotor(speed + PID_value, speed - PID_value); //根据PID结果调整车身状态
 		return PID_value;
-		//Send_UpMotor(speed+PID_value,speed-PID_value);
 	}
-	return 99;
 }
-
 
 //获取PID循迹偏差程度值 循迹码盘版（非调整情况都为前进 适用于特殊地形） @return:PID计算结果
 float PID_TrackMP2(unsigned int speed)
 {
 	float error = 0;
-	//P=0,I=0,D=0, PID_value = 0;         //PID参考参数
-	//previous_error = 0, previous_I = 0; //误差值
-	//选择偏差程度值
-
-	switch (Get_Host_UpTrack(TRACK_H8))
+	uint8_t trackStatus = Get_Host_UpTrack(TRACK_H8);
+	error = PID_GetError_plus(trackStatus); //读取调整的误差值
+	if (error == 0)					   //非调整状态
 	{
-	case 0xEF: //11101111 车头在中偏左
-		error = -2;
-		break;
-	case 0xF7: //11110111 车头在中偏右
-		error = 2;
-		break;
-
-	case 0xDF: //单灯偏左1
-		error = -2.5;
-		break;
-	case 0xBF: //单灯偏左2
-		error = -3;
-		break;
-	case 0x7F: //单灯偏左3
-		error = -3.2;
-		break;
-
-	case 0xFB: //单灯偏右1
-		error = 2.5;
-		break;
-	case 0xFD: //单灯偏右2
-		error = 3;
-		break;
-	case 0xFE: //单灯偏右3
-		error = 3.2;
-		break;
-
-	case 0xCF: //双灯偏左1
-		error = -2;
-		break;
-	case 0x9F: //双灯偏左2
-		error = -2.6;
-		break;
-	case 0x3F: //双灯偏左3
-		error = -3.2;
-		break;
-	case 0xF3: //双灯偏右1
-		error = 2;
-		break;
-	case 0xF9: //双灯偏右2
-		error = 2.6;
-		break;
-	case 0xFC: //双灯偏右3
-		error = 3.2;
-		break;
-
-	default: //0x00&0xff
-		error = 0;
-	}
-	if (error == 0) //回到轨道完毕重置参数
-	{
-		PID_reset();
-		Send_UpMotor(speed, speed);
+		PID_reset();				//正常状态重置参数
+		Send_UpMotor(speed, speed); //主车直行
 		return 0;
 	}
-	if (error != 99)
+	else //调整状态
 	{
-		PID_Calc(error); //根据偏差程度 计算PID结果
-		Send_UpMotor(speed + PID_value, speed - PID_value);
+		PID_Calc(error);									//根据偏差程度 计算PID结果
+		Send_UpMotor(speed + PID_value, speed - PID_value); //根据PID结果调整车身状态
 		return PID_value;
-		//Send_UpMotor(speed+PID_value,speed-PID_value);
 	}
-	return 99;
 }

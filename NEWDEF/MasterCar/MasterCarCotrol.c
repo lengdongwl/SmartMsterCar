@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-07 11:24:16
+ * @LastEditTime: 2022-04-07 15:46:21
  * 
  * 短线1800 长线2250
  */
@@ -486,6 +486,28 @@ void MasterCar_BackEnter(unsigned int mp)
 }
 
 /**
+ * @description: 主车循迹运行（MasterCar_SmartRun加强版停车 主要用于白色卡处于十字路口）
+ * @param {unsigned int} speed 运行速度 0~100
+ * @return {*}
+ */
+void MasterCar_SmartRun2(unsigned int speed)
+{
+	uint8_t _speed; //缓存MasterCar_GoSpeed 循迹完成恢复
+	MasterCar_Go(speed);
+	_speed = MasterCar_GoSpeed;
+	MasterCar_GoSpeed = speed;
+
+	PID_reset(); //重置PID叠加参数
+	while (PID_Track2_plus(speed) != 99)
+	{
+		delay_ms(1); //防止刷新太快循迹错乱
+	}
+	//等待循迹完成
+	MasterCar_GoSpeed = _speed; //恢复速度
+	PID_Set_recovery();			//恢复PID参数
+}
+
+/**
  * @description: 主车循迹运行（全亮与车头在正中间直行）
  * @param {unsigned int} speed 运行速度 0~100
  * @return {*}
@@ -843,20 +865,15 @@ void MasterCar_TaskRunThread(void)
 		
 		break;
 	case 0x02:
-		OFlag_ETC_wait();
-
+		PID_Set(25, 0, 300);
+		MasterCar_SmartRunMP(MasterCar_GoSpeed,1800);
 		break;
 	case 0x03:
-		for (int i = 0; i < 6; i++)
-		{
-			Send_Debug_HEX(Zigbee_receive_alarm[i]);
-		}
-		OFlag_alarm_open(Zigbee_receive_alarm);
+		PID_Set(25, 0, 300);
+		MasterCar_SmartRunMP2(MasterCar_GoSpeed,1800);
 		break;
 	case 0x04:
-		
-
-		//OFlag_SlaveRun();
+		MasterCar_BackEnter(1700);
 		break;
 /*
 	case 0x05:

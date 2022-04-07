@@ -28,8 +28,7 @@ uint8_t *RC_Get_bufferN(uint8_t position);                             //findÍê±
 uint8_t *RC_read(uint8_t Block_address, uint8_t *KEY);            //¶ÁÈ¡RFID¿¨Êı¾İ Ñ°µ½¿¨ºó²Å¿É¶ÁÈ¡Êı¾İ
 uint8_t RC_write(uint8_t Block_address, uint8_t *KEY, uint8_t *data); //ÏòRFID¿¨Ğ´Êı¾İ
 
-uint8_t MasterCar_findCar(uint8_t Block_address, uint8_t *KEY);               //Ö÷³µÖ±ÏßÑ­¼£Ñ­¼£Ñ°¿¨
-uint8_t MasterCar_findCar2(uint8_t Block_address, uint8_t *KEY);              //Ö÷³µÖ±ÏßÑ­¼£Ñ­¼£Ñ°¿¨(°×ÏßÍ£Ö¹°æ)
+
 uint8_t MasterCar_findCar3(uint8_t Block_address, uint8_t *KEY, uint32_t mp); //Ö÷³µÖ±ÏßÑ­¼£ÂëÅÌ°æ ºöÂÔºÚ°×Ïß
 
 uint8_t RC_Card_checkRange(int16_t init_distance, uint16_t distance); //ÔÚÖ¸¶¨¾àÀë·¶Î§ÄÚ²â¿¨

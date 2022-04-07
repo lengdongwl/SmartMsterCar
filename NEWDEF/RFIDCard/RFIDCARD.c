@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-10-11 10:56:06
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-07 11:07:41
+ * @LastEditTime: 2022-04-07 14:52:45
  */
 #include "RFIDCARD.h"
 #include "rc522.h"
@@ -179,75 +179,6 @@ uint8_t RC_write(uint8_t Block_address, uint8_t *KEY, uint8_t *data)
     return 0;
 }
 
-/**
- * @description: 循迹寻卡 获取结果从RC_Get_buffer()获取
- * @param {uint8_t} *KEY RFID卡密钥 ""为默认
- * @return {*}1.到达黑线退出寻卡 0.寻到卡片退出寻卡
- */
-uint8_t MasterCar_findCar(uint8_t Block_address, uint8_t *KEY)
-{
-    uint8_t break_flag = 0, r = 0;
-    PID_reset();
-    PID_Set(20, 2, 4);
-    TIM_Cmd(TIM5, DISABLE); //防止TIM5中断未结束干扰
-    while (r == 0)
-    {
-        r = RC_check_read(Block_address, KEY);
-        if (PID_Track3(26) == 99) //循迹灯全灭
-        {
-            break_flag = 1;
-            break;
-        }
-        /*
-        参考
-        delay_ms(100);
-		Send_UpMotor(0, 0);
-        delay_ms(100);
-        */
-        delay_ms(150);
-        Send_UpMotor(0, 0);
-        delay_ms(50);
-    }                   //等待寻卡完成
-                        //Send_Debug_string(RC_Get_buffer());
-    PID_Set_recovery(); //恢复PID_Set前数据
-    MasterCar_Stop();
-    return break_flag;
-}
-
-/**
- * @description: 循迹寻卡 获取结果从RC_Get_buffer()获取
- * @param {uint8_t} *KEY RFID卡密钥 ""为默认
- * @return {*}1.到达白线退出寻卡 0.寻到卡片退出寻卡
- */
-uint8_t MasterCar_findCar2(uint8_t Block_address, uint8_t *KEY)
-{
-    uint8_t break_flag = 0, r = 0;
-    PID_reset();
-    PID_Set(20, 2, 4);
-    TIM_Cmd(TIM5, DISABLE); //防止TIM5中断未结束干扰
-    while (r == 0)
-    {
-        r = RC_check_read(Block_address, KEY);
-        if (PID_Track3(26) == 99) //循迹灯全灭
-        {
-            break_flag = 1;
-            break;
-        }
-        /*
-        参考
-        delay_ms(100);
-		Send_UpMotor(0, 0);
-        delay_ms(100);
-        */
-        delay_ms(150);
-        Send_UpMotor(0, 0);
-        delay_ms(50);
-    }                   //等待寻卡完成
-                        //Send_Debug_string(RC_Get_buffer());
-    PID_Set_recovery(); //恢复PID_Set前数据
-    MasterCar_Stop();
-    return break_flag;
-}
 
 /**
  * @description: 码盘循迹寻卡 获取结果从RC_Get_buffer()获取
@@ -423,7 +354,7 @@ uint8_t RC_Card_checkRangeRead(int16_t init_distance, uint16_t distance,uint8_t 
     dt+=CanHost_Mp;//目标码盘值
     while (1)
     {
-        r = PID_Track4(36); //全灭返回99 其余灯全部忽略照样直行
+        r = PID_Track3(36); //全灭返回99 其余灯全部忽略照样直行
         if (r == 99 && card_flag!=1)        //未达到距离LED灯全亮，且未读卡成功状态
         {
             MasterCar_SmartRunMP(MasterCar_GoSpeed,250);
@@ -462,7 +393,7 @@ uint8_t RC_Card_checkRangeReadBack(int16_t init_distance, uint16_t distance,uint
     dt+=CanHost_Mp;//目标码盘值
     while (1)
     {
-        r = PID_Track4(36); //全灭返回99 其余灯全部忽略照样直行
+        r = PID_Track3(36); //全灭返回99 其余灯全部忽略照样直行
         if (r == 99 && card_flag!=1)        //未达到距离LED灯全亮，且未读卡成功状态
         {
             MasterCar_SmartRunMP(MasterCar_GoSpeed,250);
@@ -938,7 +869,7 @@ type_CardRBuf RC_Card_ALLFun1(int16_t init_distance,uint16_t distance,uint8_t Bl
 
     while (CanHost_Mp<dt)
     {
-        r = PID_Track4(36);     //全灭返回99 其余灯全部忽略照样直行
+        r = PID_Track3(36);     //全灭返回99 其余灯全部忽略照样直行
         if (r == 99 && type_cardRBuf.success_count<count) //LED灯全亮 则开始读卡
         {
             MasterCar_SmartRunMP(36, 250); //往前行驶250mp在读卡
