@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-10-11 10:56:06
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2021-12-20 10:10:20
+ * @LastEditTime: 2022-04-07 11:07:41
  */
 #include "RFIDCARD.h"
 #include "rc522.h"
@@ -193,7 +193,7 @@ uint8_t MasterCar_findCar(uint8_t Block_address, uint8_t *KEY)
     while (r == 0)
     {
         r = RC_check_read(Block_address, KEY);
-        if (PID_Track2(26) == 99) //Ñ­¼£µÆÈ«Ãð
+        if (PID_Track3(26) == 99) //Ñ­¼£µÆÈ«Ãð
         {
             break_flag = 1;
             break;

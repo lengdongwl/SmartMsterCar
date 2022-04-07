@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2022-04-06 11:22:27
+ * @LastEditTime: 2022-04-07 11:24:16
  * 
  * 短线1800 长线2250
  */
@@ -485,26 +485,8 @@ void MasterCar_BackEnter(unsigned int mp)
 	PID_Set_recovery();
 }
 
-//主车循迹运行 灭灯3个以上、全亮、全灭 停止循迹（寻卡循迹）
-void MasterCar_SmartRun2(unsigned int speed)
-{
-	uint8_t _speed; //缓存MasterCar_GoSpeed 循迹完成恢复
-	_speed = MasterCar_GoSpeed;
-	MasterCar_GoSpeed = speed;
-
-	PID_reset(); //重置PID叠加参数
-	while (PID_Track5(speed) != 99)
-	{
-		delay_ms(1); //防止刷新太快循迹错乱
-	}
-	//等待循迹完成
-	MasterCar_GoSpeed = _speed; //恢复速度
-	PID_Set_recovery();			//恢复PID参数
-}
-
-
 /**
- * @description: 主车循迹运行（全黑线或白卡处于十字黑线处停车 注：白卡长的一面平行于行走的黑线 用于白卡处于黑线十字路口时 停车调正方向）
+ * @description: 主车循迹运行（全亮与车头在正中间直行）
  * @param {unsigned int} speed 运行速度 0~100
  * @return {*}
  */
@@ -525,7 +507,11 @@ void MasterCar_SmartRun1(unsigned int speed)
 	PID_Set_recovery();			//恢复PID参数
 }
 
-//主车循迹全黑线停止循迹
+/**
+ * @description: 主车循迹运行（灭四灯及以上结束循迹）
+ * @param {unsigned int} speed 运行速度 0~100
+ * @return {*}
+ */
 void MasterCar_SmartRun(unsigned int speed)
 {
 	uint8_t _speed; //缓存MasterCar_GoSpeed 循迹完成恢复
@@ -1048,7 +1034,7 @@ void task_RFID(void)
 	Send_Debug_num2(RC_Card_checkRangeRead(0,900,RC_Get_address(0,1),K_A));
 	Send_Debug_string2(RC_Get_buffer());
 	MasterCar_BackMP(MasterCar_GoSpeed,600);
-	MasterCar_SmartRun2(MasterCar_GoSpeed);
+	MasterCar_SmartRun(MasterCar_GoSpeed);
 	MasterCar_SmartRunMP(MasterCar_GoSpeed,MasterCar_GoMpValue2);
 	MasterCar_Left(MasterCar_TrunSpeed,1);
 	Send_Debug_num2(RC_Card_checkRangeRead(MasterCar_GoMpValue2,1200,RC_Get_address(0,1),K_A));

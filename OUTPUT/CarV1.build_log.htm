@@ -27,16 +27,16 @@ Project File Date:  04/07/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Car_Demo'
-compiling PID.c...
-..\NEWDEF\PID\PID.c(354): warning:  #177-D: variable "q7"  was declared but never referenced
-  	uint16_t h8, q7;
-..\NEWDEF\PID\PID.c(662): warning:  #1-D: last line of file ends without a newline
-  }
-..\NEWDEF\PID\PID.c(21): warning:  #550-D: variable "previous_I"  was set but never used
-  static float previous_error = 0, previous_I = 0; //ŒÛ≤Ó÷µ
-..\NEWDEF\PID\PID.c: 3 warnings, 0 errors
+compiling MasterCarCotrol.c...
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1033): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  	Send_Debug_string2(RC_Get_buffer());
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1035): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  	Send_Debug_string2(RC_Get_buffer());
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1041): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  	Send_Debug_string2(RC_Get_buffer());
+..\NEWDEF\MasterCar\MasterCarCotrol.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=26232 RO-data=696 RW-data=1760 ZI-data=4568  
+Program Size: Code=25728 RO-data=696 RW-data=1760 ZI-data=4568  
 FromELF: creating hex file...
 "..\OUTPUT\CarV1.0" - 0 Error(s), 3 Warning(s).
 
@@ -52,7 +52,7 @@ Package Vendor: Keil
   d:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:03
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>
