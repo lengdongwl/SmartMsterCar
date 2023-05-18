@@ -1,0 +1,25 @@
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Car_Demo'
+compiling MasterCarCotrol.c...
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1124): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  	Send_Debug_string2(Zigbee_receive_CarPlate);
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1324): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+  			path = get_path_one(RC_Get_bufferN(i),"B4","B6",buf);
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "carId"  was declared but never referenced
+  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "carOK"  was declared but never referenced
+  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "S"  was declared but never referenced
+  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "B"  was declared but never referenced
+  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "card_flag"  was declared but never referenced
+  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
+..\NEWDEF\MasterCar\MasterCarCotrol.c(1373): warning:  #1-D: last line of file ends without a newline
+  ?0?2*/
+..\NEWDEF\MasterCar\MasterCarCotrol.c: 8 warnings, 0 errors
+linking...
+Program Size: Code=28948 RO-data=696 RW-data=1868 ZI-data=4564  
+FromELF: creating hex file...
+"..\OUTPUT\CarV1.0" - 0 Error(s), 8 Warning(s).
+Build Time Elapsed:  00:00:03
