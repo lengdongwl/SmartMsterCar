@@ -29,8 +29,7 @@ void OWiFi_Send_test(uint8_t mode, uint8_t data1, uint8_t data2, uint8_t data3);
 void Operation_WiFi(void);                            // WiFi识别静态标志物、车牌、图形等结果
 uint8_t OWiFi_cmd(uint8_t cmd, uint32_t time);        //wifi发送主指令识别请求
 uint8_t OWiFi_cmds(uint8_t cmd, uint8_t f1,uint8_t f2,uint8_t f3,uint32_t time);
-uint8_t OWiFi_QRCode1(uint32_t time);                 //请求识别静态标志物1
-uint8_t OWiFi_QRCode2(uint32_t time);                 //请求识别静态标志物2
+uint8_t OWiFi_QRCode1(uint8_t flag,uint32_t time);    //请求识别静态标志物1
 uint8_t OWiFi_TFT(uint8_t AorB, uint32_t time);       //请求识别TFT车牌、形状
 uint8_t OWiFi_JTlight(uint8_t AorB);                  //请求交通灯识别 并向标志发送确认识别结果
 uint8_t OWiFi_CodeCalc(uint8_t *data, uint32_t time); //请求数据压缩算法计算

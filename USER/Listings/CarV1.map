@@ -2031,25 +2031,20 @@ Section Cross References
     operationwifi.o(i.OWiFi_CodeCalc) refers to delay.o(i.delay_ms) for delay_ms
     operationwifi.o(i.OWiFi_CodeCalc) refers to operationwifi.o(.data) for OWiFi_END
     operationwifi.o(i.OWiFi_CodeCalc) refers to can_user.o(.data) for Wifi_Rx_flag
-    operationwifi.o(i.OWiFi_JTlight) refers to operationwifi.o(i.OWiFi_cmd) for OWiFi_cmd
-    operationwifi.o(i.OWiFi_JTlight) refers to operationflag.o(i.OFlag_JT_cmd) for OFlag_JT_cmd
-    operationwifi.o(i.OWiFi_JTlight) refers to delay.o(i.delay_ms) for delay_ms
     operationwifi.o(i.OWiFi_JTlight) refers to operationwifi.o(i.OWiFi_cmds) for OWiFi_cmds
-    operationwifi.o(i.OWiFi_JTlight) refers to operationwifi.o(.data) for OWifi_JT
-    operationwifi.o(i.OWiFi_QRCode1) refers to operationwifi.o(i.OWiFi_cmd) for OWiFi_cmd
-    operationwifi.o(i.OWiFi_QRCode2) refers to operationwifi.o(i.OWiFi_cmd) for OWiFi_cmd
+    operationwifi.o(i.OWiFi_QRCode1) refers to operationwifi.o(i.OWiFi_cmds) for OWiFi_cmds
     operationwifi.o(i.OWiFi_Send) refers to canp_hostcom.o(i.Send_WifiData_To_Fifo) for Send_WifiData_To_Fifo
     operationwifi.o(i.OWiFi_Send) refers to delay.o(i.delay_ms) for delay_ms
     operationwifi.o(i.OWiFi_Send_test) refers to operationwifi.o(i.OWiFi_Send) for OWiFi_Send
-    operationwifi.o(i.OWiFi_TFT) refers to operationwifi.o(i.OWiFi_cmd) for OWiFi_cmd
+    operationwifi.o(i.OWiFi_TFT) refers to operationwifi.o(i.OWiFi_cmds) for OWiFi_cmds
     operationwifi.o(i.OWiFi_cmd) refers to stm32f4xx_tim.o(i.TIM_Cmd) for TIM_Cmd
-    operationwifi.o(i.OWiFi_cmd) refers to operationwifi.o(i.OWiFi_Send) for OWiFi_Send
     operationwifi.o(i.OWiFi_cmd) refers to delay.o(i.delay_ms) for delay_ms
+    operationwifi.o(i.OWiFi_cmd) refers to operationwifi.o(i.OWiFi_Send) for OWiFi_Send
     operationwifi.o(i.OWiFi_cmd) refers to operationwifi.o(.data) for OWiFi_END
     operationwifi.o(i.OWiFi_cmd) refers to can_user.o(.data) for Wifi_Rx_flag
     operationwifi.o(i.OWiFi_cmds) refers to stm32f4xx_tim.o(i.TIM_Cmd) for TIM_Cmd
-    operationwifi.o(i.OWiFi_cmds) refers to operationwifi.o(i.OWiFi_Send) for OWiFi_Send
     operationwifi.o(i.OWiFi_cmds) refers to delay.o(i.delay_ms) for delay_ms
+    operationwifi.o(i.OWiFi_cmds) refers to operationwifi.o(i.OWiFi_Send) for OWiFi_Send
     operationwifi.o(i.OWiFi_cmds) refers to operationwifi.o(.data) for OWiFi_END
     operationwifi.o(i.OWiFi_cmds) refers to can_user.o(.data) for Wifi_Rx_flag
     operationwifi.o(i.OWiFi_toZigbee) refers to operationflag.o(i.Agreement_Send) for Agreement_Send
@@ -3333,14 +3328,13 @@ Removing Unused input sections from the image.
     Removing operationwifi.o(.rev16_text), (4 bytes).
     Removing operationwifi.o(.revsh_text), (4 bytes).
     Removing operationwifi.o(i.OWiFi_CodeCalc), (184 bytes).
-    Removing operationwifi.o(i.OWiFi_JTlight), (268 bytes).
-    Removing operationwifi.o(i.OWiFi_QRCode1), (14 bytes).
-    Removing operationwifi.o(i.OWiFi_QRCode2), (14 bytes).
+    Removing operationwifi.o(i.OWiFi_JTlight), (22 bytes).
+    Removing operationwifi.o(i.OWiFi_QRCode1), (22 bytes).
     Removing operationwifi.o(i.OWiFi_Send), (100 bytes).
     Removing operationwifi.o(i.OWiFi_Send_test), (60 bytes).
-    Removing operationwifi.o(i.OWiFi_TFT), (26 bytes).
-    Removing operationwifi.o(i.OWiFi_cmd), (148 bytes).
-    Removing operationwifi.o(i.OWiFi_cmds), (160 bytes).
+    Removing operationwifi.o(i.OWiFi_TFT), (22 bytes).
+    Removing operationwifi.o(i.OWiFi_cmd), (164 bytes).
+    Removing operationwifi.o(i.OWiFi_cmds), (176 bytes).
     Removing operationwifi.o(i.OWiFi_upAscll), (256 bytes).
     Removing mystring.o(.rev16_text), (4 bytes).
     Removing mystring.o(.revsh_text), (4 bytes).
@@ -3378,7 +3372,7 @@ Removing Unused input sections from the image.
     Removing dsqrt.o(.text), (162 bytes).
     Removing cdcmple.o(.text), (48 bytes).
 
-866 unused section(s) (total 134888 bytes) removed from the image.
+865 unused section(s) (total 134664 bytes) removed from the image.
 
 ==============================================================================
 
@@ -4797,32 +4791,32 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000188   Data   RO         3665    RESET               startup_stm32f40_41xxx.o
-    0x08000188   0x08000188   0x00000000   Code   RO         7647  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000188   0x08000188   0x00000004   Code   RO         7972    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x0800018c   0x0800018c   0x00000004   Code   RO         7975    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         7977    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         7979    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000190   0x08000190   0x00000008   Code   RO         7980    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         7982    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         7984    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000198   0x08000198   0x00000004   Code   RO         7973    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000188   0x08000188   0x00000000   Code   RO         7641  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000188   0x08000188   0x00000004   Code   RO         7966    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x0800018c   0x0800018c   0x00000004   Code   RO         7969    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         7971    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         7973    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000190   0x08000190   0x00000008   Code   RO         7974    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         7976    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         7978    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000198   0x08000198   0x00000004   Code   RO         7967    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x0800019c   0x0800019c   0x00000024   Code   RO         3666    .text               startup_stm32f40_41xxx.o
-    0x080001c0   0x080001c0   0x0000001e   Code   RO         7650    .text               mc_w.l(llshl.o)
-    0x080001de   0x080001de   0x00000020   Code   RO         7652    .text               mc_w.l(llushr.o)
-    0x080001fe   0x080001fe   0x00000024   Code   RO         7654    .text               mc_w.l(memcpya.o)
-    0x08000222   0x08000222   0x00000024   Code   RO         7656    .text               mc_w.l(memseta.o)
-    0x08000246   0x08000246   0x0000000e   Code   RO         7658    .text               mc_w.l(strlen.o)
-    0x08000254   0x08000254   0x000000de   Code   RO         7923    .text               mf_w.l(ddiv.o)
-    0x08000332   0x08000332   0x00000022   Code   RO         7925    .text               mf_w.l(dflti.o)
-    0x08000354   0x08000354   0x00000026   Code   RO         7931    .text               mf_w.l(f2d.o)
-    0x0800037a   0x0800037a   0x00000038   Code   RO         7933    .text               mf_w.l(d2f.o)
-    0x080003b2   0x080003b2   0x0000002c   Code   RO         7989    .text               mc_w.l(uidiv.o)
-    0x080003de   0x080003de   0x00000000   Code   RO         8000    .text               mc_w.l(iusefp.o)
-    0x080003de   0x080003de   0x0000006e   Code   RO         8001    .text               mf_w.l(fepilogue.o)
-    0x0800044c   0x0800044c   0x000000ba   Code   RO         8003    .text               mf_w.l(depilogue.o)
+    0x080001c0   0x080001c0   0x0000001e   Code   RO         7644    .text               mc_w.l(llshl.o)
+    0x080001de   0x080001de   0x00000020   Code   RO         7646    .text               mc_w.l(llushr.o)
+    0x080001fe   0x080001fe   0x00000024   Code   RO         7648    .text               mc_w.l(memcpya.o)
+    0x08000222   0x08000222   0x00000024   Code   RO         7650    .text               mc_w.l(memseta.o)
+    0x08000246   0x08000246   0x0000000e   Code   RO         7652    .text               mc_w.l(strlen.o)
+    0x08000254   0x08000254   0x000000de   Code   RO         7917    .text               mf_w.l(ddiv.o)
+    0x08000332   0x08000332   0x00000022   Code   RO         7919    .text               mf_w.l(dflti.o)
+    0x08000354   0x08000354   0x00000026   Code   RO         7925    .text               mf_w.l(f2d.o)
+    0x0800037a   0x0800037a   0x00000038   Code   RO         7927    .text               mf_w.l(d2f.o)
+    0x080003b2   0x080003b2   0x0000002c   Code   RO         7983    .text               mc_w.l(uidiv.o)
+    0x080003de   0x080003de   0x00000000   Code   RO         7994    .text               mc_w.l(iusefp.o)
+    0x080003de   0x080003de   0x0000006e   Code   RO         7995    .text               mf_w.l(fepilogue.o)
+    0x0800044c   0x0800044c   0x000000ba   Code   RO         7997    .text               mf_w.l(depilogue.o)
     0x08000506   0x08000506   0x00000002   PAD
-    0x08000508   0x08000508   0x00000024   Code   RO         8017    .text               mc_w.l(init.o)
-    0x0800052c   0x0800052c   0x0000005e   Code   RO         8035    .text               mc_w.l(__dclz77c.o)
+    0x08000508   0x08000508   0x00000024   Code   RO         8011    .text               mc_w.l(init.o)
+    0x0800052c   0x0800052c   0x0000005e   Code   RO         8029    .text               mc_w.l(__dclz77c.o)
     0x0800058a   0x0800058a   0x00000006   Code   RO         1792    i.ADC_ClearFlag     stm32f4xx_adc.o
     0x08000590   0x08000590   0x00000016   Code   RO         1794    i.ADC_Cmd           stm32f4xx_adc.o
     0x080005a6   0x080005a6   0x00000002   PAD
@@ -4975,9 +4969,9 @@ Memory Map of the image
     0x08003148   0x08003148   0x0000002e   Code   RO         6735    i.OFlag_check       operationflag.o
     0x08003176   0x08003176   0x00000002   PAD
     0x08003178   0x08003178   0x0000017c   Code   RO         6737    i.OFlag_light2      operationflag.o
-    0x080032f4   0x080032f4   0x00000038   Code   RO         7255    i.OWiFi_toZigbee    operationwifi.o
-    0x0800332c   0x0800332c   0x0000023c   Code   RO         7257    i.Operation_WiFi    operationwifi.o
-    0x08003568   0x08003568   0x0000009c   Code   RO         7258    i.Operation_WiFi_Master  operationwifi.o
+    0x080032f4   0x080032f4   0x00000038   Code   RO         7254    i.OWiFi_toZigbee    operationwifi.o
+    0x0800332c   0x0800332c   0x0000023c   Code   RO         7256    i.Operation_WiFi    operationwifi.o
+    0x08003568   0x08003568   0x0000009c   Code   RO         7257    i.Operation_WiFi_Master  operationwifi.o
     0x08003604   0x08003604   0x000000b8   Code   RO         6742    i.Operation_Zigbee  operationflag.o
     0x080036bc   0x080036bc   0x00000084   Code   RO         6596    i.PID_Calc          pid.o
     0x08003740   0x08003740   0x00000050   Code   RO         6597    i.PID_Set           pid.o
@@ -5046,10 +5040,10 @@ Memory Map of the image
     0x08005100   0x08005100   0x00000068   Code   RO         3674    i.SystemInit        system_stm32f4xx.o
     0x08005168   0x08005168   0x00000020   Code   RO         3837    i.TIM1_BRK_TIM9_IRQHandler  roadway_check.o
     0x08005188   0x08005188   0x0000002c   Code   RO         1676    i.TIM1_UP_TIM10_IRQHandler  timer.o
-    0x080051b4   0x080051b4   0x00000088   Code   RO         7478    i.TIM2_IRQHandler   taskboard.o
+    0x080051b4   0x080051b4   0x00000088   Code   RO         7472    i.TIM2_IRQHandler   taskboard.o
     0x0800523c   0x0800523c   0x0000002c   Code   RO         4916    i.TIM3_IRQHandler   function.o
     0x08005268   0x08005268   0x0000002c   Code   RO         6743    i.TIM4_IRQHandler   operationflag.o
-    0x08005294   0x08005294   0x00000044   Code   RO         7259    i.TIM5_IRQHandler   operationwifi.o
+    0x08005294   0x08005294   0x00000044   Code   RO         7258    i.TIM5_IRQHandler   operationwifi.o
     0x080052d8   0x080052d8   0x0000002c   Code   RO          234    i.TIM6_DAC_IRQHandler  ultrasonic.o
     0x08005304   0x08005304   0x00000020   Code   RO         4686    i.TIM7_IRQHandler   can_check.o
     0x08005324   0x08005324   0x00000044   Code   RO         1345    i.TIM8_TRG_COM_TIM14_IRQHandler  syn7318.o
@@ -5061,16 +5055,16 @@ Memory Map of the image
     0x080053fe   0x080053fe   0x00000002   PAD
     0x08005400   0x08005400   0x00000028   Code   RO         7112    i.TIM_PIDTrack_Set  rfidcard.o
     0x08005428   0x08005428   0x00000084   Code   RO         2885    i.TIM_TimeBaseInit  stm32f4xx_tim.o
-    0x080054ac   0x080054ac   0x00000068   Code   RO         7480    i.TaskBoard_BH      taskboard.o
-    0x08005514   0x08005514   0x00000020   Code   RO         7482    i.TaskBoard_Init    taskboard.o
-    0x08005534   0x08005534   0x00000010   Code   RO         7484    i.TaskBoard_RISend  taskboard.o
-    0x08005544   0x08005544   0x00000002   Code   RO         7485    i.TaskBoard_SMGDisplay  taskboard.o
+    0x080054ac   0x080054ac   0x00000068   Code   RO         7474    i.TaskBoard_BH      taskboard.o
+    0x08005514   0x08005514   0x00000020   Code   RO         7476    i.TaskBoard_Init    taskboard.o
+    0x08005534   0x08005534   0x00000010   Code   RO         7478    i.TaskBoard_RISend  taskboard.o
+    0x08005544   0x08005544   0x00000002   Code   RO         7479    i.TaskBoard_SMGDisplay  taskboard.o
     0x08005546   0x08005546   0x00000002   PAD
-    0x08005548   0x08005548   0x00000028   Code   RO         7487    i.TaskBoard_Time    taskboard.o
-    0x08005570   0x08005570   0x0000000e   Code   RO         7488    i.TaskBoard_TimeClose  taskboard.o
+    0x08005548   0x08005548   0x00000028   Code   RO         7481    i.TaskBoard_Time    taskboard.o
+    0x08005570   0x08005570   0x0000000e   Code   RO         7482    i.TaskBoard_TimeClose  taskboard.o
     0x0800557e   0x0800557e   0x00000002   PAD
-    0x08005580   0x08005580   0x00000020   Code   RO         7490    i.TaskBoard_TimeStatus  taskboard.o
-    0x080055a0   0x080055a0   0x00000008   Code   RO         7491    i.TaskBoard_WAVE    taskboard.o
+    0x08005580   0x08005580   0x00000020   Code   RO         7484    i.TaskBoard_TimeStatus  taskboard.o
+    0x080055a0   0x080055a0   0x00000008   Code   RO         7485    i.TaskBoard_WAVE    taskboard.o
     0x080055a8   0x080055a8   0x00000060   Code   RO         1677    i.Tim2_Init         timer.o
     0x08005608   0x08005608   0x0000005c   Code   RO         1678    i.Tim4_Init         timer.o
     0x08005664   0x08005664   0x00000060   Code   RO         1679    i.Tim5_Init         timer.o
@@ -5111,31 +5105,31 @@ Memory Map of the image
     0x08006338   0x08006338   0x00000058   Code   RO          241    i.Ultrasonic_TIM    ultrasonic.o
     0x08006390   0x08006390   0x00000010   Code   RO          789    i.WriteRawRC        rc522.o
     0x080063a0   0x080063a0   0x00000044   Code   RO          790    i.WriteRawRC_HDL    rc522.o
-    0x080063e4   0x080063e4   0x00000038   Code   RO         7493    i._BEEP_Init        taskboard.o
-    0x0800641c   0x0800641c   0x00000002   Code   RO         7494    i._CD4051_Init      taskboard.o
+    0x080063e4   0x080063e4   0x00000038   Code   RO         7487    i._BEEP_Init        taskboard.o
+    0x0800641c   0x0800641c   0x00000002   Code   RO         7488    i._CD4051_Init      taskboard.o
     0x0800641e   0x0800641e   0x00000002   PAD
-    0x08006420   0x08006420   0x0000002c   Code   RO         7495    i._IR_Init          taskboard.o
-    0x0800644c   0x0800644c   0x00000050   Code   RO         7496    i._LED_Init         taskboard.o
-    0x0800649c   0x0800649c   0x00000054   Code   RO         7497    i._LIGHT_Init       taskboard.o
-    0x080064f0   0x080064f0   0x00000002   Code   RO         7498    i._SMG_Init         taskboard.o
+    0x08006420   0x08006420   0x0000002c   Code   RO         7489    i._IR_Init          taskboard.o
+    0x0800644c   0x0800644c   0x00000050   Code   RO         7490    i._LED_Init         taskboard.o
+    0x0800649c   0x0800649c   0x00000054   Code   RO         7491    i._LIGHT_Init       taskboard.o
+    0x080064f0   0x080064f0   0x00000002   Code   RO         7492    i._SMG_Init         taskboard.o
     0x080064f2   0x080064f2   0x00000002   PAD
-    0x080064f4   0x080064f4   0x00000050   Code   RO         7499    i._WAVE_Init        taskboard.o
-    0x08006544   0x08006544   0x00000028   Code   RO         7753    i.__0sprintf$3      mc_w.l(printf3.o)
-    0x0800656c   0x0800656c   0x0000000e   Code   RO         8029    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x0800657a   0x0800657a   0x00000002   Code   RO         8030    i.__scatterload_null  mc_w.l(handlers.o)
-    0x0800657c   0x0800657c   0x0000000e   Code   RO         8031    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x080064f4   0x080064f4   0x00000050   Code   RO         7493    i._WAVE_Init        taskboard.o
+    0x08006544   0x08006544   0x00000028   Code   RO         7747    i.__0sprintf$3      mc_w.l(printf3.o)
+    0x0800656c   0x0800656c   0x0000000e   Code   RO         8023    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0800657a   0x0800657a   0x00000002   Code   RO         8024    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0800657c   0x0800657c   0x0000000e   Code   RO         8025    i.__scatterload_zeroinit  mc_w.l(handlers.o)
     0x0800658a   0x0800658a   0x00000002   PAD
-    0x0800658c   0x0800658c   0x000001b8   Code   RO         7758    i._printf_core      mc_w.l(printf3.o)
-    0x08006744   0x08006744   0x0000000a   Code   RO         7760    i._sputc            mc_w.l(printf3.o)
-    0x0800674e   0x0800674e   0x00000046   Code   RO         7362    i.arr_sort          mystring.o
+    0x0800658c   0x0800658c   0x000001b8   Code   RO         7752    i._printf_core      mc_w.l(printf3.o)
+    0x08006744   0x08006744   0x0000000a   Code   RO         7754    i._sputc            mc_w.l(printf3.o)
+    0x0800674e   0x0800674e   0x00000046   Code   RO         7356    i.arr_sort          mystring.o
     0x08006794   0x08006794   0x0000001c   Code   RO         6744    i.calc_CheckSum     operationflag.o
     0x080067b0   0x080067b0   0x0000001c   Code   RO         6359    i.default_PID       mastercarcotrol.o
     0x080067cc   0x080067cc   0x0000003c   Code   RO         1642    i.delay_init        delay.o
     0x08006808   0x08006808   0x0000004c   Code   RO         1643    i.delay_ms          delay.o
     0x08006854   0x08006854   0x0000004c   Code   RO         1644    i.delay_us          delay.o
-    0x080068a0   0x080068a0   0x00000036   Code   RO         7369    i.get_charToHEX     mystring.o
+    0x080068a0   0x080068a0   0x00000036   Code   RO         7363    i.get_charToHEX     mystring.o
     0x080068d6   0x080068d6   0x00000002   PAD
-    0x080068d8   0x080068d8   0x000000a0   Code   RO         7375    i.get_path_one      mystring.o
+    0x080068d8   0x080068d8   0x000000a0   Code   RO         7369    i.get_path_one      mystring.o
     0x08006978   0x08006978   0x0000000c   Code   RO         1682    i.gt_get            timer.o
     0x08006984   0x08006984   0x00000018   Code   RO         1683    i.gt_get_sub        timer.o
     0x0800699c   0x0800699c   0x00000104   Code   RO            4    i.keyScan           main.o
@@ -5152,7 +5146,7 @@ Memory Map of the image
     0x080071c8   0x080071c8   0x0000003c   Code   RO         3842    i.wheel_Nav_check   roadway_check.o
     0x08007204   0x08007204   0x000000a4   Code   RO         3843    i.wheel_Track_check  roadway_check.o
     0x080072a8   0x080072a8   0x00000110   Data   RO         3722    .constdata          my_lib.o
-    0x080073b8   0x080073b8   0x00000020   Data   RO         8027    Region$$Table       anon$$obj.o
+    0x080073b8   0x080073b8   0x00000020   Data   RO         8021    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM2 (Exec base: 0x10000000, Load base: 0x080075e8, Size: 0x00000000, Max: 0x00010000, ABSOLUTE)
@@ -5192,10 +5186,10 @@ Memory Map of the image
     0x20000628   COMPRESSED   0x00000098   Data   RW         6745    .data               operationflag.o
     0x200006c0   COMPRESSED   0x0000000d   Data   RW         7114    .data               rfidcard.o
     0x200006cd   COMPRESSED   0x00000003   PAD
-    0x200006d0   COMPRESSED   0x00000034   Data   RW         7261    .data               operationwifi.o
-    0x20000704   COMPRESSED   0x0000001e   Data   RW         7379    .data               mystring.o
+    0x200006d0   COMPRESSED   0x00000034   Data   RW         7260    .data               operationwifi.o
+    0x20000704   COMPRESSED   0x0000001e   Data   RW         7373    .data               mystring.o
     0x20000722   COMPRESSED   0x00000002   PAD
-    0x20000724   COMPRESSED   0x00000023   Data   RW         7500    .data               taskboard.o
+    0x20000724   COMPRESSED   0x00000023   Data   RW         7494    .data               taskboard.o
     0x20000747   COMPRESSED   0x00000001   PAD
     0x20000748        -       0x00000032   Zero   RW          576    .bss                uart_a72.o
     0x2000077a   COMPRESSED   0x00000002   PAD
@@ -5206,7 +5200,7 @@ Memory Map of the image
     0x20000acc        -       0x00000028   Zero   RW         4552    .bss                hard_can.o
     0x20000af4        -       0x00000190   Zero   RW         4595    .bss                can_user.o
     0x20000c84        -       0x0000082f   Zero   RW         7113    .bss                rfidcard.o
-    0x200014b3        -       0x00000163   Zero   RW         7260    .bss                operationwifi.o
+    0x200014b3        -       0x00000163   Zero   RW         7259    .bss                operationwifi.o
     0x20001616   COMPRESSED   0x00000002   PAD
     0x20001618        -       0x00000400   Zero   RW         3663    STACK               startup_stm32f40_41xxx.o
 

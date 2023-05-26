@@ -1,9 +1,9 @@
 /*
- * @Description: 
+ * @Description:
  * @Autor: 309
  * @Date: 2021-10-15 16:33:43
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2023-04-25 16:29:42
+ * @LastEditTime: 2023-05-23 10:16:13
  */
 #include "OperationWiFi.h"
 #include "OperationFlag.h"
@@ -13,31 +13,31 @@
 #include "Timer.h"
 #include "canP_HostCom.h"
 #include "MasterCarCotrol.h"
-char OWifi_Number[OWifi_Number_len];//接收数值
-char Owifi_String[Owifi_String_len];//接收字符串数据
+char OWifi_Number[OWifi_Number_len]; // 接收数值
+char Owifi_String[Owifi_String_len]; // 接收字符串数据
 
-uint8_t OWifi_CalcCode[7] = {0, 0, 0, 0, 0, 0, '\0'}; //接收压缩算法数据
-uint8_t OWifi_CRCode[7] = {0, 0, 0, 0, 0, 0};		  //接收二维码
-uint8_t OWifi_TFTCP[7] = {0, 0, 0, 0, 0, 0, '\0'};	  //接收TFT车牌
+uint8_t OWifi_CalcCode[7] = {0, 0, 0, 0, 0, 0, '\0'}; // 接收压缩算法数据
+uint8_t OWifi_CRCode[7] = {0, 0, 0, 0, 0, 0};		  // 接收二维码
+uint8_t OWifi_TFTCP[7] = {0, 0, 0, 0, 0, 0, '\0'};	  // 接收TFT车牌
 uint8_t OWifi_TFTShape[6] = {0, 0, 0, 0, 0, 0};		  //[0]:矩形,[1]:圆形,[2]:三角,[3]:菱形,[4]:五角星
-uint8_t OWifi_alarm[7] = {0, 0, 0, 0, 0, 0, '\0'};	  //接收烽火台数据
-uint8_t OWifi_TFTJTFLAG = 0;						  //接收TFT识别的交通标志 2.掉头 3.右转 4.直行 5.左转 6.禁止通行 7.禁止直行
-uint8_t OWiFi_END = 0;								  //WIFI完成接收结束标志
-uint8_t *OWiFi_readBuffer = 0;						  //wifi读取指针
-uint8_t OWifi_CRCode_falg = 0;						  //静态标志物 0.未接收 1.接收完成
-uint8_t OWifi_TFT_falg = 0;							  //TFT车牌 图形
-uint8_t OWifi_JT = 0;								  //接收交通灯数据1.红色 2.绿色 3.黄色
-uint32_t Wifi_request = 0;							  //平板确认识别请求
+uint8_t OWifi_alarm[7] = {0, 0, 0, 0, 0, 0, '\0'};	  // 接收烽火台数据
+uint8_t OWifi_TFTJTFLAG = 0;						  // 接收TFT识别的交通标志 2.掉头 3.右转 4.直行 5.左转 6.禁止通行 7.禁止直行
+uint8_t OWiFi_END = 0;								  // WIFI完成接收结束标志
+uint8_t *OWiFi_readBuffer = 0;						  // wifi读取指针
+uint8_t OWifi_CRCode_falg = 0;						  // 静态标志物 0.未接收 1.接收完成
+uint8_t OWifi_TFT_falg = 0;							  // TFT车牌 图形
+uint8_t OWifi_JT = 0;								  // 接收交通灯数据1.红色 2.绿色 3.黄色
+uint32_t Wifi_request = 0;							  // 平板确认识别请求
 
 void TIM5_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) == SET)
 	{
-		if (Wifi_Rx_flag) //接收到wifi消息
+		if (Wifi_Rx_flag) // 接收到wifi消息
 		{
-			Operation_WiFi(); //检测识别结果
+			Operation_WiFi(); // 检测识别结果
 			Wifi_Rx_flag = 0;
-			for (int i = 0; i < 10; i++) //清除缓存
+			for (int i = 0; i < 10; i++) // 清除缓存
 			{
 				Wifi_Rx_Buf[i] = 0;
 			}
@@ -53,7 +53,7 @@ void TIM5_IRQHandler(void)
  * 0xB3	交通灯B	0x00	0x00	0x00
  * 0xB4	静态标志物1	0x00	0x00	0x00
  * 0xB5	静态标志物2	0x00	0x00	0x00
- * 0xB6				
+ * 0xB6
  * 0xB7	数据算法压缩A	01A	10B	11C
  * 0xB8	数据算法压缩B	01A	10B	11C
  * 0xB9	破损车牌1	车牌[0]	车牌[1]	车牌[2]
@@ -108,7 +108,7 @@ void OWiFi_Send_test(uint8_t mode, uint8_t data1, uint8_t data2, uint8_t data3)
 }
 
 /**
- * @description: 图像识别请求并防止超时操作 模板 
+ * @description: 图像识别请求并防止超时操作 模板
  * @param {uint8_t} cmd 主指令
  * @param {uint8_t} *flag 标志地址
  * @param {uint32_t} time 等待周期 单位：秒
@@ -117,65 +117,71 @@ void OWiFi_Send_test(uint8_t mode, uint8_t data1, uint8_t data2, uint8_t data3)
 uint8_t OWiFi_cmd(uint8_t cmd, uint32_t time)
 {
 	uint8_t r = 1, t = 0; //_num=2;
-	OWiFi_END = 1;		  //重置接收状态
+	TIM_Cmd(TIM5, ENABLE);		 // 开启识别接收
+	delay_ms(500);
+	delay_ms(500);
+	
+	OWiFi_END = 1;		  // 重置接收状态
 	Wifi_Rx_flag = 0;
-	Wifi_request = 0; //重置wifi确认请求
-	//Wifi_Rx_flag_num=0;//利用接收次数再次发送请求
-	TIM_Cmd(TIM5, ENABLE);	  //开启识别接收
-	OWiFi_Send(cmd, 0, 0, 0); //发送一次识别请求
-	while (OWiFi_END == 1)	  //等待回传结果
+	Wifi_request = 0; // 重置wifi确认请求
+	
+	OWiFi_Send(cmd, 0, 0, 0); // 发送一次识别请求
+	while (OWiFi_END == 1)	  // 等待回传结果
 	{
 		t++;
-		if (t >= time) //超时跳出
+		if (t >= time) // 超时跳出
 		{
 			r = 0;
 			break;
 		}
-		if (OWiFi_END == 0) //接收完毕跳出
+		if (OWiFi_END == 0) // 接收完毕跳出
 		{
 			break;
 		}
 		delay_ms(500);
 		delay_ms(500);
 
-		if (Wifi_request == 0 && t > 2) //若为平板未确认请求则再次发送
+		if (Wifi_request == 0 && t > 2) // 若为平板未确认请求则再次发送
 		{
-			OWiFi_Send(cmd, 0, 0, 0); //发送一次识别请求
-									  //Send_Debug_string("wifi_error:1");
+			OWiFi_Send(cmd, 0, 0, 0); // 发送一次识别请求
+									  // Send_Debug_string("wifi_error:1");
 		}
 	}
 	TIM_Cmd(TIM5, DISABLE);
 	return r;
 }
 
-uint8_t OWiFi_cmds(uint8_t cmd, uint8_t f1,uint8_t f2,uint8_t f3,uint32_t time)
+uint8_t OWiFi_cmds(uint8_t cmd, uint8_t f1, uint8_t f2, uint8_t f3, uint32_t time)
 {
 	uint8_t r = 1, t = 0; //_num=2;
-	OWiFi_END = 1;		  //重置接收状态
+	TIM_Cmd(TIM5, ENABLE);		 // 开启识别接收
+	delay_ms(500);
+	delay_ms(500);
+	
+	OWiFi_END = 1;		  // 重置接收状态
 	Wifi_Rx_flag = 0;
-	Wifi_request = 0; //重置wifi确认请求
-	//Wifi_Rx_flag_num=0;//利用接收次数再次发送请求
-	TIM_Cmd(TIM5, ENABLE);	  //开启识别接收
-	OWiFi_Send(cmd, f1, f2, f3); //发送一次识别请求
-	while (OWiFi_END == 1)	  //等待回传结果
+	Wifi_request = 0; // 重置wifi确认请求
+	
+	OWiFi_Send(cmd, f1, f2, f3); // 发送一次识别请求
+	while (OWiFi_END == 1)		 // 等待回传结果
 	{
 		t++;
-		if (t >= time) //超时跳出
+		if (t >= time) // 超时跳出
 		{
 			r = 0;
 			break;
 		}
-		if (OWiFi_END == 0) //接收完毕跳出
+		if (OWiFi_END == 0) // 接收完毕跳出
 		{
 			break;
 		}
 		delay_ms(500);
 		delay_ms(500);
 
-		if (Wifi_request == 0 && t > 2) //若为平板未确认请求则再次发送
+		if (Wifi_request == 0 && t > 2) // 若为平板未确认请求则再次发送
 		{
-			OWiFi_Send(cmd, f1, f2, f3); //发送一次识别请求
-									  //Send_Debug_string("wifi_error:1");
+			OWiFi_Send(cmd, f1, f2, f3); // 发送一次识别请求
+										 // Send_Debug_string("wifi_error:1");
 		}
 	}
 	TIM_Cmd(TIM5, DISABLE);
@@ -184,105 +190,34 @@ uint8_t OWiFi_cmds(uint8_t cmd, uint8_t f1,uint8_t f2,uint8_t f3,uint32_t time)
 
 /**
  * @description: 请求识别静态标志物1
+ * @param {uint8_t} flag 'A'=TFTA 'B'=TFTB
  * @param {uint32_t} time  等待周期 单位：秒
  * @return {*}0.超时 1.完成
  */
-uint8_t OWiFi_QRCode1(uint32_t time)
+uint8_t OWiFi_QRCode1(uint8_t flag,uint32_t time)
 {
-
-	return OWiFi_cmd(0xB4, time);
-}
-
-/**
- * @description: 请求识别静态标志物2
- * @param {uint32_t} time  等待周期 单位：秒
- * @return {*}0.超时 1.完成
- */
-uint8_t OWiFi_QRCode2(uint32_t time)
-{
-
-	return OWiFi_cmd(0xB5, time);
+	return OWiFi_cmds(0xB4, flag, 0,0,time);
 }
 
 /**
  * @description: TFT识别 车牌 图像等
- * @param {uint8_t} AorB 'A'=TFTA 'B'=TFTB
+ * @param {uint8_t} flag 'A'=TFTA 'B'=TFTB
  * （图形识别结果 OWifi_TFTShape[0]：矩形 [1]：圆形  [2]：三角  [3]: 菱形 [4]：五角星）
  * @param {uint32_t} time  等待周期 单位：秒
  * @return {*}0.超时 1.完成
  */
-uint8_t OWiFi_TFT(uint8_t AorB, uint32_t time)
+uint8_t OWiFi_TFT(uint8_t flag, uint32_t time)
 {
-	return OWiFi_cmd(AorB == 'A' ? 0xB0 : 0xB1, time); //请求TFT识别车牌
+	return OWiFi_cmds(0xB0,flag, 0,0,time); // 请求TFT识别车牌
 }
 /**
  * @description: 请求交通灯识别 并向标志发送确认识别结果
- * @param {uint8_t} AorB 'A'=交通灯A 'B'=交通灯B
+ * @param {uint8_t} flag 'A'=交通灯A 'B'=交通灯B
  * @return {*}
  */
 uint8_t OWiFi_JTlight(uint8_t flag)
 {
-	if (flag == 'A')
-	{
-#if 0 
-		// 主车主动开启红绿灯识别
-		OFlag_JT_cmd(1, 0); //交通灯A进入识别模式
-		delay_ms(200);
-		OFlag_JT_cmd(1, 0); //交通灯A进入识别模式
-		delay_ms(200);
-		OFlag_JT_cmd(1, 0);		 //交通灯A进入识别模式
-#endif
-		if (OWiFi_cmd(0xB2, 15)) //请求识别成功
-		{
-
-			OFlag_JT_cmd(1, OWifi_JT); //A确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(1, OWifi_JT); //A确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(1, OWifi_JT); //A确认结果
-			return 1;
-		}
-		OFlag_JT_cmd(1, 1); //识别失败忙猜结果
-		delay_ms(100);
-		OFlag_JT_cmd(1, 1); //识别失败忙猜结果
-	}
-	else if(flag == 'B')
-	{
-#if 0
-		OFlag_JT_cmd(0, 0); //交通灯B进入识别模式
-		delay_ms(200);
-		OFlag_JT_cmd(0, 0); //交通灯B进入识别模式
-		delay_ms(200);
-		OFlag_JT_cmd(0, 0);		 //交通灯B进入识别模式
-#endif
-		if (OWiFi_cmd(0xB3, 15)) //请求识别成功
-		{
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			return 1;
-		}
-		OFlag_JT_cmd(0, 1); //识别失败忙猜结果
-		delay_ms(100);
-		OFlag_JT_cmd(0, 1); //识别失败忙猜结果
-	}else
-	{
-		if (OWiFi_cmds(0xB2,flag,0,0, 15)) //请求识别成功
-		{
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			delay_ms(200);
-			OFlag_JT_cmd(0, OWifi_JT); //B确认结果
-			return 1;
-		}
-		OFlag_JT_cmd(0, 1); //识别失败忙猜结果
-		delay_ms(100);
-		OFlag_JT_cmd(0, 1); //识别失败忙猜结果
-	}
-	return 0;
+	return OWiFi_cmds(0xB2, flag, 0, 0, 15);
 }
 
 /**
@@ -294,33 +229,33 @@ uint8_t OWiFi_JTlight(uint8_t flag)
 uint8_t OWiFi_CodeCalc(uint8_t *data, uint32_t time)
 {
 	uint8_t r = 1, t = 0;
-	OWiFi_END = 1;	  //重置接收状态
-	Wifi_request = 0; //重置wifi确认请求
+	OWiFi_END = 1;	  // 重置接收状态
+	Wifi_request = 0; // 重置wifi确认请求
 	Wifi_Rx_flag = 0;
-	TIM_Cmd(TIM5, ENABLE);						 //开启识别接收
-	OWiFi_Send(0xb7, data[0], data[1], data[2]); //上传信息到平板处理算法
+	TIM_Cmd(TIM5, ENABLE);						 // 开启识别接收
+	OWiFi_Send(0xb7, data[0], data[1], data[2]); // 上传信息到平板处理算法
 	delay_ms(100);
-	OWiFi_Send(0xb8, data[3], data[4], data[5]); //上传信息到平板处理算法
-	while (OWiFi_END == 1)						 //等待回传结果
+	OWiFi_Send(0xb8, data[3], data[4], data[5]); // 上传信息到平板处理算法
+	while (OWiFi_END == 1)						 // 等待回传结果
 	{
 		t++;
-		if (t >= time) //超时跳出
+		if (t >= time) // 超时跳出
 		{
 			r = 0;
 			break;
 		}
-		if (OWiFi_END == 0) //接收完毕跳出
+		if (OWiFi_END == 0) // 接收完毕跳出
 		{
 			break;
 		}
 		delay_ms(500);
 		delay_ms(500);
 
-		if (Wifi_request == 0 && t > 2) //若为平板未确认请求则再次发送
+		if (Wifi_request == 0 && t > 2) // 若为平板未确认请求则再次发送
 		{
-			OWiFi_Send(0xb7, data[0], data[1], data[2]); //上传信息到平板处理算法
+			OWiFi_Send(0xb7, data[0], data[1], data[2]); // 上传信息到平板处理算法
 			delay_ms(100);
-			OWiFi_Send(0xb8, data[3], data[4], data[5]); //上传信息到平板处理算法
+			OWiFi_Send(0xb8, data[3], data[4], data[5]); // 上传信息到平板处理算法
 		}
 	}
 	TIM_Cmd(TIM5, DISABLE);
@@ -338,11 +273,11 @@ uint8_t OWiFi_upAscll(char *str, uint32_t time)
 {
 	uint8_t r = 1, t = 0; //_num=2;
 	int i;
-	OWiFi_END = 1; //重置接收状态
+	OWiFi_END = 1; // 重置接收状态
 	Wifi_Rx_flag = 0;
-	Wifi_request = 0; //重置wifi确认请求
-	//Wifi_Rx_flag_num=0;//利用接收次数再次发送请求
-	TIM_Cmd(TIM5, ENABLE); //开启识别接收
+	Wifi_request = 0; // 重置wifi确认请求
+	// Wifi_Rx_flag_num=0;//利用接收次数再次发送请求
+	TIM_Cmd(TIM5, ENABLE); // 开启识别接收
 	for (i = 0; i < strlen(str); i++)
 	{
 		OWiFi_Send(0xDD, i, str[i], 0);
@@ -350,25 +285,24 @@ uint8_t OWiFi_upAscll(char *str, uint32_t time)
 		OWiFi_Send(0xDD, i, str[i], 0);
 		delay_ms(50);
 	}
-	OWiFi_Send(0xDD, 0, 0, 0); //发送结束标志
+	OWiFi_Send(0xDD, 0, 0, 0); // 发送结束标志
 
-
-	while (OWiFi_END == 1) //等待回传结果
+	while (OWiFi_END == 1) // 等待回传结果
 	{
 		t++;
-		if (t >= time) //超时跳出
+		if (t >= time) // 超时跳出
 		{
 			r = 0;
 			break;
 		}
-		if (OWiFi_END == 0) //接收完毕跳出
+		if (OWiFi_END == 0) // 接收完毕跳出
 		{
 			break;
 		}
 		delay_ms(500);
 		delay_ms(500);
 
-		if (Wifi_request == 0 && t > 2) //若为平板未确认请求则再次发送
+		if (Wifi_request == 0 && t > 2) // 若为平板未确认请求则再次发送
 		{
 			for (i = 0; i < strlen(str); i++)
 			{
@@ -377,8 +311,7 @@ uint8_t OWiFi_upAscll(char *str, uint32_t time)
 				OWiFi_Send(0xDD, i, str[i], 0);
 				delay_ms(50);
 			}
-			OWiFi_Send(0xDD, 0, 0, 0); //发送结束标志
-
+			OWiFi_Send(0xDD, 0, 0, 0); // 发送结束标志
 		}
 	}
 	TIM_Cmd(TIM5, DISABLE);
@@ -421,97 +354,97 @@ void Operation_WiFi(void)
 			switch (Wifi_Rx_Buf[2])
 			{
 			case 0xA1:
-				Wifi_request = 1;		 //确认
-				if (Wifi_Rx_Buf[3] == 1 &&(Wifi_Rx_Buf[4]==1)&&(Wifi_Rx_Buf[5]==1)) //识别结束
+				Wifi_request = 1;														   // 确认
+				if (Wifi_Rx_Buf[3] == 1 && (Wifi_Rx_Buf[4] == 1) && (Wifi_Rx_Buf[5] == 1)) // 识别结束
 				{
 					Send_Debug_string2("*");
 					Wifi_Rx_flag = 0;
 					OWiFi_END = 0;
 				}
-				else if (Wifi_Rx_Buf[3] == 0 &&(Wifi_Rx_Buf[4]==0)&&(Wifi_Rx_Buf[5]==0))//识别开始
+				else if (Wifi_Rx_Buf[3] == 0 && (Wifi_Rx_Buf[4] == 0) && (Wifi_Rx_Buf[5] == 0)) // 识别开始
 				{
-					for (i = 0; i < 99; i++) //清除字符串缓存数据
+					for (i = 0; i < 99; i++) // 清除字符串缓存数据
 					{
 						Owifi_String[i] = 0;
 					}
 				}
 				break;
-			case 0xA2: //二维码A
+			case 0xA2: // 二维码A
 				OWifi_CRCode[0] = Wifi_Rx_Buf[3];
 				OWifi_CRCode[1] = Wifi_Rx_Buf[4];
 				OWifi_CRCode[2] = Wifi_Rx_Buf[5];
 				break;
-			case 0xA3: //二维码B
+			case 0xA3: // 二维码B
 				OWifi_CRCode[3] = Wifi_Rx_Buf[3];
 				OWifi_CRCode[4] = Wifi_Rx_Buf[4];
 				OWifi_CRCode[5] = Wifi_Rx_Buf[5];
 				break;
-			case 0x40: //TFT车牌1
+			case 0x40: // TFT车牌1
 				OWifi_TFTCP[0] = Wifi_Rx_Buf[3];
 				OWifi_TFTCP[1] = Wifi_Rx_Buf[4];
 				OWifi_TFTCP[2] = Wifi_Rx_Buf[5];
 				break;
-			case 0x41: //TFT车牌2
+			case 0x41: // TFT车牌2
 				OWifi_TFTCP[3] = Wifi_Rx_Buf[3];
 				OWifi_TFTCP[4] = Wifi_Rx_Buf[4];
 				OWifi_TFTCP[5] = Wifi_Rx_Buf[5];
 				break;
-			case 0x45: //图形识别1
+			case 0x45: // 图形识别1
 				OWifi_TFTShape[0] = Wifi_Rx_Buf[3];
 				OWifi_TFTShape[1] = Wifi_Rx_Buf[4];
 				OWifi_TFTShape[2] = Wifi_Rx_Buf[5];
 
 				break;
-			case 0x46: //图形识别2
+			case 0x46: // 图形识别2
 				OWifi_TFTShape[3] = Wifi_Rx_Buf[3];
 				OWifi_TFTShape[4] = Wifi_Rx_Buf[4];
 				OWifi_TFTShape[5] = Wifi_Rx_Buf[5];
 				break;
-			case 0xAE: //数据算法压缩A
+			case 0xAE: // 数据算法压缩A
 				OWifi_CalcCode[0] = Wifi_Rx_Buf[3];
 				OWifi_CalcCode[1] = Wifi_Rx_Buf[4];
 				OWifi_CalcCode[2] = Wifi_Rx_Buf[5];
 				break;
-			case 0xAF: //数据算法压缩B
+			case 0xAF: // 数据算法压缩B
 				OWifi_CalcCode[3] = Wifi_Rx_Buf[3];
 				OWifi_CalcCode[4] = Wifi_Rx_Buf[4];
 				OWifi_CalcCode[5] = Wifi_Rx_Buf[5];
 				break;
-			case 0xA5: //识别TFT交通标志
+			case 0xA5: // 识别TFT交通标志
 				OWifi_TFTJTFLAG = Wifi_Rx_Buf[3];
 				/*if(OWifi_TFTJTFLAG<2 && OWifi_TFTJTFLAG>7)//若其他结果则赋值为2
 				{
 					OWifi_TFTJTFLAG = 2;
 				}*/
 				break;
-			case 0xA9: //红绿灯识别结果
+			case 0xA9: // 红绿灯识别结果
 				OWifi_JT = Wifi_Rx_Buf[3];
-			case 0xAC: //字符串接收
-				if (Owifi_String_len > Wifi_Rx_Buf[3]+1)
+			case 0xAC: // 字符串接收
+				if (Owifi_String_len > Wifi_Rx_Buf[3] + 1)
 				{
 					Owifi_String[Wifi_Rx_Buf[3]] = Wifi_Rx_Buf[4];
 					Owifi_String[Wifi_Rx_Buf[3] + 1] = Wifi_Rx_Buf[5];
 				}
 				break;
-			case 0xAD://多类数值接收
+			case 0xAD: // 多类数值接收
 				if (OWifi_Number_len > Wifi_Rx_Buf[3])
 				{
-					OWifi_Number[Wifi_Rx_Buf[3]] =  Wifi_Rx_Buf[4];
+					OWifi_Number[Wifi_Rx_Buf[3]] = Wifi_Rx_Buf[4];
 				}
 				break;
-			case 0XAA: //接收烽火台数据1
+			case 0XAA: // 接收烽火台数据1
 				OWifi_alarm[0] = Wifi_Rx_Buf[3];
 				OWifi_alarm[1] = Wifi_Rx_Buf[4];
 				OWifi_alarm[2] = Wifi_Rx_Buf[5];
 
 				break;
-			case 0XAB: //接收烽火台数据2
+			case 0XAB: // 接收烽火台数据2
 				OWifi_alarm[3] = Wifi_Rx_Buf[3];
 				OWifi_alarm[4] = Wifi_Rx_Buf[4];
 				OWifi_alarm[5] = Wifi_Rx_Buf[5];
 				break;
 			default:
-				//Send_Debug_string2(".");
+				// Send_Debug_string2(".");
 				break;
 			}
 		}
@@ -526,7 +459,7 @@ void Operation_WiFi(void)
 		}*/
 		else
 		{
-			MasterCar_TaskReceiveThread(); //查看是否为其他线程(安卓向主车发送消息，以主车作为zigbee转发请求控制标志物)
+			MasterCar_TaskReceiveThread(); // 查看是否为其他线程(安卓向主车发送消息，以主车作为zigbee转发请求控制标志物)
 		}
 	}
 }
@@ -574,7 +507,7 @@ void Operation_WiFi_Master(uint8_t *buf)
 		case 0x06:
 			MasterCar_SmartRun(buf[3]); // 主车循迹
 			break;
-		case 0xA0: //启动主车
+		case 0xA0: // 启动主车
 			MasterCar_TaskRunThread(0x08);
 			break;
 		}
