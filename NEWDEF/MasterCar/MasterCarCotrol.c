@@ -807,14 +807,18 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 		switch (OFlag_SLAVEflag)
 		{
 		case 0x01:
+			OFlag_SLAVEflag = 0;
+			TaskBoard_TimeClose(); // 关闭倒计时检测
 			Send_Debug_string2("slave...");
 			task_wait(); //启动主车指令 taskID根据需求修改
-			OFlag_SLAVEflag = 0;
+			
 			break;
 		case 0x02:
+			OFlag_SLAVEflag = 0;
+			TaskBoard_TimeClose(); // 关闭倒计时检测
 			Send_Debug_string2("slave2...");
 			task_wait2(); //启动主车指令 taskID根据需求修改
-			OFlag_SLAVEflag = 0;
+			
 			break;
 		default:
 			break;
@@ -901,6 +905,7 @@ char alarmKey[] = {'1', '2', '3', '4', '5', '6'};
 
 int testp = 15;
 int testi;
+static char *slave_p = NULL; // 从车的坐标
 uint8_t *testarr;
 void MasterCar_TaskRunThread(unsigned char mode)
 {
@@ -1326,10 +1331,11 @@ void task_RFID(void)
 			{
 				Send_Debug_string2(path);
 				Send_Debug_string2(buf);
-				//发送给副车初始坐标
-				OFlag_SlaveSendZigbee( 0x06,  get_charToHEX(path[0])*16+get_charToHEX(path[1]),0,0);
-				delay_ms(200);
-				OFlag_SlaveSendZigbee( 0x06,  get_charToHEX(path[0])*16+get_charToHEX(path[1]),0,0);
+				
+				if (slave_p == NULL) // 若以及设置初始坐标 则不再使用读取坐标
+				{
+					slave_p = path;
+				}
 				//发送给副车自由路径
 				delay_ms(200);
 				OFlag_SlaveSendZigbee( 0x08,  get_charToHEX(buf[0])*16+get_charToHEX(buf[1]),  
@@ -1350,7 +1356,13 @@ void task_RFID(void)
 			}
 		}
 	}
-	
+	Send_Debug_string2(slave_p);
+
+	OFlag_SlaveSendZigbee(0x06, slave_p[0], slave_p[1], 0); // ASCII
+	delay_ms(200);
+	OFlag_SlaveSendZigbee(0x06, slave_p[0], slave_p[1], 0); // ASCII
+	delay_ms(200);
+	OFlag_SlaveSendZigbee(0x06, slave_p[0], slave_p[1], 0); // ASCII
 
 	MasterCar_BackMP(MasterCar_GoSpeed, 800);
 

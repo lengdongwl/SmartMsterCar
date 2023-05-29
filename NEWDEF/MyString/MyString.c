@@ -366,7 +366,7 @@ char* get_path_one(char *str,char *first,char *finally,char *buf)
 {
 	int len = strlen(str);
 	int i,j,flag=0;
-	static char r[2];
+	static char r[3]={0,0,'\0'};
 	if(str[0]!=first[0] || str[1]!=first[1]) //สืฮป first
 	{
 		return 0;
