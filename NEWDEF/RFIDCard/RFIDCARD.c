@@ -53,8 +53,8 @@ RFID控制块内容：
 #define MP_DX 1300                                     //通过特殊地形的码盘值
 uint8_t K_A[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // 默认A密钥
 uint8_t K_B[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // 默认B密钥
-uint8_t buffer_data[99];                               //RC_check_read数据缓存区
-uint8_t bufferCard[20][99];                            //多个卡片存放缓冲区
+static uint8_t buffer_data[99];                               //RC_check_read数据缓存区
+static uint8_t bufferCard[20][99];                            //多个卡片存放缓冲区
 void RC_Clean_buffer(void);
 void RC_Clean_bufferN(void);
 uint8_t TIM_PIDTrackFlag = 0;

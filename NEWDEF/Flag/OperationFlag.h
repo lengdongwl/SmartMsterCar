@@ -17,14 +17,17 @@
 #define zNum_CK_B 0x05      //Á¢Ìå³µ¿âB±êÖ¾Îï
 #define zNum_YY 0x06        //ÓïÒô²¥±¨±êÖ¾Îï
 #define zNum_alarm 0x07     //·é»ğÌ¨¾¯±¨Æ÷±êÖ¾Îï
+#define zNum_TFT_A 0x0B     //TFTAÏÔÊ¾±êÖ¾Îï
 #define zNum_TFT_B 0x08     //TFTBÏÔÊ¾±êÖ¾Îï
+#define zNum_TFT_C 0x12     //TFTCÏÔÊ¾±êÖ¾Îï
 #define zNum_light 0x09     //ÖÇÄÜÂ·µÆ±êÖ¾Îï
 #define zNum_WX 0x0A        //ÎŞÏß³äµç±êÖ¾Îï
-#define zNum_TFT_A 0x0B     //TFTAÏÔÊ¾±êÖ¾Îï
 #define zNum_ETC 0x0C       //ETCÏµÍ³±êÖ¾Îï
 #define zNum_CK_A 0x0D      //Á¢Ìå³µ¿âA±êÖ¾Îï
 #define zNum_JT_A 0x0E      //ÖÇÄÜ½»Í¨±êÖ¾ÎïA
 #define zNum_JT_B 0x0F      //ÖÇÄÜ½»Í¨±êÖ¾ÎïB
+#define zNum_JT_C 0x13      //ÖÇÄÜ½»Í¨±êÖ¾ÎïC
+#define zNum_JT_D 0x14      //ÖÇÄÜ½»Í¨±êÖ¾ÎïD
 #define zNum_DX 0x10        //ÌØÊâµØĞÎ±êÖ¾Îï
 #define zNum_LT 0x11        //Á¢ÌåÏÔÊ¾±êÖ¾Îï
 
@@ -62,8 +65,10 @@ void OFlag_DZ_show(uint8_t *str);                                        //µÀÕ¢Ï
 unsigned int OFlag_DZ_wait(uint8_t count, uint8_t *str);                 //´ò¿ªµÀÕ¢ÇÒµÈ´ıµÀÕ¢´¦ÓÚ´ò¿ª×´Ì¬
 unsigned int OFlag_DZ_status(uint8_t *status);                           //µÀÕ¢±êÖ¾Îï¿ØÖÆ µÀÕ¢×´Ì¬½âÎö
 
-void OFlag_WX_open(void); //ÎŞÏß³äµç±êÖ¾Îï¿ªÆô 10Ãëºó×Ô¶¯¹Ø±Õ
+void OFlag_WX(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3);//ÎŞÏß³äµç±êÖ¾Îï¿ØÖÆ
+void OFlag_WX_open(uint8_t *key); //ÎŞÏß³äµç±êÖ¾Îï¿ªÆô 10Ãëºó×Ô¶¯¹Ø±Õ
 void OFlag_WX_close(void);//ÎŞÏß³äµç±êÖ¾Îï¹Ø±Õ
+void OFlag_WX_change(uint8_t *key);//ÎŞÏß³äµç±êÖ¾ÎïĞŞ¸Äkey
 
 void OFlag_YY(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3); //ÓïÒô²¥±¨±êÖ¾Îï¿ØÖÆ
 void OFlag_YY_cmd(uint8_t cmd);                                          //ÓïÒô²¥±¨0.Ëæ»ú 1-7Ö¸¶¨±àºÅ²¥±¨
@@ -100,6 +105,7 @@ void OFlag_DX_carGo(unsigned int speed, unsigned int refMP);             //¹ı°×É
 void OFlag_YYupload(uint8_t num);                                        //¾ºÈüÆ½Ì¨Ö÷³µÏò×Ô¶¯ÆÀ·ÖÏµÍ³ÉÏ´«ÓïÒô±àºÅ
 
 void OFlag_SlaveRun(void);                                                            //Ö÷³µ·¢ËÍZigbeeÖ¸ÁîÆô¶¯¸±³µ
+void OFlag_SlaveRun2(uint8_t flag);                                                    //Ö÷³µ·¢ËÍZigbeeÖ¸ÁîÆô¶¯¸±³µ
 uint8_t OFlag_SlaveRun_wait(uint8_t count);                                           //´¦Àí¸±³µÇëÇó²¢µÈ´ı¸±³µÆô¶¯Ö÷³µ(ÓĞbugÔİÎ´Ê¹ÓÃ)
 uint8_t OFlag_SlaveRun_wait_flag(uint8_t count,uint8_t flag);
 void OFlag_SlaveSendZigbee(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3); //Ö÷³µ·¢ËÍZigbeeÖ¸Áîµ½¸±³µ

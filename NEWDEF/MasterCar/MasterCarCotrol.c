@@ -513,6 +513,7 @@ void MasterCar_BackEnter(unsigned int mp)
 
 /**
  * @description: 主车循迹运行 灭灯3个以上、全亮、全灭 停止循迹（寻卡循迹）用于十字路口存在白卡 注意接近了在使用 防止循迹灯误判
+ * 可以配合MasterCar_SmartRunMP();使用 防止十字路口被磨白造成误判
  * @param {*}
  * @return {*}
  */
@@ -681,12 +682,13 @@ void getStopGoMP(void)
 	Send_Debug_num2(MasterCar_GoMpValue2);
 	PID_Set_recovery();
 }
-
+#define Zigbee_Number_len 0xff+1
+static uint8_t Zigbee_receive_Number[Zigbee_Number_len];
 uint8_t Zigbee_receive_light = 0;
-uint8_t Zigbee_receive_alarm[7] = {'1', '2', '3', '4', '5', '6', '\0'}; //接收副车车牌数据
+uint8_t Zigbee_receive_alarm[7] = {'1', '2', '3', '4', '5', '6', '\0'}; //接收烽火台开启码
 uint8_t Zigbee_receive_CarPlate[7] = {'A', '9', '9', '9', '9', '9','\0'};	//接收副车车牌数据
-unsigned char Zigbee_receive_RFIDKey[6];								//接收RFID密钥
-uint8_t Wifi_receive_data[6] = {0, 0, 0, 0, 0, 0};						//wifi接收数据存放缓冲区
+uint8_t Zigbee_receive_RFIDKey[6];								//接收RFID密钥
+//uint8_t Wifi_receive_data[6] = {0, 0, 0, 0, 0, 0};						//wifi接收数据存放缓冲区
 /**
  * @description: 主车接收Wifi Zigbee处理线程
  * 在主车无操作下或与安卓端通信时，自动启用该线程
@@ -694,7 +696,7 @@ uint8_t Wifi_receive_data[6] = {0, 0, 0, 0, 0, 0};						//wifi接收数据存放缓冲区
  * @param {*}
  * @return {*}
  */
-int OFlag_SLAVEtask;;
+int OFlag_SLAVEtask;
 void MasterCar_TaskReceiveThread(void)
 {
 	if (OFlag_SLAVEflag && TaskBoard_TimeStatus() == 0) //等待副车防超时
@@ -872,7 +874,11 @@ void SlaveCar_TaskRunThread(unsigned char *data)
 		Send_Debug_string("MO5=");
 		Send_Debug_num(MO5);
 		Send_Debug_string("\n");*/
-
+	case 0xFE: // 接收副车发送的数值
+		if (Zigbee_Number_len > OFlag_GetCmd1(data))//防止数组越界
+		{
+			Zigbee_receive_Number[OFlag_GetCmd1(data)] = OFlag_GetCmd2(data);
+		}
 		break;
 	default:
 		break;
@@ -921,7 +927,7 @@ void MasterCar_TaskRunThread(unsigned char mode)
 		break;
 	case 0x02:
 		DebugKEY = 1;
-		task_ETC();
+		OFlag_WX_open("");
 		/*
 		if (OWiFi_TFT('A', 60)) //请求TFTA识别
 		{
@@ -950,7 +956,7 @@ void MasterCar_TaskRunThread(unsigned char mode)
 		break;
 	case 0x03:
 		DebugKEY = 1;
-		task_wait();
+		OFlag_WX_change("159");
 
 		//Send_Debug_num2(TaskBoard_BH());
 		/*
@@ -966,7 +972,7 @@ void MasterCar_TaskRunThread(unsigned char mode)
 	case 0x04:
 		//DebugKEY=1;
 		DebugKEY = 1;
-		task_test();
+		OFlag_WX_open("159");
 
 		//OFlag_alarm_change("123456");//烽火台修改开启码
 
@@ -1194,11 +1200,11 @@ void task_wait2(void)
 	
 	MasterCar_LeftMP(MasterCar_TrunSpeed, MasterCar_LeftMPV_45);
 	delay_ms(200);
-	OFlag_alarm_open("123456"); //发送开启码开启烽火台
+	OFlag_alarm_open(Zigbee_receive_alarm); // 发送开启码开启烽火台
 	delay_ms(200);
-	OFlag_alarm_open("123456"); //发送开启码开启烽火台
+	OFlag_alarm_open(Zigbee_receive_alarm); // 发送开启码开启烽火台
 	delay_ms(200);
-	OFlag_alarm_open("123456"); //发送开启码开启烽火台
+	OFlag_alarm_open(Zigbee_receive_alarm); // 发送开启码开启烽火台
 	delay_ms(200);
 	MasterCar_RightMP(MasterCar_TrunSpeed, MasterCar_RightMPV_45);
 
@@ -1214,9 +1220,9 @@ void task_wait2(void)
 	delay_ms(200);
 	OFlag_LED_time(0);
 
-	OFlag_WX_open();
+	OFlag_WX_open("");
 	delay_ms(200);
-	OFlag_WX_open();
+	OFlag_WX_open("");
 
 	while(1);
 
@@ -1319,7 +1325,7 @@ void task_waitWifi(void)
 void task_RFID(void)
 {
 	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-	char *path,buf[50];
+	static char *path,buf[50];
 	RC_Card_checkRangeReadPlus2(0, 2250 * 2, RC_Get_address(2, 2), K_A, 2, 1); //在指定距离内读卡循迹灯版
 
 	for ( i = 0; i < 3; i++)
@@ -1375,11 +1381,11 @@ void task_RFID(void)
 }
 
 /*
-    //直行右转直接过路障
-    MasterCar_SmartRun2(MasterCar_GoSpeed);//卡在十字路口用这个 否则用MasterCar_SmartRun(MasterCar_GoSpeed);
-    MasterCar_SmartRunMP(MasterCar_GoSpeed,360);//特殊设置值
-    MasterCar_Right(MasterCar_TrunSpeed,1);
-    MasterCar_SmartRun2(MasterCar_GoSpeed);
-    MasterCar_BackMP(MasterCar_GoSpeed,500);
-    OFlag_DX_carGo(36,1250);//过路障
- */
+?? ?? //直行右转直接过路障
+?? ?? MasterCar_SmartRun2(MasterCar_GoSpeed);//卡在十字路口用这个 否则用MasterCar_SmartRun(MasterCar_GoSpeed);
+?? ?? MasterCar_SmartRunMP(MasterCar_GoSpeed,360);//特殊设置值
+?? ?? MasterCar_Right(MasterCar_TrunSpeed,1);
+?? ?? MasterCar_SmartRun2(MasterCar_GoSpeed);
+?? ?? MasterCar_BackMP(MasterCar_GoSpeed,500);
+?? ?? OFlag_DX_carGo(36,1250);//过路障
+??*/

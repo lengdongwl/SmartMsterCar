@@ -55,10 +55,10 @@ uint8_t LED_cmd[8] = {0x55, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};      //LE
 uint8_t DZ_cmd[8] = {0x55, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};       //道闸标志物控制指令与回传结构
 uint8_t WX_cmd[8] = {0x55, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};       //无线充电标志物
 uint8_t YY_cmd[8] = {0x55, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};       //语音播报标志物
-uint8_t TFT_cmd_A[8] = {0x55, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};    //智能TFT显示标志物A
-uint8_t TFT_cmd_B[8] = {0x55, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};    //智能TFT显示标志物B
-uint8_t JT_cmd_A[8] = {0x55, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //智能交通灯标志物A
-uint8_t JT_cmd_B[8] = {0x55, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //智能交通灯标志物B
+uint8_t TFT_cmd[8] = {0x55, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};    //智能TFT显示标志物A
+//uint8_t TFT_cmd_B[8] = {0x55, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};    //智能TFT显示标志物B
+uint8_t JT_cmd[8] = {0x55, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //智能交通灯标志物A
+//uint8_t JT_cmd_B[8] = {0x55, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //智能交通灯标志物B
 uint8_t CK_cmd_A[8] = {0x55, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //立体车库标志物A
 uint8_t CK_cmd_B[8] = {0x55, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};     //立体车库标志物B
 uint8_t ETC_cmd[8] = {0x55, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00, 0xBB};      //ETC系统标志物控制与回传
@@ -754,23 +754,52 @@ unsigned int OFlag_DZ_wait(uint8_t count, uint8_t *str)
     return r;
 }
 
+
 /**
- * @description: 无线充电标志物开启 10秒后自动关闭
- * @param {*}
+ * @description:无线充电标志物控制
+ * @param {uint8_t} cmd 主指令 具体说明查阅智能嵌入式实训系统通信协议
+ * @param {uint8_t} fcmd1 副指令x
+ * @param {uint8_t} fcmd2
+ * @param {uint8_t} fcmd3
  * @return {*}
  */
-void OFlag_WX_open(void)
+void OFlag_WX(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3)
 {
     uint8_t dt[8];
     dt[0] = WX_cmd[0];                                 //帧头1
     dt[1] = WX_cmd[1];                                 //帧头2
-    dt[2] = 0x01;                                      //主指令
-    dt[3] = 0x01;                                      //副指令1
-    dt[4] = 0x00;                                      //副指令2
-    dt[5] = 0x00;                                      //副指令3
+    dt[2] = cmd;                                       //主指令
+    dt[3] = fcmd1;                                     //副指令1
+    dt[4] = fcmd2;                                     //副指令2
+    dt[5] = fcmd3;                                     //副指令3
     dt[6] = calc_CheckSum(dt[2], dt[3], dt[4], dt[5]); //校验和
     dt[7] = WX_cmd[7];                                 //帧尾
     Agreement_Send(Agreement_mode_Zigbee, dt);
+}
+
+/**
+ * @description: 无线充电标志物开启 10秒后自动关闭
+0x01 0xXX 0xXX 0xXX 智能无线充电开启码开启
+0x02 0x02 0x00 0x00 关闭智能无线充电功能
+0x03 0xXX 0xXX 0xXX 修改智能无线充电开启码
+ * @param {*}
+ * @return {*}
+ */
+void OFlag_WX_open(uint8_t *key)
+{
+    
+#if 0 //v5.1旧版
+		OFlag_WX(0x01,0x01,0x00,0x00);
+#else 
+		if(*key != NULL)
+		{
+			OFlag_WX(0x01, key[0], key[1], key[2]);
+	  }else
+		{
+			//默认key:0xA1,0x23,0xB4
+			OFlag_WX(0x01, 0xA1, 0x23, 0xB4);
+		}
+#endif
 }
 
 /**
@@ -780,16 +809,17 @@ void OFlag_WX_open(void)
  */
 void OFlag_WX_close(void)
 {
-    uint8_t dt[8];
-    dt[0] = WX_cmd[0];                                 //帧头1
-    dt[1] = WX_cmd[1];                                 //帧头2
-    dt[2] = 0x01;                                      //主指令
-    dt[3] = 0x02;                                      //副指令1
-    dt[4] = 0x00;                                      //副指令2
-    dt[5] = 0x00;                                      //副指令3
-    dt[6] = calc_CheckSum(dt[2], dt[3], dt[4], dt[5]); //校验和
-    dt[7] = WX_cmd[7];                                 //帧尾
-    Agreement_Send(Agreement_mode_Zigbee, dt);
+    OFlag_WX(0x02, 0x02, 0x00, 0x00);
+}
+
+/**
+ * @description: 无线充电标志物修改key
+ * @param {*}
+ * @return {*}
+ */
+void OFlag_WX_change(uint8_t *key)
+{
+    OFlag_WX(0x03, key[0], key[1], key[2]);
 }
 
 /**
@@ -962,7 +992,7 @@ uint8_t OFlag_YY_play(uint8_t *str,uint8_t encode)
 
 /**
  * @description: TFT标志物控制
- * @param {uint8_t} mode 'A'.选择TFTA 'B'.选择TFTB
+ * @param {uint8_t} mode 'A'.选择TFTA 'B'.选择TFTB 'C'.选择TFTB
  * @param {uint8_t} cmd 主指令 具体说明查阅智能嵌入式实训系统通信协议
  * @param {uint8_t} fcmd1 副指令x
  * @param {uint8_t} fcmd2
@@ -972,14 +1002,27 @@ uint8_t OFlag_YY_play(uint8_t *str,uint8_t encode)
 void OFlag_TFT(uint8_t mode, uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3)
 {
     uint8_t dt[8];
-    dt[0] = TFT_cmd_A[0];                                           //帧头1
-    dt[1] = mode == 1 || mode == 'A' ? TFT_cmd_A[1] : TFT_cmd_B[1]; //帧头2
+    dt[0] = TFT_cmd[0];                                           //帧头1
     dt[2] = cmd;                                                    //主指令
     dt[3] = fcmd1;                                                  //副指令1
     dt[4] = fcmd2;                                                  //副指令2
     dt[5] = fcmd3;                                                  //副指令3
     dt[6] = calc_CheckSum(dt[2], dt[3], dt[4], dt[5]);              //校验和
-    dt[7] = TFT_cmd_A[7];                                           //帧尾
+    dt[7] = TFT_cmd[7];                                           //帧尾
+	  switch (mode)////帧头2
+    {
+    case 'A':
+        dt[1] = zNum_TFT_A;
+        break;
+    case 'B':
+        dt[1] = zNum_TFT_B;
+        break;
+    case 'C':
+        dt[1] = zNum_TFT_C;
+        break;
+    default:
+        break;
+    }
     Agreement_Send(Agreement_mode_Zigbee, dt);
 }
 /**
@@ -1039,14 +1082,30 @@ void OFlag_TFT_jl(uint8_t mode, uint32_t data)
 void OFlag_JT(uint8_t mode, uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3)
 {
     uint8_t dt[8];
-    dt[0] = JT_cmd_A[0];                               //帧头1
-    dt[1] = mode == 1 ? JT_cmd_A[1] : JT_cmd_B[1];     //帧头2
+    dt[0] = JT_cmd[0];                               //帧头1
+    //dt[1] = mode == 1 ? JT_cmd[1] : JT_cmd[1];     //帧头2
     dt[2] = cmd;                                       //主指令
     dt[3] = fcmd1;                                     //副指令1
     dt[4] = fcmd2;                                     //副指令2
     dt[5] = fcmd3;                                     //副指令3
     dt[6] = calc_CheckSum(dt[2], dt[3], dt[4], dt[5]); //校验和
-    dt[7] = JT_cmd_A[7];                               //帧尾
+    dt[7] = JT_cmd[7];                               //帧尾
+	  switch (mode)
+    {
+    case 'A':
+        dt[1] = zNum_JT_A;
+        break;
+    case 'B':
+        dt[1] = zNum_JT_B;
+        break;
+    case 'C':
+        dt[1] = zNum_JT_C;
+        break;
+		case 'D':
+				dt[1] = zNum_JT_D;
+    default:
+        break;
+    }
     Agreement_Send(Agreement_mode_Zigbee, dt);
 }
 
@@ -1071,15 +1130,32 @@ void OFlag_JT_cmd(uint8_t mode, uint8_t sb)
 /**
  * @description: 智能交通灯标志物控制 状态解析
  * @param {uint8_t*} status 数据帧
- * @param {uint8_t} mode 1.智能交通灯标志物A 0.智能交通灯标志物B 
+ * @param {uint8_t} mode 'A'.智能交通灯标志物A 'B'.智能交通灯标志物B 'C'.智能交通灯标志物C
  * @return {*} 0.错误 1.成功 2.失败
  */
 unsigned int OFlag_JT_status(uint8_t *status, uint8_t mode)
 {
     uint8_t _mode;
 
-    _mode = mode == 1 ? JT_cmd_A[1] : JT_cmd_B[1]; //智能交通灯标志物A或智能交通灯标志物B
-    if (status[0] == JT_cmd_A[0] && status[1] == _mode && status[7] == JT_cmd_A[7])
+    //_mode = mode == 1 ? JT_cmd_A[1] : JT_cmd_B[1]; //智能交通灯标志物A或智能交通灯标志物B
+		switch (mode)
+    {
+    case 'A':
+        _mode = zNum_JT_A;
+        break;
+    case 'B':
+        _mode = zNum_JT_B;
+        break;
+    case 'C':
+        _mode = zNum_JT_C;
+        break;
+		case 'D':
+				_mode = zNum_JT_D;
+    default:
+        break;
+    }
+	
+    if (status[0] == JT_cmd[0] && status[1] == _mode && status[7] == JT_cmd[7])
     {
         if (status[2] == 0x01) //主指令
         {
@@ -1542,6 +1618,15 @@ void OFlag_SlaveRun(void)
     OFlag_Zigbee(0x02, 0, 0, 0, 0);
     delay_ms(300);
     OFlag_Zigbee(0x02, 0, 0, 0, 0);
+}
+
+void OFlag_SlaveRun2(uint8_t flag)
+{
+    OFlag_Zigbee(0x02, 0, flag, 0, 0);
+    delay_ms(300);
+    OFlag_Zigbee(0x02, 0, flag, 0, 0);
+    delay_ms(300);
+    OFlag_Zigbee(0x02, 0, flag, 0, 0);
 }
 
 /**
