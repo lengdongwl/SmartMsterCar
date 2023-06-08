@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OUTPUT\CarV1.0]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OUTPUT\CarV1.0</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Jun 05 10:23:34 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jun 08 10:33:45 2023
 <BR><P>
 <H3>Maximum Stack Usage =        360 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1808,11 +1808,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MasterCar_TaskReceiveThread
 </UL>
 
-<P><STRONG><a name="[134]"></a>Operation_WiFi</STRONG> (Thumb, 512 bytes, Stack size 8 bytes, operationwifi.o(i.Operation_WiFi))
+<P><STRONG><a name="[134]"></a>Operation_WiFi</STRONG> (Thumb, 570 bytes, Stack size 8 bytes, operationwifi.o(i.Operation_WiFi))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = Operation_WiFi &rArr; MasterCar_TaskReceiveThread &rArr; task_ETC &rArr; task_RFID &rArr; RC_Card_checkRangeReadPlus2 &rArr; MasterCar_findCar3 &rArr; RC_check_read &rArr; PcdAuthState &rArr; PcdComMF522 &rArr; SetBitMask &rArr; WriteRawRC &rArr; WriteRawRC_HDL &rArr; Rece_data
 </UL>
-<BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MasterCar_TaskReceiveThread
-<LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Debug_string2
+<BR>[Calls]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Debug_string
+<LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MasterCar_TaskReceiveThread
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM5_IRQHandler
 </UL>
@@ -2308,6 +2308,7 @@ Global Symbols
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[10b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Debug_string2
 <LI><a href="#[159]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Debug_num2
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Operation_WiFi
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;task_first
 </UL>
 
@@ -2318,7 +2319,6 @@ Global Symbols
 <LI><a href="#[15a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_InfoData_To_Fifo
 </UL>
 <BR>[Called By]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MasterCar_TaskReceiveThread
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Operation_WiFi
 <LI><a href="#[12a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OFlag_SlaveRun_wait_flag
 <LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OFlag_SlaveRun_wait
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OFlag_ETC_wait

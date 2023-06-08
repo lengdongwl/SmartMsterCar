@@ -14,8 +14,8 @@
 #include "canP_HostCom.h"
 #include "MasterCarCotrol.h"
 char OWifi_Number[OWifi_Number_len]; // 接收数值
-char Owifi_String[Owifi_String_len]; // 接收字符串数据
-
+char Owifi_String[Owifi_StringID_len][Owifi_String_len]; // 接收字符串数据
+static uint8_t Owifi_StringIndex = 0;  //标志位
 uint8_t OWifi_CalcCode[7] = {0, 0, 0, 0, 0, 0, '\0'}; // 接收压缩算法数据
 uint8_t OWifi_CRCode[7] = {0, 0, 0, 0, 0, 0};		  // 接收二维码
 uint8_t OWifi_TFTCP[7] = {0, 0, 0, 0, 0, 0, '\0'};	  // 接收TFT车牌
@@ -357,16 +357,17 @@ void Operation_WiFi(void)
 				Wifi_request = 1;														   // 确认
 				if (Wifi_Rx_Buf[3] == 1 && (Wifi_Rx_Buf[4] == 1) && (Wifi_Rx_Buf[5] == 1)) // 识别结束
 				{
-					Send_Debug_string2("*");
+					Send_Debug_string("*");
 					Wifi_Rx_flag = 0;
 					OWiFi_END = 0;
 				}
 				else if (Wifi_Rx_Buf[3] == 0 && (Wifi_Rx_Buf[4] == 0) && (Wifi_Rx_Buf[5] == 0)) // 识别开始
 				{
+					/*
 					for (i = 0; i < 99; i++) // 清除字符串缓存数据
 					{
 						Owifi_String[i] = 0;
-					}
+					}*/
 				}
 				break;
 			case 0xA2: // 二维码A
@@ -419,11 +420,23 @@ void Operation_WiFi(void)
 				break;
 			case 0xA9: // 红绿灯识别结果
 				OWifi_JT = Wifi_Rx_Buf[3];
+			case 0xCC: // 字符串ID
+				if (Owifi_StringID_len > Wifi_Rx_Buf[3] + 1)
+				{
+					Owifi_StringIndex = Wifi_Rx_Buf[3];
+					// 清空缓存
+					int i;
+					for (i = 0; i < Owifi_String_len; i++)
+					{
+						Owifi_String[Owifi_StringIndex][i] = 0;
+					}
+				}
+				break;
 			case 0xAC: // 字符串接收
 				if (Owifi_String_len > Wifi_Rx_Buf[3] + 1)
 				{
-					Owifi_String[Wifi_Rx_Buf[3]] = Wifi_Rx_Buf[4];
-					Owifi_String[Wifi_Rx_Buf[3] + 1] = Wifi_Rx_Buf[5];
+					Owifi_String[Owifi_StringIndex][Wifi_Rx_Buf[3]] = Wifi_Rx_Buf[4];
+					Owifi_String[Owifi_StringIndex][Wifi_Rx_Buf[3] + 1] = Wifi_Rx_Buf[5];
 				}
 				break;
 			case 0xAD: // 多类数值接收

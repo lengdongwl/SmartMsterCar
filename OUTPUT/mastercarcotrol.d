@@ -1,4 +1,7 @@
 ..\output\mastercarcotrol.o: ..\NEWDEF\MasterCar\MasterCarCotrol.c
+..\output\mastercarcotrol.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+..\output\mastercarcotrol.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\mastercarcotrol.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\output\mastercarcotrol.o: ..\SYSTEM\sys\sys.h
 ..\output\mastercarcotrol.o: ..\CMSIS\stm32f4xx.h
 ..\output\mastercarcotrol.o: ..\CMSIS\core_cm4.h
@@ -40,7 +43,6 @@
 ..\output\mastercarcotrol.o: ..\HARDWARE\CAN\CanP_HostCom.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\CAN\can_user.h
 ..\output\mastercarcotrol.o: ..\SYSTEM\delay\delay.h
-..\output\mastercarcotrol.o: ..\HARDWARE\Drive\drive.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\Task_Board\ultrasonic.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\NEW_Task_board\NEW_Task_board.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\Task_Board\bh1750.h
@@ -57,8 +59,5 @@
 ..\output\mastercarcotrol.o: ..\NEWDEF\WiFi\OperationWiFi.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\CAN\can_user.h
 ..\output\mastercarcotrol.o: ..\NEWDEF\MyString\MyString.h
-..\output\mastercarcotrol.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-..\output\mastercarcotrol.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\Core_Board\cba.h
 ..\output\mastercarcotrol.o: ..\HARDWARE\Task_Board\bkrc_voice.h
-..\output\mastercarcotrol.o: ..\HARDWARE\crc\CRC.h

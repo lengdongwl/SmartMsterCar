@@ -11,9 +11,10 @@
 
 #define OWifi_Number_len 0xff+1
 #define Owifi_String_len 99
+#define Owifi_StringID_len 10
 
 extern char OWifi_Number[OWifi_Number_len];  //接收多类数值
-extern char Owifi_String[Owifi_String_len];  //接收字符串数据
+extern char Owifi_String[Owifi_StringID_len][Owifi_String_len];  //接收字符串数据
 
 extern uint8_t OWiFi_END;         //WIFI完成接收结束标志
 extern uint8_t OWifi_CRCode[7];   //接收二维码

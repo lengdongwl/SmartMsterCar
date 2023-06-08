@@ -7,38 +7,36 @@
  * 
  * 短线1800 长线2250
  */
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "sys.h"
 #include "MasterCarCotrol.h"
-#include "power_check.h"
-#include "CanP_HostCom.h"
+#include "power_check.h"//电池检测
+#include "CanP_HostCom.h" //CAN主机通信
 #include "can_user.h" //Zigbee_Rx_flag
-#include "delay.h"
-#include "drive.h"
-#include "ultrasonic.h"
+#include "delay.h" //延迟
+#include "ultrasonic.h" //超声波测距
 #include "bh1750.h"		   //读取光照度
 #include "PID.h"		   //PID循迹
 #include "Timer.h"		   //定时器
 #include "roadway_check.h" //码盘同步
 #include "infrared.h"	   //红外
-//#include "Card.h"		   //RFID例程
-//#include "rc522.h"		   //RFID
-#include "RFIDCARD.h"
-#include "OperationFlag.h"
+#include "RFIDCARD.h" //RFID卡驱动
+#include "OperationFlag.h" //标志物通信操作库
 #include "zigbee.h"	 //wifi接收数据
 #include "syn7318.h" //syn7318语音识别
-#include "OperationWiFi.h"
-#include "MyString.h"
+#include "OperationWiFi.h" //WiFi通信操作库
+#include "MyString.h" //字符算法
 #include "TaskBoard.h" //任务版
-#include "math.h"
-#include "stdio.h"
 #include "cba.h"		//蜂鸣器
 #include "bkrc_voice.h" //小创语音
-#include "CRC.h"
+
 
 uint8_t debugbuf[99]; //缓存
 uint8_t DebugKEY = 0; //0.关闭DebugKEY 1.开启
 
-//unsigned char _Flag_Task = 0;  //任务标志
 unsigned int MasterCar_GoSpeed = 40;   //主车默认循迹运行速度
 unsigned int MasterCar_TrunSpeed = 90; //主车转弯速度
 #define MasterCar_GoMpValue 340		   //移动时拐弯前的前进码盘值
