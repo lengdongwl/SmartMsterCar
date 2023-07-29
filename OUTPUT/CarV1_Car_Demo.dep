@@ -594,7 +594,7 @@ I (..\SYSTEM\delay\delay.h)(0x5BBAFA81)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (..\HARDWARE\Core_Board\cba.h)(0x6179EC6B)
 I (..\SYSTEM\sys\sys.h)(0x617906DC)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (..\HARDWARE\CAN\CanP_HostCom.h)(0x634412E3)
 I (..\HARDWARE\Task_Board\syn7318.h)(0x619B89CA)
 F (..\HARDWARE\Task_Board\bkrc_voice.c)(0x6440F8E6)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\bkrc_voice.o --omf_browse ..\output\bkrc_voice.crf --depend ..\output\bkrc_voice.d)
@@ -637,7 +637,7 @@ I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x581CC67C)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x581CC67C)
 I (..\SYSTEM\delay\delay.h)(0x5BBAFA81)
 I (..\HARDWARE\CAN\canp_hostcom.h)(0x634412E3)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (d:\Keil_v5\ARM\ARMCC\include\math.h)(0x599ECD2E)
 F (..\SYSTEM\sys\sys.c)(0x617915FF)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\sys.o --omf_browse ..\output\sys.crf --depend ..\output\sys.d)
 I (..\SYSTEM\sys\sys.h)(0x617906DC)
@@ -1399,7 +1399,7 @@ I (..\HARDWARE\CAN\can_drv.h)(0x6143013E)
 I (..\HARDWARE\CAN\fifo_drv.h)(0x6143013E)
 I (..\HARDWARE\CAN\can_user.h)(0x615BAF9B)
 I (..\SYSTEM\timer\Timer.h)(0x6347BF5D)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (..\HARDWARE\CAN\CanP_HostCom.h)(0x634412E3)
 I (..\NEWDEF\WiFi\OperationWiFi.h)(0x6481276B)
 I (..\NEWDEF\MasterCar\MasterCarCotrol.h)(0x6449D8A8)
@@ -1792,7 +1792,7 @@ I (..\HARDWARE\Zigbee\Zigbee.h)(0x616EB0C6)
 I (..\HARDWARE\NEW_SYN\new_syn.h)(0x6168DB1B)
 I (..\HARDWARE\RNG\rng.h)(0x5710F36F)
 I (..\HARDWARE\Card\Card.h)(0x60646C6A)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 F (..\HARDWARE\Card\Card.c)(0x61B066F4)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\card.o --omf_browse ..\output\card.crf --depend ..\output\card.d)
 I (..\HARDWARE\Card\Card.h)(0x60646C6A)
 I (..\SYSTEM\sys\sys.h)(0x617906DC)
@@ -1842,7 +1842,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 F (..\HARDWARE\crc\CRC.C)(0x60587C40)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\crc.o --omf_browse ..\output\crc.crf --depend ..\output\crc.d)
 I (..\HARDWARE\crc\CRC.h)(0x60587C17)
 F (..\TXT\TXT.txt)(0x617BA8CE)()
-F (..\NEWDEF\MasterCar\MasterCarCotrol.c)(0x64812678)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\mastercarcotrol.o --omf_browse ..\output\mastercarcotrol.crf --depend ..\output\mastercarcotrol.d)
+F (..\NEWDEF\MasterCar\MasterCarCotrol.c)(0x64C37A55)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\mastercarcotrol.o --omf_browse ..\output\mastercarcotrol.crf --depend ..\output\mastercarcotrol.d)
 I (d:\Keil_v5\ARM\ARMCC\include\math.h)(0x599ECD2E)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
@@ -1895,7 +1895,7 @@ I (..\SYSTEM\timer\Timer.h)(0x6347BF5D)
 I (..\my_lib\roadway_check.h)(0x634F6571)
 I (..\HARDWARE\Task_Board\infrared.h)(0x619EE4C6)
 I (..\NEWDEF\RFIDCard\RFIDCARD.h)(0x64102103)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (..\HARDWARE\Zigbee\zigbee.h)(0x616EB0C6)
 I (..\HARDWARE\Task_Board\syn7318.h)(0x619B89CA)
 I (..\NEWDEF\WiFi\OperationWiFi.h)(0x6481276B)
@@ -1939,8 +1939,8 @@ I (..\FWLIB\inc\stm32f4xx_can.h)(0x5821F052)
 I (..\FWLIB\inc\stm32f4xx_dac.h)(0x581CC67C)
 I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x581CC67C)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x581CC67C)
-F (..\NEWDEF\Flag\OperationFlag.c)(0x647D4721)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\operationflag.o --omf_browse ..\output\operationflag.crf --depend ..\output\operationflag.d)
-I (..\NEWDEF\Flag\OperationFlag.H)(0x647D46FB)
+F (..\NEWDEF\Flag\OperationFlag.c)(0x64C5070C)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\operationflag.o --omf_browse ..\output\operationflag.crf --depend ..\output\operationflag.d)
+I (..\NEWDEF\Flag\OperationFlag.H)(0x64C506BC)
 I (..\HARDWARE\CAN\CanP_HostCom.h)(0x634412E3)
 I (..\CMSIS\stm32f4xx.h)(0x582097AC)
 I (..\CMSIS\core_cm4.h)(0x581CC64E)
@@ -2030,7 +2030,7 @@ I (..\SYSTEM\delay\delay.h)(0x5BBAFA81)
 I (..\HARDWARE\CAN\canp_hostcom.h)(0x634412E3)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (..\my_lib\roadway_check.h)(0x634F6571)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (d:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x599ECD2A)
 F (..\NEWDEF\WiFi\OperationWiFi.c)(0x64813E07)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\operationwifi.o --omf_browse ..\output\operationwifi.crf --depend ..\output\operationwifi.d)
 I (..\NEWDEF\WiFi\OperationWiFi.h)(0x6481276B)
@@ -2069,7 +2069,7 @@ I (..\FWLIB\inc\stm32f4xx_can.h)(0x5821F052)
 I (..\FWLIB\inc\stm32f4xx_dac.h)(0x581CC67C)
 I (..\FWLIB\inc\stm32f4xx_dcmi.h)(0x581CC67C)
 I (..\FWLIB\inc\stm32f4xx_fsmc.h)(0x581CC67C)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 I (..\HARDWARE\CAN\CanP_HostCom.h)(0x634412E3)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (..\SYSTEM\delay\delay.h)(0x5BBAFA81)
@@ -2160,5 +2160,5 @@ I (..\HARDWARE\Task_Board\infrared.h)(0x619EE4C6)
 I (..\HARDWARE\Task_Board\bh1750.h)(0x61823111)
 I (..\HARDWARE\Task_Board\syn7318.h)(0x619B89CA)
 I (..\HARDWARE\CAN\canp_hostcom.h)(0x634412E3)
-I (..\NEWDEF\Flag\OperationFlag.h)(0x647D46FB)
+I (..\NEWDEF\Flag\OperationFlag.h)(0x64C506BC)
 F (..\NEWDEF\test.c)(0x6459FBD2)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\CMSIS -I ..\FWLIB\inc -I ..\USER -I ..\HARDWARE\Task_Board -I ..\SYSTEM\delay -I ..\SYSTEM\sys -I ..\HARDWARE\Core_Board -I ..\HARDWARE\CAN -I ..\my_lib -I ..\SYSTEM\timer -I ..\HARDWARE\Drive -I ..\HARDWARE\Function -I ..\HARDWARE\Zigbee -I ..\HARDWARE\NEW_Task_board -I ..\Voluntarily -I ..\HARDWARE\NEW_SYN -I ..\HARDWARE\RNG -I ..\HARDWARE\Card -I ..\HARDWARE\crc -I ..\NEWDEF\MasterCar -I ..\NEWDEF\PID -I ..\NEWDEF\Flag -I ..\NEWDEF\RFIDCard -I ..\NEWDEF\WiFi -I ..\NEWDEF\MyString -I ..\NEWDEF\TaskBoard-I.\RTE\_Car_Demo-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Device\Include-D__UVISION_VERSION="527" -DSTM32F407xx -DUSE_STDPERIPH_DRIVER -DSTM32F40_41xxx-o ..\output\test.o --omf_browse ..\output\test.crf --depend ..\output\test.d)

@@ -21,17 +21,32 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.5.0
 Dialog DLL:      TCM.DLL V1.36.1.0
  
 <h2>Project:</h2>
-C:\Users\lengd\OneDrive\单片机\testcar\CarV9.9.9\USER\CarV1.uvprojx
+c:\Users\lengd\OneDrive\单片机\testcar\CarV9.9.9\USER\CarV1.uvprojx
 Project File Date:  05/18/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Car_Demo'
-compiling OperationWiFi.c...
+compiling OperationFlag.c...
+..\NEWDEF\Flag\OperationFlag.c(185): warning:  #223-D: function "Get_Bh_Value" declared implicitly
+      Get_Bh_Value(); //必须读一次 否则影响结果
+..\NEWDEF\Flag\OperationFlag.c(527): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+      uint16_t p_len = strlen(str); // 文本长度
+..\NEWDEF\Flag\OperationFlag.c(992): warning:  #940-D: missing return statement at end of non-void function "OFlag_YY_play" 
+  }
+..\NEWDEF\Flag\OperationFlag.c(1260): warning:  #550-D: variable "r"  was set but never used
+      uint8_t r = 1, t = 0;
+..\NEWDEF\Flag\OperationFlag.c(1609): warning:  #177-D: variable "_mp"  was declared but never referenced
+      int _mp;
+..\NEWDEF\Flag\OperationFlag.c(1691): warning:  #940-D: missing return statement at end of non-void function "OFlag_SlaveRun_wait" 
+  }
+..\NEWDEF\Flag\OperationFlag.c(1711): warning:  #940-D: missing return statement at end of non-void function "OFlag_SlaveRun_wait_flag" 
+  }
+..\NEWDEF\Flag\OperationFlag.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=29036 RO-data=696 RW-data=1856 ZI-data=6176  
+Program Size: Code=26016 RO-data=696 RW-data=1828 ZI-data=4084  
 FromELF: creating hex file...
-"..\OUTPUT\CarV1.0" - 0 Error(s), 0 Warning(s).
+"..\OUTPUT\CarV1.0" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 

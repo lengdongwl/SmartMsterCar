@@ -1,25 +1,23 @@
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Car_Demo'
-compiling MasterCarCotrol.c...
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1124): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  	Send_Debug_string2(Zigbee_receive_CarPlate);
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1324): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
-  			path = get_path_one(RC_Get_bufferN(i),"B4","B6",buf);
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "carId"  was declared but never referenced
-  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "carOK"  was declared but never referenced
-  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "S"  was declared but never referenced
-  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "B"  was declared but never referenced
-  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1316): warning:  #177-D: variable "card_flag"  was declared but never referenced
-  	int i = 0, carId = 0, carOK = 0, S = 5, B = 3, card_flag = 0;
-..\NEWDEF\MasterCar\MasterCarCotrol.c(1373): warning:  #1-D: last line of file ends without a newline
-  ?0?2*/
-..\NEWDEF\MasterCar\MasterCarCotrol.c: 8 warnings, 0 errors
+compiling OperationFlag.c...
+..\NEWDEF\Flag\OperationFlag.c(185): warning:  #223-D: function "Get_Bh_Value" declared implicitly
+      Get_Bh_Value(); //必须读一次 否则影响结果
+..\NEWDEF\Flag\OperationFlag.c(527): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+      uint16_t p_len = strlen(str); // 文本长度
+..\NEWDEF\Flag\OperationFlag.c(992): warning:  #940-D: missing return statement at end of non-void function "OFlag_YY_play" 
+  }
+..\NEWDEF\Flag\OperationFlag.c(1260): warning:  #550-D: variable "r"  was set but never used
+      uint8_t r = 1, t = 0;
+..\NEWDEF\Flag\OperationFlag.c(1609): warning:  #177-D: variable "_mp"  was declared but never referenced
+      int _mp;
+..\NEWDEF\Flag\OperationFlag.c(1691): warning:  #940-D: missing return statement at end of non-void function "OFlag_SlaveRun_wait" 
+  }
+..\NEWDEF\Flag\OperationFlag.c(1711): warning:  #940-D: missing return statement at end of non-void function "OFlag_SlaveRun_wait_flag" 
+  }
+..\NEWDEF\Flag\OperationFlag.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=28948 RO-data=696 RW-data=1868 ZI-data=4564  
+Program Size: Code=26016 RO-data=696 RW-data=1828 ZI-data=4084  
 FromELF: creating hex file...
-"..\OUTPUT\CarV1.0" - 0 Error(s), 8 Warning(s).
-Build Time Elapsed:  00:00:03
+"..\OUTPUT\CarV1.0" - 0 Error(s), 7 Warning(s).
+Build Time Elapsed:  00:00:02

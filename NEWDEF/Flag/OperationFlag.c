@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2023-04-27 10:03:07
+ * @LastEditTime: 2023-07-29 20:33:16
  * @version: 2021.05.20协议
  */
 #include "OperationFlag.H"
@@ -18,6 +18,7 @@
 #define Agreement_mode_infrared 1
 #define Agreement_mode_Zigbee 2
 uint8_t ZIGBEE_TIMRX_flag = 0;
+uint8_t ETC_flag = 0;           //ETC标志物开启
 uint8_t DZ_flag = 0;            //道闸标志物开启
 uint8_t CK_flag = 0;            //车库标志物下降完毕
 uint8_t DX_flag = 0;            //特殊地形方向
@@ -1456,6 +1457,46 @@ void OFlag_ETC_wait(void)
     delay_ms(300);
 }
 
+/** 未测试！！！！！
+ * @description: 主车边前进边检测ETC是否回传 到达码盘值无论是否收到都退出本函数
+ * @param {uint32_t} mp 码盘
+ * @return {*}
+ */
+uint8_t OFlag_ETC_runWait(uint32_t mp)
+{
+    Send_Debug_string2("wait ETC2");
+    ETC_flag = 0;
+    Zigbee_Rx_flag=0;
+  
+    TIM_Cmd(TIM4, ENABLE);                      //开启接收
+    while (1)
+    {
+        if (mp<=0)break;
+        
+        if(ETC_flag)//若接收到信号则快速通过
+        {
+            MasterCar_SmartRunMP(40,mp);
+            break;
+        }
+        else //否则慢速前进
+        {
+            mp-=100;
+            if (mp>100)
+            {
+                MasterCar_SmartRunMP(30,100);
+            }
+            else 
+            {MasterCar_SmartRunMP(40,mp);
+            }
+
+            delay_ms(500);
+        }
+        
+    }
+    TIM_Cmd(TIM4, DISABLE);//关闭接收
+    return ETC_flag;
+}
+
 /**
  * @description: 获取闸门状态 10秒闸门自动关闭
  * @param {uint8_t*} status 欲判断的帧数据
@@ -1807,6 +1848,8 @@ void Operation_Zigbee(void)
     case zNum_alarm:
         OFlag_alarmFlag = Zigb_Rx_Buf[3];
         break;
+    case zNum_ETC:
+        ETC_flag = 1;
     case zNum_MasterCar: //来自从车向主车的指令（！主车失控）
         /*if(SLAVE_flag==0)
         {

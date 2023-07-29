@@ -3,7 +3,7 @@
  * @Autor: 309
  * @Date: 2021-09-28 20:59:16
  * @LastEditors: 309 Mushroom
- * @LastEditTime: 2023-04-27 10:02:43
+ * @LastEditTime: 2023-07-29 20:31:25
  * @version: 2021
  */
 #ifndef __OperationFlag_H
@@ -96,6 +96,7 @@ void OFlag_ETC(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3); //ETC±
 void OFlag_ETC_cmd(uint8_t mode, uint8_t cmd);                            //ETC±êÖ¾Îï×óÓÒÕ¢ÃÅ¿ØÖÆ
 unsigned int OFlag_ETC_status(uint8_t *status);                           //»ñÈ¡Õ¢ÃÅ×´Ì¬ 10ÃëÕ¢ÃÅ×Ô¶¯¹Ø±Õ
 void OFlag_ETC_wait(void);                                                //¿ªÆôETC¼ì²âÔËĞĞ
+uint8_t OFlag_ETC_runWait(uint32_t mp);                                   //ETCÔËĞĞµÈ´ı
 
 void OFlag_DX(uint8_t cmd, uint8_t fcmd1, uint8_t fcmd2, uint8_t fcmd3); //ÌØÊâµØĞÎ±êÖ¾Îï¿ØÖÆ
 void OFlag_DX_statusGet(void);                                           //ÇëÇó²éÑ¯³µÁ¾Í¨ĞĞ×´Ì¬
